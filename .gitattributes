@@ -1,2 +1,33 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+*.lua -text
+*.proto -text
+*.h -text
+*.c -text
+*.cc -text
+
+*.obj                                    filter=lfs diff=lfs merge=lfs -text
+*.pdb                                    filter=lfs diff=lfs merge=lfs -text
+*.a                                      filter=lfs diff=lfs merge=lfs -text
+*.lib                                    filter=lfs diff=lfs merge=lfs -text
+*.dat                                    filter=lfs diff=lfs merge=lfs -text
+*.ldb                         	 filter=lfs diff=lfs merge=lfs -text
+*.uasset                                 filter=lfs diff=lfs merge=lfs -text
+*.so                                     filter=lfs diff=lfs merge=lfs -text
+*.dll                                    filter=lfs diff=lfs merge=lfs -text
+*.apk                                    filter=lfs diff=lfs merge=lfs -text
+*.db                                     filter=lfs diff=lfs merge=lfs -text
+*.bin                                    filter=lfs diff=lfs merge=lfs -text
+*.blend                                  filter=lfs diff=lfs merge=lfs -text
+*.exe                                    filter=lfs diff=lfs merge=lfs -text
+*.zip                                    filter=lfs diff=lfs merge=lfs -text
+*.dylib                                  filter=lfs diff=lfs merge=lfs -text
+IntegrationDemo               	 filter=lfs diff=lfs merge=lfs -text
+*.pch                                    filter=lfs diff=lfs merge=lfs -text
+*.bnk                                    filter=lfs diff=lfs merge=lfs -text
+*.umap                                   filter=lfs diff=lfs merge=lfs -text
+*.chm                                    filter=lfs diff=lfs merge=lfs -text
+*.exp                                    filter=lfs diff=lfs merge=lfs -text
+*.png                                    filter=lfs diff=lfs merge=lfs -text
+*.pyd                                    filter=lfs diff=lfs merge=lfs -text
+*.jar                                    filter=lfs diff=lfs merge=lfs -text
+*.pck                                    filter=lfs diff=lfs merge=lfs -text
+*.jpg                                    filter=lfs diff=lfs merge=lfs -text
