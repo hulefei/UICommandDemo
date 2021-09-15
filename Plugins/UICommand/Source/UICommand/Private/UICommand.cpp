@@ -59,13 +59,13 @@ void FUICommandModule::StartupModule()
 		                                     {
 			                                     Builder.AddToolBarButton(FTestCommands::Get().CommandA);
 		                                     }));
-		ToolbarExtender->AddToolBarExtension("Settings"
-		                                     , EExtensionHook::After
-		                                     , PluginCommandList
-		                                     , FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
-		                                     {
-			                                     Builder.AddToolBarButton(FTestCommands::Get().CommandB);
-		                                     }));
+		// ToolbarExtender->AddToolBarExtension("Settings"
+		//                                      , EExtensionHook::After
+		//                                      , PluginCommandList
+		//                                      , FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
+		//                                      {
+		// 	                                     Builder.AddToolBarButton(FTestCommands::Get().CommandB);
+		//                                      }));
 		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
 	}
 
