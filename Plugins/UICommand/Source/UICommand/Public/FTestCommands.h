@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+//一系列命令
 class FTestCommands : public TCommands<FTestCommands>
 {
 public:
@@ -14,4 +15,5 @@ public:
 
 	//命令A
 	TSharedPtr< FUICommandInfo > CommandA;
+	TSharedPtr< FUICommandInfo > CommandB;
 };

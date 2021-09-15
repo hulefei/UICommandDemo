@@ -50,11 +50,13 @@ TSharedRef<FSlateStyleSet> FTestStyle::Create()
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet(GetStyleSetName()));
 
 	//设置资源目录，为本插件的Resources目录
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("UICommand")->GetBaseDir() / TEXT("Resources"));
+	const FString ContentRoot = IPluginManager::Get().FindPlugin("UICommand")->GetBaseDir() / TEXT("Resources");
+	Style->SetContentRoot(ContentRoot);
 
 	//注册图标：
 	// Style->Set("TestCommands.CommandA", new IMAGE_BRUSH(TEXT("Icon128"), Icon128x128));
 	Style->Set("TestCommands.CommandA", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
+	Style->Set("TestCommands.CommandB", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
 
 	return Style;
 }

@@ -19,6 +19,7 @@ FTestCommands::FTestCommands() : TCommands<FTestCommands>(
 void FTestCommands::RegisterCommands()
 {
 	UI_COMMAND(CommandA, "TestCommandA", "Execute TestYaksue CommandA", EUserInterfaceActionType::Button, FInputChord());
+	UI_COMMAND(CommandB, "TestCommandB", "Execute TestYaksue CommandB", EUserInterfaceActionType::Button, FInputChord());
 }
 
 

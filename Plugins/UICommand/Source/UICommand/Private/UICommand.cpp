@@ -20,6 +20,10 @@ void FUICommandModule::StartupModule()
 		FTestCommands::Get().CommandA,
 		FExecuteAction::CreateRaw(this, &FUICommandModule::CommandAAction),
 		FCanExecuteAction());
+	PluginCommandList->MapAction(
+		FTestCommands::Get().CommandB,
+		FExecuteAction::CreateRaw(this, &FUICommandModule::CommandAAction),
+		FCanExecuteAction());
 
 	//获得关卡编辑器模块
 	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
@@ -33,6 +37,13 @@ void FUICommandModule::StartupModule()
 				{
 					Builder.AddMenuEntry(FTestCommands::Get().CommandA);
 				}));
+		MenuExtender->AddMenuExtension("WindowLayout"
+			, EExtensionHook::After
+			, PluginCommandList
+			, FMenuExtensionDelegate::CreateLambda([](FMenuBuilder& Builder)
+				{
+					Builder.AddMenuEntry(FTestCommands::Get().CommandB);
+				}));
 		LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
 	}
 	//扩展关卡编辑器的工具栏
@@ -44,6 +55,13 @@ void FUICommandModule::StartupModule()
 			, FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
 				{
 					Builder.AddToolBarButton(FTestCommands::Get().CommandA);
+				}));
+		ToolbarExtender->AddToolBarExtension("Settings"
+			, EExtensionHook::After
+			, PluginCommandList
+			, FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
+				{
+					Builder.AddToolBarButton(FTestCommands::Get().CommandB);
 				}));
 		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
 	}
