@@ -1,29 +1,19 @@
-* FUICommandList
-    * 存储命令所对应的操作
-* TCommands
-    * 一组命令 
-* FUICommandInfo
-    * 对应一种命令 
-* FCustomStyle
-    * 定义风格
-* FUIAction
-    * 对应了一个实际的操作 
+# 总结
 
-![image](./Documents/1.png)
+### 示意流程
 
-### 流程
-0. TCommands.Register
-    1. TCommands(ContextName, StyleName)
-    2. TCommands.RegisterCommands
-1. new FUICommandList
-2. FUICommandList.MapAction(Command, Action)
-3. FModuleManager::LoadModuleChecked<FLevelEditorModule>
-    1. new FExtender
-    2. MenuExtender.AddMenuExtension(CoommandList, FUICommandInfo)
-    2. LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender)
-3. FCustomStyle.Initialize
-    1. Create
-    2. FSlateStyleRegistry::RegisterSlateStyle
-4. FTestStyle.ReloadTextures
+0. FGlobalTabmanager::Get()->RegisterNomadTabSpawner(MutilTabExampleTabName, OnSpawnPluginTab)
+1. FGlobalTabmanager.RegisterNomadTabSpawner(InnerTabName, SDockTab)
+2. FGlobalTabmanager.RegisterNomadTabSpawner(InnerTabName2, SDockTab)
+3. OnSpawnPluginTab 
+    0. NomadTab = SNew(SDockTab)
+    1. TabManager = FGlobalTabmanager.NewTabManager
+    2. TabManagerLayout.AddArea(FTabManager.NewPrimaryArea)
+        .Split(FTabManager::NewStack)
+        .Split(FTabManager::NewStack)
+    3. TabContents = TabManager.RestoreFrom
+    4. NomadTab.SetContent(TabContents)
+4. FGlobalTabmanager::Get()->TryInvokeTab(MutilTabExampleTabName);
 
-[原文](https://blog.csdn.net/u013412391/article/details/107891152)
+
+[原文](https://www.codenong.com/cs109321869/)
