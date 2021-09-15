@@ -2,12 +2,15 @@
 
 #include "UICommand.h"
 
+#include "ContentBrowserDelegates.h"
+#include "ContentBrowserModule.h"
 #include "FTestCommands.h"
 #include "LevelEditor.h"
 #include "TestStyle.h"
 #include "Misc/MessageDialog.h"
 
 #define LOCTEXT_NAMESPACE "FUICommandModule"
+
 
 void FUICommandModule::StartupModule()
 {
@@ -31,40 +34,62 @@ void FUICommandModule::StartupModule()
 	{
 		TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
 		MenuExtender->AddMenuExtension("WindowLayout"
-			, EExtensionHook::After
-			, PluginCommandList
-			, FMenuExtensionDelegate::CreateLambda([](FMenuBuilder& Builder)
-				{
-					Builder.AddMenuEntry(FTestCommands::Get().CommandA);
-				}));
+		                               , EExtensionHook::After
+		                               , PluginCommandList
+		                               , FMenuExtensionDelegate::CreateLambda([](FMenuBuilder& Builder)
+		                               {
+			                               Builder.AddMenuEntry(FTestCommands::Get().CommandA);
+		                               }));
 		MenuExtender->AddMenuExtension("WindowLayout"
-			, EExtensionHook::After
-			, PluginCommandList
-			, FMenuExtensionDelegate::CreateLambda([](FMenuBuilder& Builder)
-				{
-					Builder.AddMenuEntry(FTestCommands::Get().CommandB);
-				}));
+		                               , EExtensionHook::After
+		                               , PluginCommandList
+		                               , FMenuExtensionDelegate::CreateLambda([](FMenuBuilder& Builder)
+		                               {
+			                               Builder.AddMenuEntry(FTestCommands::Get().CommandB);
+		                               }));
 		LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
 	}
 	//扩展关卡编辑器的工具栏
 	{
 		TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
 		ToolbarExtender->AddToolBarExtension("Settings"
-			, EExtensionHook::After
-			, PluginCommandList
-			, FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
-				{
-					Builder.AddToolBarButton(FTestCommands::Get().CommandA);
-				}));
+		                                     , EExtensionHook::After
+		                                     , PluginCommandList
+		                                     , FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
+		                                     {
+			                                     Builder.AddToolBarButton(FTestCommands::Get().CommandA);
+		                                     }));
 		ToolbarExtender->AddToolBarExtension("Settings"
-			, EExtensionHook::After
-			, PluginCommandList
-			, FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
-				{
-					Builder.AddToolBarButton(FTestCommands::Get().CommandB);
-				}));
+		                                     , EExtensionHook::After
+		                                     , PluginCommandList
+		                                     , FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder)
+		                                     {
+			                                     Builder.AddToolBarButton(FTestCommands::Get().CommandB);
+		                                     }));
 		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
 	}
+
+	//获得内容浏览器模块
+	FContentBrowserModule& ContentBrowserModule = FModuleManager::LoadModuleChecked<FContentBrowserModule>(
+		TEXT("ContentBrowser"));
+	//增加内容浏览器中Asset右键菜单
+	TArray<FContentBrowserMenuExtender_SelectedAssets>& CBAssetMenuExtenderDelegates = ContentBrowserModule.
+		GetAllAssetViewContextMenuExtenders();
+	CBAssetMenuExtenderDelegates.Add(FContentBrowserMenuExtender_SelectedAssets::CreateLambda(
+		[](const TArray<FAssetData>& SelectedAssets)
+		{
+			TSharedRef<FExtender> Extender(new FExtender());
+			Extender->AddMenuExtension(
+				"AssetContextReferences",
+				EExtensionHook::After,
+				nullptr,
+				FMenuExtensionDelegate::CreateLambda([](FMenuBuilder& MenuBuilder)
+				{
+					MenuBuilder.AddMenuEntry(FTestCommands::Get().CommandB);
+				}));
+
+			return Extender;
+		}));
 
 	FTestStyle::Initialize();
 	FTestStyle::ReloadTextures();
@@ -81,5 +106,5 @@ void FUICommandModule::CommandAAction()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FUICommandModule, UICommand)
