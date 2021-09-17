@@ -13,4 +13,8 @@ class FTestPreviewScene : public FPreviewScene
 {
 public:
 	FTestPreviewScene(ConstructionValues CVS);
+
+private:
+	void CreateSkySphere();
+	void CreateFloor();
 };

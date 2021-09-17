@@ -1,6 +1,8 @@
 ﻿#include "STestEditorViewport.h"
 
-#include "FTestPreviewScene.h"
+#include "TestEditorViewportClient.h"
+#include "TestPreviewScene.h"
+
 
 void STestEditorViewport::Construct(const FArguments& InArgs)
 {
@@ -46,7 +48,10 @@ TSharedRef<FEditorViewportClient> STestEditorViewport::MakeEditorViewportClient(
 	//使用UE4默认的FEditorViewportClient，并使用PreviewScene的world, 默认使用编辑器中打开的默认场景
 	const TSharedPtr<FEditorViewportClient> EditorViewportClient = MakeShareable(new FEditorViewportClient(nullptr,
 	                                                                                                       PreviewScene.Get()));
-
+	//使用自定义FEditorViewportClient
+	// const TSharedPtr<FTestEditorViewportClient> EditorViewportClient = MakeShareable(new FTestEditorViewportClient(nullptr,
+	// 																										PreviewScene.Get()));
+	
 	return EditorViewportClient.ToSharedRef();
 }
 
