@@ -8,6 +8,7 @@
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
 #include "ToolMenus.h"
+#include "SMainMenuWidget.h"
 
 static const FName SlateExampleTabName("SlateExample");
 
@@ -64,13 +65,15 @@ TSharedRef<SDockTab> FSlateExampleModule::OnSpawnPluginTab(const FSpawnTabArgs& 
 		.TabRole(ETabRole::NomadTab)
 		[
 			// Put your tab content here!
-			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
+			// SNew(SBox)
+			// .HAlign(HAlign_Center)
+			// .VAlign(VAlign_Center)
+			// [
+			// 	SNew(STextBlock)
+			// 	.Text(WidgetText)
+			// ]
+			SNew(SMainMenuWidget)
+				
 		];
 }
 
