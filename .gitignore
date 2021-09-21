@@ -95,6 +95,5 @@ Plugins/Developer/RiderLink
 .lfsconfig
 
 # 忽略资源目录
-Content/
 KGame.sln.DotSettings.user
 *.user
