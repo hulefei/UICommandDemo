@@ -24,4 +24,12 @@ void AMenuPlayerController::OpenMenu()
 	}
 }
 
+void AMenuPlayerController::CloseMenu()
+{
+	if (AMenuHUD* MenuHUD = GetHUD<AMenuHUD>())
+	{
+		MenuHUD->RemoveMenu();
+	}
+}
+
 

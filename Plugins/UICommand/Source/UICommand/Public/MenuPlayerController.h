@@ -15,4 +15,5 @@ protected:
 	virtual void SetupInputComponent() override;
 private:
 	void OpenMenu();
+	void CloseMenu();
 };
