@@ -15,5 +15,5 @@ class CUSTOMASSET_API UCustomAsset : public UObject
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=NewAsset)
-	FText Value;
+	FText Text;
 };

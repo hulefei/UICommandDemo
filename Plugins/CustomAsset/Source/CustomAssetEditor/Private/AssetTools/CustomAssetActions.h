@@ -12,7 +12,7 @@
 class CUSTOMASSETEDITOR_API FCustomAssetActions : public FAssetTypeActions_Base
 {
 public:
-	FCustomAssetActions();
+	FCustomAssetActions(const TSharedRef<ISlateStyle>& InStyle);
 	// void CreateBlueprint();
 
 	public:
@@ -24,4 +24,11 @@ public:
 
 	virtual void GetActions(const TArray<UObject*>& InObjects, FMenuBuilder& MenuBuilder) override;
 	virtual bool HasActions(const TArray<UObject*>& InObjects) const override;
+
+private:
+
+	/** Pointer to the style set to use for toolkits. */
+	TSharedRef<ISlateStyle> Style;
+
+	void OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<IToolkitHost> EditWithinLevelEditor);
 };

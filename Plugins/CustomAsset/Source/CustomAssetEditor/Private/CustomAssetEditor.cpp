@@ -5,6 +5,7 @@
 #include "Modules/ModuleInterface.h"
 #include "Templates/SharedPointer.h"
 #include "Modules/ModuleManager.h"
+#include "Styles/CustomAssetEditorStyle.h"
 
 #define LOCTEXT_NAMESPACE "FCustomAssetEditorModule"
 
@@ -15,6 +16,7 @@ class FCustomAssetEditorModule
 {
 	virtual void StartupModule() override
 	{
+		Style = MakeShareable(new FCustomAssetEditorStyle());
 		RegisterAssetTools();
 	}
 	virtual void ShutdownModule() override
@@ -31,7 +33,7 @@ protected:
 	void RegisterAssetTools()
 	{
 		IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
-		RegisterAssetTypeAction(AssetTools, MakeShareable(new FCustomAssetActions()));
+		RegisterAssetTypeAction(AssetTools, MakeShareable(new FCustomAssetActions(Style.ToSharedRef())));
 	}
 
 	void RegisterAssetTypeAction(IAssetTools& AssetTools, TSharedRef<IAssetTypeActions> Action)
@@ -58,6 +60,9 @@ protected:
 private:
 	// /** The collection of registered asset type actions. */
 	TArray<TSharedRef<IAssetTypeActions>> RegisteredAssetTypeActions;
+
+	/** Holds the plug-ins style set. */
+	TSharedPtr<ISlateStyle> Style;
 };
 
 #undef LOCTEXT_NAMESPACE

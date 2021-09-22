@@ -4,13 +4,14 @@
 #include "CustomAssetActions.h"
 
 #include "CustomAsset.h"
+#include "Toolkits/CustomAssetEditorToolkit.h"
 
 
 #define LOCTEXT_NAMESPACE "AssetTypeActions"
 
-FCustomAssetActions::FCustomAssetActions()
-{
-}
+FCustomAssetActions::FCustomAssetActions(const TSharedRef<ISlateStyle>& InStyle)
+	: Style(InStyle)
+{ }
 
 uint32 FCustomAssetActions::GetCategories()
 {
@@ -35,23 +36,34 @@ FColor FCustomAssetActions::GetTypeColor() const
 void FCustomAssetActions::GetActions(const TArray<UObject*>& InObjects, FMenuBuilder& MenuBuilder)
 {
 	FAssetTypeActions_Base::GetActions(InObjects, MenuBuilder);
-	
-	const auto NextAnimAssets = GetTypedWeakObjectPtrs<UCustomAsset>(InObjects);
-	
+
+	auto CustomAssets = GetTypedWeakObjectPtrs<UCustomAsset>(InObjects);
+
 	MenuBuilder.AddMenuEntry(
-		LOCTEXT("CustomAsset_CustomAsset", "CustomAsset"),
-		LOCTEXT("CustomAsset_CustomAssetTip", "CustomAsset Tip"),
+		LOCTEXT("TextAsset_ReverseText", "Reverse Text"),
+		LOCTEXT("TextAsset_ReverseTextToolTip", "Reverse the text stored in the selected text asset(s)."),
 		FSlateIcon(),
 		FUIAction(
-			FExecuteAction::CreateLambda([=]
-			{
-				//TODO
-				// const FText DialogText = LOCTEXT("TODO", "待实现");
-				// FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+			FExecuteAction::CreateLambda([=]{
+				for (auto& CustomAsset : CustomAssets)
+				{
+					if (CustomAsset.IsValid() && !CustomAsset->Text.IsEmpty())
+					{
+						CustomAsset->Text = FText::FromString(CustomAsset->Text.ToString().Reverse());
+						CustomAsset->PostEditChange();
+						CustomAsset->MarkPackageDirty();
+					}
+				}
 			}),
-			FCanExecuteAction::CreateLambda([=]
-			{
-				return true;
+			FCanExecuteAction::CreateLambda([=] {
+				for (auto& CustomAsset : CustomAssets)
+				{
+					if (CustomAsset.IsValid() && !CustomAsset->Text.IsEmpty())
+					{
+						return true;
+					}
+				}
+				return false;
 			})
 		)
 	);
@@ -60,6 +72,24 @@ void FCustomAssetActions::GetActions(const TArray<UObject*>& InObjects, FMenuBui
 bool FCustomAssetActions::HasActions(const TArray<UObject*>& InObjects) const
 {
 	return true;
+}
+
+void FCustomAssetActions::OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<IToolkitHost> EditWithinLevelEditor)
+{
+	const EToolkitMode::Type Mode = EditWithinLevelEditor.IsValid()
+		                                ? EToolkitMode::WorldCentric
+		                                : EToolkitMode::Standalone;
+
+	for (auto ObjIt = InObjects.CreateConstIterator(); ObjIt; ++ObjIt)
+	{
+		const auto CustomAsset = Cast<UCustomAsset>(*ObjIt);
+
+		if (CustomAsset != nullptr)
+		{
+			TSharedRef<FCustomAssetEditorToolkit> EditorToolkit = MakeShareable(new FCustomAssetEditorToolkit(Style));
+			EditorToolkit->Initialize(CustomAsset, Mode, EditWithinLevelEditor);
+		}
+	}
 }
 
 #undef LOCTEXT_NAMESPACE
