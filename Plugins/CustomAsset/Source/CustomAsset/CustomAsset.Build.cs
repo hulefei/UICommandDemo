@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class UltimateSkill : ModuleRules
+public class CustomAsset : ModuleRules
 {
-	public UltimateSkill(ReadOnlyTargetRules Target) : base(Target)
+	public CustomAsset(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -38,7 +38,6 @@ public class UltimateSkill : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"DataTableEditor",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

@@ -1,8 +1,8 @@
-﻿using UnrealBuildTool;
+using UnrealBuildTool;
 
-public class UltimateSkillEditor : ModuleRules
+public class CustomAssetEditor : ModuleRules
 {
-	public UltimateSkillEditor(ReadOnlyTargetRules Target) : base(Target)
+	public CustomAssetEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
@@ -15,8 +15,6 @@ public class UltimateSkillEditor : ModuleRules
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
-				"Private",
-				"UltimateSkillEditor/Private"
 			});
 		
 		PrivateDependencyModuleNames.AddRange(
@@ -32,7 +30,7 @@ public class UltimateSkillEditor : ModuleRules
 				"Slate",
 				"SlateCore",
 				"UnrealEd",
-				"UltimateSkill",
+				"CustomAsset",
 			});
 		
 		PrivateIncludePathModuleNames.AddRange(

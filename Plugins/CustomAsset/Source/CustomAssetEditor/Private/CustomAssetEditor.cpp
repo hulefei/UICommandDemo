@@ -1,14 +1,14 @@
-﻿#include "AssetToolsModule.h"
+#include "AssetToolsModule.h"
 #include "IAssetTools.h"
 #include "IAssetTypeActions.h"
-#include "AssetTools/UltimateSkillAssetActions.h"
+#include "AssetTools/CustomAssetActions.h"
 #include "Modules/ModuleInterface.h"
 #include "Templates/SharedPointer.h"
 #include "Modules/ModuleManager.h"
 
-#define LOCTEXT_NAMESPACE "FUltimateSkillEditorModule"
+#define LOCTEXT_NAMESPACE "FCustomAssetEditorModule"
 
-class FUltimateSkillEditorModule
+class FCustomAssetEditorModule
 // : public IHasMenuExtensibility
 // , public IHasToolBarExtensibility
  : public IModuleInterface
@@ -31,7 +31,7 @@ protected:
 	void RegisterAssetTools()
 	{
 		IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
-		RegisterAssetTypeAction(AssetTools, MakeShareable(new FUltimateSkillAssetActions()));
+		RegisterAssetTypeAction(AssetTools, MakeShareable(new FCustomAssetActions()));
 	}
 
 	void RegisterAssetTypeAction(IAssetTools& AssetTools, TSharedRef<IAssetTypeActions> Action)
@@ -62,4 +62,4 @@ private:
 
 #undef LOCTEXT_NAMESPACE
 
-IMPLEMENT_MODULE(FUltimateSkillEditorModule, UltimateSkillEditor);
+IMPLEMENT_MODULE(FCustomAssetEditorModule, CustomAssetEditor);

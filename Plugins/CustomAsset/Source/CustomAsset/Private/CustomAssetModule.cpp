@@ -1,15 +1,15 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "UltimateSkill.h"
+#include "CustomAssetModule.h"
 
-#define LOCTEXT_NAMESPACE "FUltimateSkillModule"
+#define LOCTEXT_NAMESPACE "FCustomAssetModule"
 
-void FUltimateSkillModule::StartupModule()
+void FCustomAssetModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
 }
 
-void FUltimateSkillModule::ShutdownModule()
+void FCustomAssetModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
@@ -17,4 +17,4 @@ void FUltimateSkillModule::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FUltimateSkillModule, UltimateSkill)
+IMPLEMENT_MODULE(FCustomAssetModule, CustomAsset)
