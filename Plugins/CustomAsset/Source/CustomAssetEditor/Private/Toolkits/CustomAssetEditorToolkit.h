@@ -5,12 +5,16 @@
 #include "CoreMinimal.h"
 
 #include "CustomAsset.h"
+#include "WorkflowOrientedApp/WorkflowCentricApplication.h"
 
 /**
  * 
  */
+
+
+
 class CUSTOMASSETEDITOR_API FCustomAssetEditorToolkit
-	: public FAssetEditorToolkit
+	: public FWorkflowCentricApplication//FAssetEditorToolkit // FWorkflowCentricApplication
 	  , public FEditorUndoClient
 	  , public FGCObject
 {
@@ -58,7 +62,7 @@ public:
 	//~ FGCObject interface
 
 	virtual void AddReferencedObjects(FReferenceCollector& Collector) override;
-	
+
 	protected:
 
 	//~ FEditorUndoClient interface
@@ -66,16 +70,26 @@ public:
 	virtual void PostUndo(bool bSuccess) override;
 	virtual void PostRedo(bool bSuccess) override;
 
-	private:
-
+public:
+	void CreateInternalWidgets();
+	TSharedRef<SWidget> SpawnProperties();
+	static FText GetLocalizedMode(FName InMode);
+private:
 	/** Callback for spawning the Properties tab. */
 	TSharedRef<SDockTab> HandleTabManagerSpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier);
-
-	private:
-
+	
+private:
 	/** The text asset being edited. */
 	UCustomAsset* CustomAsset = nullptr;
 
 	/** Pointer to the style set to use for toolkits. */
 	TSharedRef<ISlateStyle> Style;
+
+	TSharedPtr<class FDocumentTracker> DocumentManager;
+	TSharedPtr<class IDetailsView> DetailsView;
+
+public:
+	/** Modes in mode switcher */
+	static const FName CustomAssetMode;
+	static const FName CustomAssetBlackboardMode;
 };

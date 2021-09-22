@@ -7,13 +7,18 @@
 #include "EditorStyleSet.h"
 #include "Widgets/SCustomAssetEditor.h"
 #include "CustomAsset.h"
+#include "CustomAssetEditorApplicationMode.h"
+#include "CustomAssetSummoner.h"
 #include "UObject/NameTypes.h"
 #include "Widgets/Docking/SDockTab.h"
+#include "WorkflowOrientedApp/WorkflowTabManager.h"
 
-#define LOCTEXT_NAMESPACE "FTextAssetEditorToolkit"
+#define LOCTEXT_NAMESPACE "FCustomAssetEditorToolkit"
 
-DEFINE_LOG_CATEGORY_STATIC(LogTextAssetEditor, Log, All);
+DEFINE_LOG_CATEGORY_STATIC(LogCustomAssetEditor, Log, All);
 
+const FName FCustomAssetEditorToolkit::CustomAssetMode(TEXT("CustomAsset"));
+const FName FCustomAssetEditorToolkit::CustomAssetBlackboardMode(TEXT("CustomAssetBlackboard"));
 
 /* Local constants
  *****************************************************************************/
@@ -95,6 +100,32 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 
 	RegenerateMenusAndToolbars();
 }
+
+// void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const EToolkitMode::Type InMode, const TSharedPtr<class IToolkitHost>& InToolkitHost)
+// {
+// 	CustomAsset = InCustomAsset;
+//
+// 	TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
+// 	if(!DocumentManager.IsValid())
+// 	{
+// 		DocumentManager = MakeShareable(new FDocumentTracker);
+// 		DocumentManager->Initialize(ThisPtr);
+//
+// 		CreateInternalWidgets();
+// 		
+// 		// Register the document factories
+// 		{
+// 			// FCustomAssetSummoner* CustomAssetSummoner = new FCustomAssetSummoner(ThisPtr);
+// 			// TSharedPtr<FDocumentTabFactory> GraphEditorFactory = MakeShareable(CustomAssetSummoner);
+// 			
+// 			// Also store off a reference to the grapheditor factory so we can find all the tabs spawned by it later.
+// 			// GraphEditorTabFactoryPtr = GraphEditorFactory;
+// 			// DocumentManager->RegisterDocumentFactory(GraphEditorFactory);
+// 		}
+// 		
+// 		AddApplicationMode(CustomAssetMode, MakeShareable(new FCustomAssetEditorApplicationMode(SharedThis(this))));
+// 	}
+// }
 
 
 /* FAssetEditorToolkit interface
@@ -194,6 +225,46 @@ TSharedRef<SDockTab> FCustomAssetEditorToolkit::HandleTabManagerSpawnTab(const F
 		[
 			TabWidget.ToSharedRef()
 		];
+}
+
+void FCustomAssetEditorToolkit::CreateInternalWidgets()
+{
+	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	FDetailsViewArgs DetailsViewArgs(false, false, true, FDetailsViewArgs::HideNameArea, false);
+	// DetailsViewArgs.NotifyHook = this;
+	DetailsViewArgs.DefaultsOnlyVisibility = EEditDefaultsOnlyNodeVisibility::Hide;
+	DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+	DetailsView->SetObject(NULL);
+	// DetailsView->SetIsPropertyEditingEnabledDelegate(FIsPropertyEditingEnabled::CreateSP(this, &FTestEditor::IsPropertyEditable));
+	// DetailsView->OnFinishedChangingProperties().AddSP(this, &FCustomAssetEditorToolkit::OnFinishedChangingProperties);
+}
+
+TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnProperties()
+{
+	return
+		SNew(SVerticalBox)
+		+ SVerticalBox::Slot()
+		.FillHeight(1.0f)
+		.HAlign(HAlign_Fill)
+		[
+			DetailsView.ToSharedRef()
+		];
+}
+
+FText FCustomAssetEditorToolkit::GetLocalizedMode(FName InMode)
+{
+	static TMap< FName, FText > LocModes;
+
+	if (LocModes.Num() == 0)
+	{
+		LocModes.Add( CustomAssetMode, LOCTEXT("CustomAssetMode", "Custom Asset") );
+		LocModes.Add( CustomAssetBlackboardMode, LOCTEXT("CustomAssetBlackboardMode", "Custom Asset BlackboardMode") );
+	}
+
+	check( InMode != NAME_None );
+	const FText* OutDesc = LocModes.Find( InMode );
+	check( OutDesc );
+	return *OutDesc;
 }
 
 

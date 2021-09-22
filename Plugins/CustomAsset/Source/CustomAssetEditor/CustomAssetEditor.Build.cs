@@ -31,6 +31,8 @@ public class CustomAssetEditor : ModuleRules
 				"SlateCore",
 				"UnrealEd",
 				"CustomAsset",
+				"Kismet",
+				"PropertyEditor"
 			});
 		
 		PrivateIncludePathModuleNames.AddRange(
