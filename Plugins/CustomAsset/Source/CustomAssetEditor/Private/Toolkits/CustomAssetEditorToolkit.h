@@ -71,12 +71,15 @@ public:
 	virtual void PostRedo(bool bSuccess) override;
 
 public:
-	void CreateInternalWidgets();
+	void RegisterToolbarTab(const TSharedRef<class FTabManager>& InTabManager);
 	TSharedRef<SWidget> SpawnProperties();
+	TSharedRef<SWidget> SpawnEditable();
 	static FText GetLocalizedMode(FName InMode);
+	
 private:
 	/** Callback for spawning the Properties tab. */
 	TSharedRef<SDockTab> HandleTabManagerSpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier);
+	void CreateInternalWidgets();
 	
 private:
 	/** The text asset being edited. */

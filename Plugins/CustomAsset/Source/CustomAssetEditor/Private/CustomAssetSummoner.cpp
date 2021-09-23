@@ -9,25 +9,25 @@
 #define LOCTEXT_NAMESPACE "CustomAssetEditorFactories"
 
 FCustomAssetSummoner::FCustomAssetSummoner(TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditorPtr)
-	: FWorkflowTabFactory(FCustomAssetEditorTabs::GraphDetailsID, InCustomAssetEditorPtr)
+	: FWorkflowTabFactory(FCustomAssetEditorTabs::CustomAssetEditorID, InCustomAssetEditorPtr)
 	, CustomAssetEditorToolkitPtr(InCustomAssetEditorPtr)
 {
-	TabLabel = LOCTEXT("TestDetailsLabel", "Details");
+	TabLabel = LOCTEXT("CustomEditorLabel", "Editor");
 	TabIcon = FSlateIcon(FEditorStyle::GetStyleSetName(), "Kismet.Tabs.Components");
 	bIsSingleton = true;
-	ViewMenuDescription = LOCTEXT("TestDetailsView", "Details");
-	ViewMenuTooltip = LOCTEXT("TestDetailsView_ToolTip", "Show the details view");
+	ViewMenuDescription = LOCTEXT("CustomEditorView", "Details");
+	ViewMenuTooltip = LOCTEXT("CustomEditorView_ToolTip", "Show the editor view");
 }
 
 TSharedRef<SWidget> FCustomAssetSummoner::CreateTabBody(const FWorkflowTabSpawnInfo& Info) const
 {
 	check(CustomAssetEditorToolkitPtr.IsValid());
-	return CustomAssetEditorToolkitPtr.Pin()->SpawnProperties();
+	return CustomAssetEditorToolkitPtr.Pin()->SpawnEditable();
 }
 
 FText FCustomAssetSummoner::GetTabToolTipText(const FWorkflowTabSpawnInfo& Info) const
 {
-	return LOCTEXT("TestDetailsTabTooltip", "The Test details tab allows editing of the properties");
+	return LOCTEXT("CustomEditorTabTooltip", "The Test details tab allows editing of the properties");
 }
 
 #undef LOCTEXT_NAMESPACE

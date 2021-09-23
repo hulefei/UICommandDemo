@@ -1,7 +1,7 @@
 ﻿#include "CustomAssetEditorTabs.h"
 
 // Tab identifiers
-const FName FCustomAssetEditorTabs::GraphDetailsID(TEXT("BehaviorTreeEditor_Properties"));
+const FName FCustomAssetEditorTabs::CustomAssetDetailsID(TEXT("CustomAsset_Properties"));
 
 // Document tab identifiers
-const FName FCustomAssetEditorTabs::GraphEditorID(TEXT("Document"));
+const FName FCustomAssetEditorTabs::CustomAssetEditorID(TEXT("CustomAsset_Editor"));

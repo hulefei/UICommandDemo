@@ -5,16 +5,15 @@
 #include "CoreMinimal.h"
 
 #include "WorkflowOrientedApp/WorkflowTabFactory.h"
+#include "Toolkits/CustomAssetEditorToolkit.h"
 
-
-class FCustomAssetEditorToolkit;
 /**
  * 
  */
-struct FCustomAssetSummoner : public FWorkflowTabFactory
+class CUSTOMASSETEDITOR_API FCustomAssetDetailsSummoner : public FWorkflowTabFactory
 {
 public:
-	FCustomAssetSummoner(TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditorPtr);
+	FCustomAssetDetailsSummoner(TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditorPtr);
 
 	//FWorkflowTabFactory Implement
 	virtual TSharedRef<SWidget> CreateTabBody(const FWorkflowTabSpawnInfo& Info) const override;

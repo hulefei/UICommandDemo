@@ -271,6 +271,23 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnProperties()
 		];
 }
 
+TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnEditable()
+{
+	return
+		SNew(SVerticalBox)
+		+ SVerticalBox::Slot()
+		.FillHeight(1.0f)
+		.HAlign(HAlign_Fill)
+		[
+			SNew(SCustomAssetEditor, CustomAsset, Style)
+		];
+}
+
+void FCustomAssetEditorToolkit::RegisterToolbarTab(const TSharedRef<class FTabManager>& InTabManager)
+{
+	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
+}
+
 FText FCustomAssetEditorToolkit::GetLocalizedMode(FName InMode)
 {
 	static TMap<FName, FText> LocModes;
