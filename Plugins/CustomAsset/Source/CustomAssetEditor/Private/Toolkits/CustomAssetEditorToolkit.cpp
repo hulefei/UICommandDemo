@@ -23,10 +23,10 @@ const FName FCustomAssetEditorToolkit::CustomAssetBlackboardMode(TEXT("CustomAss
 /* Local constants
  *****************************************************************************/
 
-namespace TextAssetEditor
+namespace CustomAssetEditor
 {
-	static const FName AppIdentifier("TextAssetEditorApp");
-	static const FName TabId("TextEditor");
+	static const FName AppIdentifier("CustomAssetEditorApp");
+	static const FName TabId("CustomEditor");
 }
 
 
@@ -35,64 +35,104 @@ namespace TextAssetEditor
 
 FCustomAssetEditorToolkit::FCustomAssetEditorToolkit(const TSharedRef<ISlateStyle>& InStyle)
 	: CustomAsset(nullptr)
-	, Style(InStyle)
-{ }
+	  , Style(InStyle)
+{
+}
 
 
 FCustomAssetEditorToolkit::~FCustomAssetEditorToolkit()
 {
-	FReimportManager::Instance()->OnPreReimport().RemoveAll(this);
-	FReimportManager::Instance()->OnPostReimport().RemoveAll(this);
-
-	GEditor->UnregisterForUndo(this);
+	// FReimportManager::Instance()->OnPreReimport().RemoveAll(this);
+	// FReimportManager::Instance()->OnPostReimport().RemoveAll(this);
+	//
+	// GEditor->UnregisterForUndo(this);
 }
 
 
 /* FTextAssetEditorToolkit interface
  *****************************************************************************/
 
-void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const EToolkitMode::Type InMode, const TSharedPtr<class IToolkitHost>& InToolkitHost)
+// void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const EToolkitMode::Type InMode, const TSharedPtr<class IToolkitHost>& InToolkitHost)
+// {
+// 	CustomAsset = InCustomAsset;
+//
+// 	// Support undo/redo
+// 	CustomAsset->SetFlags(RF_Transactional);
+// 	GEditor->RegisterForUndo(this);
+//
+// 	// create tab layout
+// 	const TSharedRef<FTabManager::FLayout> Layout = FTabManager::NewLayout("Standalone_CustomAssetEditor")
+// 		->AddArea
+// 		(
+// 			FTabManager::NewPrimaryArea()
+// 				->SetOrientation(Orient_Horizontal)
+// 				->Split
+// 				(
+// 					FTabManager::NewSplitter()
+// 						->SetOrientation(Orient_Vertical)
+// 						->SetSizeCoefficient(0.66f)
+// 						->Split
+// 						(
+// 							FTabManager::NewStack()
+// 								->AddTab(GetToolbarTabId(), ETabState::OpenedTab)
+// 								->SetHideTabWell(true)
+// 								->SetSizeCoefficient(0.1f)
+// 								
+// 						)
+// 						->Split
+// 						(
+// 							FTabManager::NewStack()
+// 								->AddTab(TextAssetEditor::TabId, ETabState::OpenedTab)
+// 								->SetHideTabWell(true)
+// 								->SetSizeCoefficient(0.9f)
+// 						)
+// 				)
+// 		);
+//
+// 	FAssetEditorToolkit::InitAssetEditor(
+// 		InMode,
+// 		InToolkitHost,
+// 		TextAssetEditor::AppIdentifier,
+// 		Layout,
+// 		true /*bCreateDefaultStandaloneMenu*/,
+// 		true /*bCreateDefaultToolbar*/,
+// 		InCustomAsset
+// 	);
+//
+// 	RegenerateMenusAndToolbars();
+// }
+
+void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const EToolkitMode::Type InMode,
+                                           const TSharedPtr<class IToolkitHost>& InToolkitHost)
 {
 	CustomAsset = InCustomAsset;
 
-	// Support undo/redo
-	CustomAsset->SetFlags(RF_Transactional);
-	GEditor->RegisterForUndo(this);
+	// TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
+	// if(!DocumentManager.IsValid())
+	// {
+	// 	DocumentManager = MakeShareable(new FDocumentTracker);
+	// 	DocumentManager->Initialize(ThisPtr);
+	//
+	// 	CreateInternalWidgets();
+	// 	
+	// 	// Register the document factories
+	// 	{
+	// 		// FCustomAssetSummoner* CustomAssetSummoner = new FCustomAssetSummoner(ThisPtr);
+	// 		// TSharedPtr<FDocumentTabFactory> GraphEditorFactory = MakeShareable(CustomAssetSummoner);
+	// 		
+	// 		// Also store off a reference to the grapheditor factory so we can find all the tabs spawned by it later.
+	// 		// GraphEditorTabFactoryPtr = GraphEditorFactory;
+	// 		// DocumentManager->RegisterDocumentFactory(GraphEditorFactory);
+	// 	}
+	// }
 
-	// create tab layout
-	const TSharedRef<FTabManager::FLayout> Layout = FTabManager::NewLayout("Standalone_CustomAssetEditor")
-		->AddArea
-		(
-			FTabManager::NewPrimaryArea()
-				->SetOrientation(Orient_Horizontal)
-				->Split
-				(
-					FTabManager::NewSplitter()
-						->SetOrientation(Orient_Vertical)
-						->SetSizeCoefficient(0.66f)
-						->Split
-						(
-							FTabManager::NewStack()
-								->AddTab(GetToolbarTabId(), ETabState::OpenedTab)
-								->SetHideTabWell(true)
-								->SetSizeCoefficient(0.1f)
-								
-						)
-						->Split
-						(
-							FTabManager::NewStack()
-								->AddTab(TextAssetEditor::TabId, ETabState::OpenedTab)
-								->SetHideTabWell(true)
-								->SetSizeCoefficient(0.9f)
-						)
-				)
-		);
+	AddApplicationMode(CustomAssetMode, MakeShareable(new FCustomAssetEditorApplicationMode(SharedThis(this))));
 
 	FAssetEditorToolkit::InitAssetEditor(
 		InMode,
 		InToolkitHost,
-		TextAssetEditor::AppIdentifier,
-		Layout,
+		CustomAssetEditor::AppIdentifier,
+		FTabManager::FLayout::NullLayout,
 		true /*bCreateDefaultStandaloneMenu*/,
 		true /*bCreateDefaultToolbar*/,
 		InCustomAsset
@@ -100,32 +140,6 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 
 	RegenerateMenusAndToolbars();
 }
-
-// void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const EToolkitMode::Type InMode, const TSharedPtr<class IToolkitHost>& InToolkitHost)
-// {
-// 	CustomAsset = InCustomAsset;
-//
-// 	TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
-// 	if(!DocumentManager.IsValid())
-// 	{
-// 		DocumentManager = MakeShareable(new FDocumentTracker);
-// 		DocumentManager->Initialize(ThisPtr);
-//
-// 		CreateInternalWidgets();
-// 		
-// 		// Register the document factories
-// 		{
-// 			// FCustomAssetSummoner* CustomAssetSummoner = new FCustomAssetSummoner(ThisPtr);
-// 			// TSharedPtr<FDocumentTabFactory> GraphEditorFactory = MakeShareable(CustomAssetSummoner);
-// 			
-// 			// Also store off a reference to the grapheditor factory so we can find all the tabs spawned by it later.
-// 			// GraphEditorTabFactoryPtr = GraphEditorFactory;
-// 			// DocumentManager->RegisterDocumentFactory(GraphEditorFactory);
-// 		}
-// 		
-// 		AddApplicationMode(CustomAssetMode, MakeShareable(new FCustomAssetEditorApplicationMode(SharedThis(this))));
-// 	}
-// }
 
 
 /* FAssetEditorToolkit interface
@@ -139,15 +153,15 @@ FString FCustomAssetEditorToolkit::GetDocumentationLink() const
 
 void FCustomAssetEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
-	WorkspaceMenuCategory = InTabManager->AddLocalWorkspaceMenuCategory(LOCTEXT("WorkspaceMenu_CustomAssetEditor", "Custom Asset Editor"));
-	const auto WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
+	// WorkspaceMenuCategory = InTabManager->AddLocalWorkspaceMenuCategory(LOCTEXT("WorkspaceMenu_CustomAssetEditor", "Custom Asset Editor"));
+	// const auto WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
 
 	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
 
-	InTabManager->RegisterTabSpawner(TextAssetEditor::TabId, FOnSpawnTab::CreateSP(this, &FCustomAssetEditorToolkit::HandleTabManagerSpawnTab, TextAssetEditor::TabId))
-		.SetDisplayName(LOCTEXT("CustomEditorTabName", "Custom Editor"))
-		.SetGroup(WorkspaceMenuCategoryRef)
-		.SetIcon(FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.Tabs.Viewports"));
+	// InTabManager->RegisterTabSpawner(TextAssetEditor::TabId, FOnSpawnTab::CreateSP(this, &FCustomAssetEditorToolkit::HandleTabManagerSpawnTab, TextAssetEditor::TabId))
+	// 	.SetDisplayName(LOCTEXT("CustomEditorTabName", "Custom Editor"))
+	// 	.SetGroup(WorkspaceMenuCategoryRef)
+	// 	.SetIcon(FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.Tabs.Viewports"));
 }
 
 
@@ -155,7 +169,7 @@ void FCustomAssetEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManag
 {
 	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
 
-	InTabManager->UnregisterTabSpawner(TextAssetEditor::TabId);
+	InTabManager->UnregisterTabSpawner(CustomAssetEditor::TabId);
 }
 
 
@@ -199,7 +213,8 @@ void FCustomAssetEditorToolkit::AddReferencedObjects(FReferenceCollector& Collec
 *****************************************************************************/
 
 void FCustomAssetEditorToolkit::PostUndo(bool bSuccess)
-{ }
+{
+}
 
 
 void FCustomAssetEditorToolkit::PostRedo(bool bSuccess)
@@ -215,7 +230,7 @@ TSharedRef<SDockTab> FCustomAssetEditorToolkit::HandleTabManagerSpawnTab(const F
 {
 	TSharedPtr<SWidget> TabWidget = SNullWidget::NullWidget;
 
-	if (TabIdentifier == TextAssetEditor::TabId)
+	if (TabIdentifier == CustomAssetEditor::TabId)
 	{
 		TabWidget = SNew(SCustomAssetEditor, CustomAsset, Style);
 	}
@@ -229,7 +244,8 @@ TSharedRef<SDockTab> FCustomAssetEditorToolkit::HandleTabManagerSpawnTab(const F
 
 void FCustomAssetEditorToolkit::CreateInternalWidgets()
 {
-	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(
+		"PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs(false, false, true, FDetailsViewArgs::HideNameArea, false);
 	// DetailsViewArgs.NotifyHook = this;
 	DetailsViewArgs.DefaultsOnlyVisibility = EEditDefaultsOnlyNodeVisibility::Hide;
@@ -244,26 +260,27 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnProperties()
 	return
 		SNew(SVerticalBox)
 		+ SVerticalBox::Slot()
-		.FillHeight(1.0f)
-		.HAlign(HAlign_Fill)
+		  .FillHeight(1.0f)
+		  .HAlign(HAlign_Fill)
 		[
-			DetailsView.ToSharedRef()
+			// DetailsView.ToSharedRef()
+			SNew(SButton)
 		];
 }
 
 FText FCustomAssetEditorToolkit::GetLocalizedMode(FName InMode)
 {
-	static TMap< FName, FText > LocModes;
+	static TMap<FName, FText> LocModes;
 
 	if (LocModes.Num() == 0)
 	{
-		LocModes.Add( CustomAssetMode, LOCTEXT("CustomAssetMode", "Custom Asset") );
-		LocModes.Add( CustomAssetBlackboardMode, LOCTEXT("CustomAssetBlackboardMode", "Custom Asset BlackboardMode") );
+		LocModes.Add(CustomAssetMode, LOCTEXT("CustomAssetMode", "Custom Asset"));
+		LocModes.Add(CustomAssetBlackboardMode, LOCTEXT("CustomAssetBlackboardMode", "Custom Asset BlackboardMode"));
 	}
 
-	check( InMode != NAME_None );
-	const FText* OutDesc = LocModes.Find( InMode );
-	check( OutDesc );
+	check(InMode != NAME_None);
+	const FText* OutDesc = LocModes.Find(InMode);
+	check(OutDesc);
 	return *OutDesc;
 }
 

@@ -3,12 +3,14 @@
 
 #include "CustomAssetEditorApplicationMode.h"
 
+#include "CustomAssetSummoner.h"
 #include "Toolkits/CustomAssetEditorToolkit.h"
 
 
 FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 	TSharedPtr<FCustomAssetEditorToolkit> InBehaviorTreeEditor) : FApplicationMode(FCustomAssetEditorToolkit::CustomAssetMode, FCustomAssetEditorToolkit::GetLocalizedMode)
 {
+	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetSummoner(InBehaviorTreeEditor)));
 }
 
 void FCustomAssetEditorApplicationMode::RegisterTabFactories(TSharedPtr<FTabManager> InTabManager)

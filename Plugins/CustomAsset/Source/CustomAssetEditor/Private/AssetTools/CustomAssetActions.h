@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "AssetTypeActions_Base.h"
+#include "Toolkits/CustomAssetEditorToolkit.h"
 
 /**
  * 
