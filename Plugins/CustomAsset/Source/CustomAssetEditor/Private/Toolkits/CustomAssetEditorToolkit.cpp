@@ -107,6 +107,7 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 {
 	CustomAsset = InCustomAsset;
 
+	CreateInternalWidgets();
 	// TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
 	// if(!DocumentManager.IsValid())
 	// {
@@ -137,6 +138,8 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 		true /*bCreateDefaultToolbar*/,
 		InCustomAsset
 	);
+
+	SetCurrentMode(CustomAssetMode);
 
 	RegenerateMenusAndToolbars();
 }
@@ -250,7 +253,7 @@ void FCustomAssetEditorToolkit::CreateInternalWidgets()
 	// DetailsViewArgs.NotifyHook = this;
 	DetailsViewArgs.DefaultsOnlyVisibility = EEditDefaultsOnlyNodeVisibility::Hide;
 	DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	DetailsView->SetObject(NULL);
+	DetailsView->SetObject(CustomAsset);
 	// DetailsView->SetIsPropertyEditingEnabledDelegate(FIsPropertyEditingEnabled::CreateSP(this, &FTestEditor::IsPropertyEditable));
 	// DetailsView->OnFinishedChangingProperties().AddSP(this, &FCustomAssetEditorToolkit::OnFinishedChangingProperties);
 }
@@ -263,8 +266,8 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnProperties()
 		  .FillHeight(1.0f)
 		  .HAlign(HAlign_Fill)
 		[
-			// DetailsView.ToSharedRef()
-			SNew(SButton)
+			DetailsView.ToSharedRef()
+			// SNew(SButton)
 		];
 }
 
