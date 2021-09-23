@@ -3,15 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Toolkits/CustomAssetEditorToolkit.h"
 #include "WorkflowOrientedApp/ApplicationMode.h"
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
 
-class FCustomAssetEditorToolkit;
-
-class FCustomAssetEditorApplicationMode : public FApplicationMode
+/**
+ * 
+ */
+class FCustomAssetTestApplicationMode : public FApplicationMode
 {
 public:
-	FCustomAssetEditorApplicationMode(TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditor);
+	FCustomAssetTestApplicationMode(TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditor);
 	virtual void RegisterTabFactories(TSharedPtr<class FTabManager> InTabManager) override;
 	virtual void PreDeactivateMode() override;
 	virtual void PostActivateMode() override;

@@ -8,6 +8,8 @@
 #include "Widgets/SCustomAssetEditor.h"
 #include "CustomAsset.h"
 #include "CustomAssetEditorApplicationMode.h"
+#include "CustomAssetEditorToolbar.h"
+#include "CustomAssetTestApplicationMode.h"
 #include "CustomAssetSummoner.h"
 #include "UObject/NameTypes.h"
 #include "Widgets/Docking/SDockTab.h"
@@ -18,7 +20,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogCustomAssetEditor, Log, All);
 
 const FName FCustomAssetEditorToolkit::CustomAssetMode(TEXT("CustomAsset"));
-const FName FCustomAssetEditorToolkit::CustomAssetBlackboardMode(TEXT("CustomAssetBlackboard"));
+const FName FCustomAssetEditorToolkit::CustomAssetTestMode(TEXT("CustomAssetTestMode"));
 
 /* Local constants
  *****************************************************************************/
@@ -37,6 +39,7 @@ FCustomAssetEditorToolkit::FCustomAssetEditorToolkit(const TSharedRef<ISlateStyl
 	: CustomAsset(nullptr)
 	  , Style(InStyle)
 {
+	
 }
 
 
@@ -107,6 +110,11 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 {
 	CustomAsset = InCustomAsset;
 
+	if (!ToolbarBuilder.IsValid())
+	{
+		ToolbarBuilder = MakeShareable(new FCustomAssetEditorToolbar(SharedThis(this)));
+	}
+
 	CreateInternalWidgets();
 	// TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
 	// if(!DocumentManager.IsValid())
@@ -128,6 +136,7 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 	// }
 
 	AddApplicationMode(CustomAssetMode, MakeShareable(new FCustomAssetEditorApplicationMode(SharedThis(this))));
+	AddApplicationMode(CustomAssetTestMode, MakeShareable(new FCustomAssetTestApplicationMode(SharedThis(this))));
 
 	FAssetEditorToolkit::InitAssetEditor(
 		InMode,
@@ -295,7 +304,7 @@ FText FCustomAssetEditorToolkit::GetLocalizedMode(FName InMode)
 	if (LocModes.Num() == 0)
 	{
 		LocModes.Add(CustomAssetMode, LOCTEXT("CustomAssetMode", "Custom Asset"));
-		LocModes.Add(CustomAssetBlackboardMode, LOCTEXT("CustomAssetBlackboardMode", "Custom Asset BlackboardMode"));
+		LocModes.Add(CustomAssetTestMode, LOCTEXT("CustomAssetTestMode", "Custom Asset Test"));
 	}
 
 	check(InMode != NAME_None);

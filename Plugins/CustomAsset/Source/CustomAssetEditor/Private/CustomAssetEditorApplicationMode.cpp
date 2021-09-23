@@ -5,43 +5,58 @@
 
 #include "CustomAssetDetailsSummoner.h"
 #include "CustomAssetEditorTabs.h"
+#include "CustomAssetEditorToolbar.h"
 #include "CustomAssetSummoner.h"
 #include "Toolkits/CustomAssetEditorToolkit.h"
 
 
 FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
-	TSharedPtr<FCustomAssetEditorToolkit> InBehaviorTreeEditor) : FApplicationMode(FCustomAssetEditorToolkit::CustomAssetMode, FCustomAssetEditorToolkit::GetLocalizedMode)
+	TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditor) : FApplicationMode(
+	FCustomAssetEditorToolkit::CustomAssetMode, FCustomAssetEditorToolkit::GetLocalizedMode)
 {
-	CustomAssetEditor = InBehaviorTreeEditor;
-	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetSummoner(InBehaviorTreeEditor)));
-	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetDetailsSummoner(InBehaviorTreeEditor)));
+	CustomAssetEditor = InCustomAssetEditor;
+	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetSummoner(InCustomAssetEditor)));
+	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetDetailsSummoner(InCustomAssetEditor)));
 
-	TabLayout = FTabManager::NewLayout( "Standalone_TestEditor_Layout_v1" )
-	->AddArea
-	(
-		FTabManager::NewPrimaryArea()->SetOrientation(Orient_Horizontal)
-		->Split
+	TabLayout = FTabManager::NewLayout("Standalone_TestEditor_Layout_v1")
+		->AddArea
 		(
-			FTabManager::NewStack()
-			->SetSizeCoefficient(0.8f)
-			->AddTab(FCustomAssetEditorTabs::CustomAssetEditorID, ETabState::OpenedTab)
-			->SetHideTabWell(true) 
-		)
-		->Split
-		(
-			FTabManager::NewStack()
-			->SetSizeCoefficient(0.2f)
-			->AddTab(FCustomAssetEditorTabs::CustomAssetDetailsID, ETabState::OpenedTab)
-			->SetHideTabWell(true) 
-		)
-	);
+			FTabManager::NewPrimaryArea()->SetOrientation(Orient_Vertical)
+			                             ->Split(FTabManager::NewStack()
+			                                     ->SetSizeCoefficient(0.1f)
+			                                     ->AddTab(InCustomAssetEditor->GetToolbarTabId(), ETabState::OpenedTab)
+			                                     ->SetHideTabWell(true))
+			                             ->Split(
+				                             FTabManager::NewSplitter()->SetOrientation(Orient_Horizontal)
+				                                                       ->Split
+				                                                       (
+					                                                       FTabManager::NewStack()
+					                                                       ->SetSizeCoefficient(0.8f)
+					                                                       ->AddTab(
+						                                                       FCustomAssetEditorTabs::CustomAssetEditorID,
+						                                                       ETabState::OpenedTab)
+					                                                       ->SetHideTabWell(true)
+				                                                       )
+				                                                       ->Split
+				                                                       (
+					                                                       FTabManager::NewStack()
+					                                                       ->SetSizeCoefficient(0.2f)
+					                                                       ->AddTab(
+						                                                       FCustomAssetEditorTabs::CustomAssetDetailsID,
+						                                                       ETabState::OpenedTab)
+					                                                       ->SetHideTabWell(true)
+				                                                       )
+			                             )
+		);
+
+	InCustomAssetEditor->GetToolbarBuilder()->AddModesToolbar(ToolbarExtender);
 }
 
 void FCustomAssetEditorApplicationMode::RegisterTabFactories(TSharedPtr<FTabManager> InTabManager)
 {
 	check(CustomAssetEditor.IsValid());
 	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
-	
+
 	CustomAssetEditorPtr->RegisterToolbarTab(InTabManager.ToSharedRef());
 
 	// Mode-specific setup
@@ -56,7 +71,7 @@ void FCustomAssetEditorApplicationMode::PreDeactivateMode()
 
 	check(CustomAssetEditor.IsValid());
 	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
-	
+
 	// CustomAssetEditorPtr->SaveEditedObjectState();
 }
 

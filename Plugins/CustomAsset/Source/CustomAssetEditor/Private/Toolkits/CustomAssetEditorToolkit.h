@@ -7,11 +7,8 @@
 #include "CustomAsset.h"
 #include "WorkflowOrientedApp/WorkflowCentricApplication.h"
 
-/**
- * 
- */
 
-
+class FCustomAssetEditorToolbar;
 
 class CUSTOMASSETEDITOR_API FCustomAssetEditorToolkit
 	: public FWorkflowCentricApplication//FAssetEditorToolkit // FWorkflowCentricApplication
@@ -40,6 +37,9 @@ public:
 	*/
 	void Initialize(UCustomAsset* InCustomAsset, const EToolkitMode::Type InMode, const TSharedPtr<IToolkitHost>& InToolkitHost);
 
+	/** Access the toolbar builder for this editor */
+	TSharedPtr<FCustomAssetEditorToolbar> GetToolbarBuilder() { return ToolbarBuilder; }
+	
 	public:
 
 	//~ FAssetEditorToolkit interface
@@ -75,6 +75,7 @@ public:
 	TSharedRef<SWidget> SpawnProperties();
 	TSharedRef<SWidget> SpawnEditable();
 	static FText GetLocalizedMode(FName InMode);
+	TSharedPtr<FCustomAssetEditorToolbar> ToolbarBuilder;
 	
 private:
 	/** Callback for spawning the Properties tab. */
@@ -94,5 +95,5 @@ private:
 public:
 	/** Modes in mode switcher */
 	static const FName CustomAssetMode;
-	static const FName CustomAssetBlackboardMode;
+	static const FName CustomAssetTestMode;
 };
