@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+@startuml
+participant CustomAssetEditorToolkit as Toolkit
+'participant CustomAssetEditorMode as Mode
+'participant CustomAssetSummoner as Summoner
+
+autonumber
+
+Toolkit -> Toolkit: Initialize
+Toolkit -> FAssetEditorToolkit: AddApplicationMode
+FAssetEditorToolkit -> Mode: new
+Mode -> FWorkflowAllowedTabSet: RegisterFactory
+FWorkflowTabFactory -> FWorkflowTabFactory: CreateTabBody
+FWorkflowTabFactory -> Toolkit: SpawnProperties
+Mode -> Mode: NewLayout
+Mode -> Mode: RegisterTabFactories
+Mode -> Toolkit: RegisterToolbarTab
+Mode -> FAssetEditorToolkit: PushTabFactories
+
+FWorkflowAllowedTabSet -> FWorkflowTabFactory: CreateTabBody
+FWorkflowTabFactory-> Toolkit: SpawnProperties
+
+Toolkit -> FAssetEditorToolkit: SetCurrentMode
+Toolkit -> FAssetEditorToolkit: InitAssetEditor
+Toolkit -> FAssetEditorToolkit:RegenerateMenusAndToolbars
+
+@enduml
