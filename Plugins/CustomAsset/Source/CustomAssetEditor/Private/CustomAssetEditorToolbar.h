@@ -23,7 +23,7 @@ public:
 	void AddCustomAssetToolbar(TSharedPtr<FExtender> Extender);
 
 private:
-	void FillModesToolbar(FToolBarBuilder& ToolbarBuilder);
+	void FillModesToolbar(FToolBarBuilder& ToolbarBuilder) const;
 	// void FillDebuggerToolbar(FToolBarBuilder& ToolbarBuilder);
 	void FillCustomAssetEditorToolbar(FToolBarBuilder& ToolbarBuilder);
 

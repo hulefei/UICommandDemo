@@ -83,7 +83,7 @@ public:
 private:
 	/** Callback for spawning the Properties tab. */
 	TSharedRef<SDockTab> HandleTabManagerSpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier);
-	void BindCommonCommands() const;
+	// void BindCommonCommands() const;
 	
 private:
 	/** The text asset being edited. */

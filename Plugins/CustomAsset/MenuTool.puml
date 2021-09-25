@@ -1,0 +1,19 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant CustomAssetEditorToolkit as Toolkit
+participant CustomAssetEditorApplicationMode as Mode
+participant CustomAssetEditorToolbar as Toolbar
+
+
+Toolkit -> Toolkit: Initialize
+Toolkit -> Toolkit: new Toolbar
+Toolkit -> Mode: 
+Mode -> Toolbar: AddCustomAssetToolbar(FApplicationMode.ToolbarExtender)
+Toolbar -> ToolbarExtender: AddToolBarExtension(Toolkit.GetToolkitCommands, FToolBarExtensionDelegate(CreateSP))
+FExtender -> Toolbar: FillCustomAssetEditorToolbar
+Toolbar -> ToolbarBuilder: AddToolBarButton
+
+@enduml

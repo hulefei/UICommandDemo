@@ -4,14 +4,14 @@
 
 #include "Editor.h"
 #include "EditorReimportHandler.h"
-#include "EditorStyleSet.h"
+// #include "EditorStyleSet.h"
 #include "Widgets/SCustomAssetEditor.h"
 #include "CustomAsset.h"
-#include "CustomAssetCommands.h"
+// #include "CustomAssetCommands.h"
 #include "CustomAssetEditorApplicationMode.h"
 #include "CustomAssetEditorToolbar.h"
 #include "CustomAssetTestApplicationMode.h"
-#include "CustomAssetSummoner.h"
+// #include "CustomAssetSummoner.h"
 #include "UObject/NameTypes.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
@@ -49,7 +49,7 @@ FCustomAssetEditorToolkit::~FCustomAssetEditorToolkit()
 	FReimportManager::Instance()->OnPreReimport().RemoveAll(this);
 	FReimportManager::Instance()->OnPostReimport().RemoveAll(this);
 
-	FCustomAssetCommands::Unregister();
+	// FCustomAssetCommands::Unregister();
 	
 	GEditor->UnregisterForUndo(this);
 }
@@ -118,8 +118,8 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 		ToolbarBuilder = MakeShareable(new FCustomAssetEditorToolbar(SharedThis(this)));
 	}
 
-	FCustomAssetCommands::Register();
-	BindCommonCommands();
+	// FCustomAssetCommands::Register();
+	// BindCommonCommands();
 	CreateInternalWidgets();
 	// TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
 	// if(!DocumentManager.IsValid())
@@ -261,13 +261,13 @@ TSharedRef<SDockTab> FCustomAssetEditorToolkit::HandleTabManagerSpawnTab(const F
 
 //Custom
 
-void FCustomAssetEditorToolkit::BindCommonCommands() const
-{
-	ToolkitCommands->MapAction(FCustomAssetCommands::Get().Action1,
-			FExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CreateNewNode),
-			FCanExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CanCreateNewNode)
-			);
-}
+// void FCustomAssetEditorToolkit::BindCommonCommands() const
+// {
+	// ToolkitCommands->MapAction(FCustomAssetCommands::Get().Action1,
+	// 		FExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CreateNewNode),
+	// 		FCanExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CanCreateNewNode)
+	// 		);
+// }
 
 void FCustomAssetEditorToolkit::CreateNewNode() const
 {

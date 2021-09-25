@@ -35,7 +35,7 @@ public:
 void FCustomAssetEditorToolbar::AddModesToolbar(TSharedPtr<FExtender> Extender)
 {
 	check(CustomAssetEditor.IsValid());
-	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
+	const TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
 
 	Extender->AddToolBarExtension(
 		"Asset",
@@ -47,26 +47,23 @@ void FCustomAssetEditorToolbar::AddModesToolbar(TSharedPtr<FExtender> Extender)
 void FCustomAssetEditorToolbar::AddCustomAssetToolbar(TSharedPtr<FExtender> Extender)
 {
 	check(CustomAssetEditor.IsValid());
-	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
-
-	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
-	ToolbarExtender->AddToolBarExtension("Asset", EExtensionHook::After, CustomAssetEditorPtr->GetToolkitCommands(), FToolBarExtensionDelegate::CreateSP(this, &FCustomAssetEditorToolbar::FillCustomAssetEditorToolbar));
-	CustomAssetEditorPtr->AddToolbarExtender(ToolbarExtender);
+	const TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
+	Extender->AddToolBarExtension("Asset", EExtensionHook::After, CustomAssetEditorPtr->GetToolkitCommands(), FToolBarExtensionDelegate::CreateSP(this, &FCustomAssetEditorToolbar::FillCustomAssetEditorToolbar));
 }
 
 
-void FCustomAssetEditorToolbar::FillModesToolbar(FToolBarBuilder& ToolbarBuilder)
+void FCustomAssetEditorToolbar::FillModesToolbar(FToolBarBuilder& ToolbarBuilder) const
 {
 	check(CustomAssetEditor.IsValid());
-	TSharedPtr<FCustomAssetEditorToolkit> BehaviorTreeEditorPtr = CustomAssetEditor.Pin();
+	const TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
 
-	TAttribute<FName> GetActiveMode(BehaviorTreeEditorPtr.ToSharedRef(), &FCustomAssetEditorToolkit::GetCurrentMode);
-	FOnModeChangeRequested SetActiveMode = FOnModeChangeRequested::CreateSP(BehaviorTreeEditorPtr.ToSharedRef(), &FCustomAssetEditorToolkit::SetCurrentMode);
+	const TAttribute<FName> GetActiveMode(CustomAssetEditorPtr.ToSharedRef(), &FCustomAssetEditorToolkit::GetCurrentMode);
+	const FOnModeChangeRequested SetActiveMode = FOnModeChangeRequested::CreateSP(CustomAssetEditorPtr.ToSharedRef(), &FCustomAssetEditorToolkit::SetCurrentMode);
 
 	// Left side padding
-	BehaviorTreeEditorPtr->AddToolbarWidget(SNew(SSpacer).Size(FVector2D(4.0f, 1.0f)));
+	CustomAssetEditorPtr->AddToolbarWidget(SNew(SSpacer).Size(FVector2D(4.0f, 1.0f)));
 
-	BehaviorTreeEditorPtr->AddToolbarWidget(
+	CustomAssetEditorPtr->AddToolbarWidget(
 		SNew(SModeWidget, FCustomAssetEditorToolkit::GetLocalizedMode( FCustomAssetEditorToolkit::CustomAssetMode ), FCustomAssetEditorToolkit::CustomAssetMode)
 		.OnGetActiveMode(GetActiveMode)
 		.OnSetActiveMode(SetActiveMode)
@@ -76,9 +73,9 @@ void FCustomAssetEditorToolbar::FillModesToolbar(FToolBarBuilder& ToolbarBuilder
 		.SmallIconImage(FEditorStyle::GetBrush("BTEditor.SwitchToBehaviorTreeMode.Small"))
 	);
 
-	BehaviorTreeEditorPtr->AddToolbarWidget(SNew(SCustomAssetModeSeparator));
+	CustomAssetEditorPtr->AddToolbarWidget(SNew(SCustomAssetModeSeparator));
 
-	BehaviorTreeEditorPtr->AddToolbarWidget(
+	CustomAssetEditorPtr->AddToolbarWidget(
 		SNew(SModeWidget, FCustomAssetEditorToolkit::GetLocalizedMode( FCustomAssetEditorToolkit::CustomAssetMode ), FCustomAssetEditorToolkit::CustomAssetTestMode)
 		.OnGetActiveMode(GetActiveMode)
 		.OnSetActiveMode(SetActiveMode)
@@ -89,7 +86,7 @@ void FCustomAssetEditorToolbar::FillModesToolbar(FToolBarBuilder& ToolbarBuilder
 	);
 		
 	// Right side padding
-	BehaviorTreeEditorPtr->AddToolbarWidget(SNew(SSpacer).Size(FVector2D(4.0f, 1.0f)));
+	CustomAssetEditorPtr->AddToolbarWidget(SNew(SSpacer).Size(FVector2D(4.0f, 1.0f)));
 }
 
 void FCustomAssetEditorToolbar::FillCustomAssetEditorToolbar(FToolBarBuilder& ToolbarBuilder)
