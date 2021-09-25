@@ -50,6 +50,7 @@ FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 		);
 
 	InCustomAssetEditor->GetToolbarBuilder()->AddModesToolbar(ToolbarExtender);
+	InCustomAssetEditor->GetToolbarBuilder()->AddCustomAssetToolbar(ToolbarExtender);
 }
 
 void FCustomAssetEditorApplicationMode::RegisterTabFactories(TSharedPtr<FTabManager> InTabManager)

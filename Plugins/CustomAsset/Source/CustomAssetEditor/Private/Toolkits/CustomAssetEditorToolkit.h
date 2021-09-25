@@ -76,11 +76,14 @@ public:
 	TSharedRef<SWidget> SpawnEditable();
 	static FText GetLocalizedMode(FName InMode);
 	TSharedPtr<FCustomAssetEditorToolbar> ToolbarBuilder;
-	
+
+	void CreateNewNode() const;
+	bool CanCreateNewNode() const;
+	void CreateInternalWidgets();
 private:
 	/** Callback for spawning the Properties tab. */
 	TSharedRef<SDockTab> HandleTabManagerSpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier);
-	void CreateInternalWidgets();
+	void BindCommonCommands() const;
 	
 private:
 	/** The text asset being edited. */

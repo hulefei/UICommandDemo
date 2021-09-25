@@ -7,6 +7,7 @@
 #include "EditorStyleSet.h"
 #include "Widgets/SCustomAssetEditor.h"
 #include "CustomAsset.h"
+#include "CustomAssetCommands.h"
 #include "CustomAssetEditorApplicationMode.h"
 #include "CustomAssetEditorToolbar.h"
 #include "CustomAssetTestApplicationMode.h"
@@ -45,10 +46,12 @@ FCustomAssetEditorToolkit::FCustomAssetEditorToolkit(const TSharedRef<ISlateStyl
 
 FCustomAssetEditorToolkit::~FCustomAssetEditorToolkit()
 {
-	// FReimportManager::Instance()->OnPreReimport().RemoveAll(this);
-	// FReimportManager::Instance()->OnPostReimport().RemoveAll(this);
-	//
-	// GEditor->UnregisterForUndo(this);
+	FReimportManager::Instance()->OnPreReimport().RemoveAll(this);
+	FReimportManager::Instance()->OnPostReimport().RemoveAll(this);
+
+	FCustomAssetCommands::Unregister();
+	
+	GEditor->UnregisterForUndo(this);
 }
 
 
@@ -115,6 +118,8 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 		ToolbarBuilder = MakeShareable(new FCustomAssetEditorToolbar(SharedThis(this)));
 	}
 
+	FCustomAssetCommands::Register();
+	BindCommonCommands();
 	CreateInternalWidgets();
 	// TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
 	// if(!DocumentManager.IsValid())
@@ -254,6 +259,30 @@ TSharedRef<SDockTab> FCustomAssetEditorToolkit::HandleTabManagerSpawnTab(const F
 		];
 }
 
+//Custom
+
+void FCustomAssetEditorToolkit::BindCommonCommands() const
+{
+	ToolkitCommands->MapAction(FCustomAssetCommands::Get().Action1,
+			FExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CreateNewNode),
+			FCanExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CanCreateNewNode)
+			);
+}
+
+void FCustomAssetEditorToolkit::CreateNewNode() const
+{
+	const FText DialogText = FText::Format(
+							LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
+							FText::FromString(TEXT("FSimpleEditorsModule::PluginButtonClicked()")),
+							FText::FromString(TEXT("SimpleEditors.cpp"))
+					);
+	FMessageDialog::Debugf(DialogText);
+}
+
+bool FCustomAssetEditorToolkit::CanCreateNewNode() const
+{
+	return true;
+}
 void FCustomAssetEditorToolkit::CreateInternalWidgets()
 {
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(

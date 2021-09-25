@@ -44,6 +44,17 @@ void FCustomAssetEditorToolbar::AddModesToolbar(TSharedPtr<FExtender> Extender)
 		FToolBarExtensionDelegate::CreateSP( this, &FCustomAssetEditorToolbar::FillModesToolbar ) );
 }
 
+void FCustomAssetEditorToolbar::AddCustomAssetToolbar(TSharedPtr<FExtender> Extender)
+{
+	check(CustomAssetEditor.IsValid());
+	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
+
+	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
+	ToolbarExtender->AddToolBarExtension("Asset", EExtensionHook::After, CustomAssetEditorPtr->GetToolkitCommands(), FToolBarExtensionDelegate::CreateSP(this, &FCustomAssetEditorToolbar::FillCustomAssetEditorToolbar));
+	CustomAssetEditorPtr->AddToolbarExtender(ToolbarExtender);
+}
+
+
 void FCustomAssetEditorToolbar::FillModesToolbar(FToolBarBuilder& ToolbarBuilder)
 {
 	check(CustomAssetEditor.IsValid());
@@ -79,6 +90,31 @@ void FCustomAssetEditorToolbar::FillModesToolbar(FToolBarBuilder& ToolbarBuilder
 		
 	// Right side padding
 	BehaviorTreeEditorPtr->AddToolbarWidget(SNew(SSpacer).Size(FVector2D(4.0f, 1.0f)));
+}
+
+void FCustomAssetEditorToolbar::FillCustomAssetEditorToolbar(FToolBarBuilder& ToolbarBuilder)
+{
+	check(CustomAssetEditor.IsValid());
+	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
+	ToolbarBuilder.BeginSection("ExtendToolbarItem");
+	{
+		const FText NewNodeLabel = LOCTEXT("NewNode_Label", "New");
+		const FText NewNodeTooltip = LOCTEXT("NewNode_ToolTip", "Create a new node");
+		const FSlateIcon NewNodeIcon = FSlateIcon(TEXT("EditorStyle"), "SessionConsole.Clear");
+	
+		ToolbarBuilder.AddToolBarButton(
+			FUIAction(
+				FExecuteAction::CreateSP(CustomAssetEditorPtr.Get(), &FCustomAssetEditorToolkit::CreateNewNode),
+				FCanExecuteAction::CreateSP(CustomAssetEditorPtr.Get(), &FCustomAssetEditorToolkit::CanCreateNewNode),
+				FIsActionChecked()
+			),
+			NAME_None,
+			NewNodeLabel,
+			NewNodeTooltip,
+			NewNodeIcon
+		);
+	}
+	ToolbarBuilder.EndSection();
 }
 
 #undef LOCTEXT_NAMESPACE
