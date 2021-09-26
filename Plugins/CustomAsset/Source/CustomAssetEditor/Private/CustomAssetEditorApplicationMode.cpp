@@ -36,6 +36,10 @@ FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 						                                                       FCustomAssetEditorTabs::CustomAssetEditorID,
 						                                                       ETabState::OpenedTab)
 					                                                       ->SetHideTabWell(true)
+					                                                       ->AddTab(
+																			FCustomAssetEditorTabs::GraphEditorID,
+																			ETabState::OpenedTab)
+																		->SetHideTabWell(true)
 				                                                       )
 				                                                       ->Split
 				                                                       (
@@ -80,7 +84,7 @@ void FCustomAssetEditorApplicationMode::PostActivateMode()
 {
 	check(CustomAssetEditor.IsValid());
 	TSharedPtr<FCustomAssetEditorToolkit> BehaviorTreeEditorPtr = CustomAssetEditor.Pin();
-	// BehaviorTreeEditorPtr->RestoreBehaviorTree();
+	BehaviorTreeEditorPtr->RestoreBehaviorTree();
 
 	FApplicationMode::PostActivateMode();
 }

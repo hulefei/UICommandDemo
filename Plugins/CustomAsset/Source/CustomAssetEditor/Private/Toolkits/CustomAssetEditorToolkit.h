@@ -71,19 +71,29 @@ public:
 	virtual void PostRedo(bool bSuccess) override;
 
 public:
+	//~ Custom
+	
 	void RegisterToolbarTab(const TSharedRef<class FTabManager>& InTabManager);
 	TSharedRef<SWidget> SpawnProperties();
 	TSharedRef<SWidget> SpawnEditable();
 	static FText GetLocalizedMode(FName InMode);
-	TSharedPtr<FCustomAssetEditorToolbar> ToolbarBuilder;
 
 	void CreateNewNode() const;
 	bool CanCreateNewNode() const;
 	void CreateInternalWidgets();
+	void OnGraphEditorFocused(const TSharedRef<SGraphEditor>& InGraphEditor);
+	void RestoreBehaviorTree();
+	UCustomAsset* GetCustomAsset() const 
+	{
+		return CustomAsset; 
+	}
+	
+	TSharedPtr<FCustomAssetEditorToolbar> ToolbarBuilder;
 private:
 	/** Callback for spawning the Properties tab. */
 	TSharedRef<SDockTab> HandleTabManagerSpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier);
 	// void BindCommonCommands() const;
+	TSharedRef<SGraphEditor> CreateGraphEditorWidget(UEdGraph* InGraph);
 	
 private:
 	/** The text asset being edited. */

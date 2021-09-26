@@ -14,6 +14,13 @@ class CUSTOMASSET_API UCustomAsset : public UObject
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY()
+	class UEdGraph*	CustomAssetGraph;
+
+	/** Info about the graphs we last edited */
+	UPROPERTY()
+	TArray<FEditedDocumentInfo> LastEditedDocuments;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=NewAsset)
 	FText Text;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=NewAsset)

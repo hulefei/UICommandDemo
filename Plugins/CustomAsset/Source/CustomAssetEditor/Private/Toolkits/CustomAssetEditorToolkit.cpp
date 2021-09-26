@@ -12,9 +12,14 @@
 #include "CustomAssetEditorToolbar.h"
 #include "CustomAssetTestApplicationMode.h"
 // #include "CustomAssetSummoner.h"
+#include "CustomAssetGraph.h"
+#include "CustomAssetGraphEditorSummoner.h"
+#include "UEdGraphSchema_CustomAsset.h"
+#include "Kismet2/BlueprintEditorUtils.h"
 #include "UObject/NameTypes.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
+#include "WorkflowOrientedApp/WorkflowUObjectDocuments.h"
 
 #define LOCTEXT_NAMESPACE "FCustomAssetEditorToolkit"
 
@@ -40,7 +45,6 @@ FCustomAssetEditorToolkit::FCustomAssetEditorToolkit(const TSharedRef<ISlateStyl
 	: CustomAsset(nullptr)
 	  , Style(InStyle)
 {
-	
 }
 
 
@@ -50,7 +54,7 @@ FCustomAssetEditorToolkit::~FCustomAssetEditorToolkit()
 	FReimportManager::Instance()->OnPostReimport().RemoveAll(this);
 
 	// FCustomAssetCommands::Unregister();
-	
+
 	GEditor->UnregisterForUndo(this);
 }
 
@@ -140,6 +144,27 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 	// 	}
 	// }
 
+	const TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
+	if (!DocumentManager.IsValid())
+	{
+		DocumentManager = MakeShareable(new FDocumentTracker);
+		DocumentManager->Initialize(ThisPtr);
+		
+		TSharedRef<FDocumentTabFactory> GraphEditorFactory = MakeShareable(new FCustomAssetGraphEditorSummoner(ThisPtr,
+			FCustomAssetGraphEditorSummoner::FOnCreateGraphEditorWidget::CreateSP(
+				this, &FCustomAssetEditorToolkit::CreateGraphEditorWidget)
+		));
+		DocumentManager->RegisterDocumentFactory(GraphEditorFactory);
+
+		CustomAsset->CustomAssetGraph = FBlueprintEditorUtils::CreateNewGraph(CustomAsset, TEXT("Custom Asset"),
+		                                                     UCustomAssetGraph::StaticClass(),
+		                                                     UEdGraphSchema_CustomAsset::StaticClass());
+		TSharedRef<FTabPayload_UObject > Payload = FTabPayload_UObject::Make(CustomAsset->CustomAssetGraph);
+		// TSharedPtr<SDockTab> DocumentTab = DocumentManager->OpenDocument(Payload, bNewGraph ? FDocumentTracker::OpenNewDocument : 
+		// FDocumentTracker::RestorePreviousDocument);
+		// TSharedPtr<SDockTab> DocumentTab = DocumentManager->OpenDocument(Payload, FDocumentTracker::OpenNewDocument);
+	}
+
 	AddApplicationMode(CustomAssetMode, MakeShareable(new FCustomAssetEditorApplicationMode(SharedThis(this))));
 	AddApplicationMode(CustomAssetTestMode, MakeShareable(new FCustomAssetTestApplicationMode(SharedThis(this))));
 
@@ -173,8 +198,11 @@ void FCustomAssetEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager
 	// WorkspaceMenuCategory = InTabManager->AddLocalWorkspaceMenuCategory(LOCTEXT("WorkspaceMenu_CustomAssetEditor", "Custom Asset Editor"));
 	// const auto WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
 
-	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
+	// FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
 
+	DocumentManager->SetTabManager(InTabManager);
+	FWorkflowCentricApplication::RegisterTabSpawners(InTabManager);
+	
 	// InTabManager->RegisterTabSpawner(TextAssetEditor::TabId, FOnSpawnTab::CreateSP(this, &FCustomAssetEditorToolkit::HandleTabManagerSpawnTab, TextAssetEditor::TabId))
 	// 	.SetDisplayName(LOCTEXT("CustomEditorTabName", "Custom Editor"))
 	// 	.SetGroup(WorkspaceMenuCategoryRef)
@@ -259,23 +287,116 @@ TSharedRef<SDockTab> FCustomAssetEditorToolkit::HandleTabManagerSpawnTab(const F
 		];
 }
 
+TSharedRef<SGraphEditor> FCustomAssetEditorToolkit::CreateGraphEditorWidget(UEdGraph* InGraph)
+{
+	check(InGraph != NULL);
+	// CreateCommandList();
+	SGraphEditor::FGraphEditorEvents InEvents;
+	// InEvents.OnSelectionChanged = SGraphEditor::FOnSelectionChanged::CreateSP(this, &FTestEditor::OnSelectedNodesChanged);
+	// InEvents.OnNodeDoubleClicked = FSingleNodeEvent::CreateSP(this, &FTestEditor::OnNodeDoubleClicked);
+	// InEvents.OnTextCommitted = FOnNodeTextCommitted::CreateSP(this, &FTestEditor::OnNodeTitleCommitted);
+
+	// Make title bar
+	TSharedRef<SWidget> TitleBarWidget =
+		SNew(SBorder)
+    		.BorderImage(FEditorStyle::GetBrush(TEXT("Graph.TitleBackground")))
+    		.HAlign(HAlign_Fill)
+		[
+			SNew(SHorizontalBox)
+			+ SHorizontalBox::Slot()
+			  .HAlign(HAlign_Center)
+			  .FillWidth(1.f)
+			[
+				SNew(STextBlock)
+    			.Text(LOCTEXT("CustomAssetGraphLabel", "Custom Asset"))
+    		.TextStyle(FEditorStyle::Get(), TEXT("GraphBreadcrumbButtonText"))
+			]
+		];
+
+	// Make full graph editor
+	const bool bGraphIsEditable = InGraph->bEditable;
+	return SNew(SGraphEditor)
+    		//.AdditionalCommands(GraphEditorCommands)
+    		// .IsEditable(this, &FTestEditor::InEditingMode, bGraphIsEditable)
+    		// .Appearance(this, &FTestEditor::GetGraphAppearance)
+    		.TitleBar(TitleBarWidget)
+    		.GraphToEdit(InGraph)
+    		.GraphEvents(InEvents);
+}
+
+void FCustomAssetEditorToolkit::OnGraphEditorFocused(const TSharedRef<SGraphEditor>& InGraphEditor)
+{
+}
+
+void FCustomAssetEditorToolkit::RestoreBehaviorTree()
+{
+	// Update BT asset data based on saved graph to have correct data in editor
+	UCustomAssetGraph* MyGraph = Cast<UCustomAssetGraph>(CustomAsset->CustomAssetGraph);
+	const bool bNewGraph = MyGraph == NULL;
+	if (MyGraph == NULL)
+	{
+		CustomAsset->CustomAssetGraph = FBlueprintEditorUtils::CreateNewGraph(CustomAsset, TEXT("Custom Asset"), UCustomAssetGraph::StaticClass(), UEdGraphSchema_CustomAsset::StaticClass());
+		MyGraph = Cast<UCustomAssetGraph>(CustomAsset->CustomAssetGraph);
+
+		// Initialize the behavior tree graph
+		const UEdGraphSchema* Schema = MyGraph->GetSchema();
+		Schema->CreateDefaultNodesForGraph(*MyGraph);
+
+		// MyGraph->OnCreated();
+	}
+	else
+	{
+		// MyGraph->OnLoaded();
+	}
+
+	// MyGraph->Initialize();
+
+	TSharedRef<FTabPayload_UObject> Payload = FTabPayload_UObject::Make(MyGraph);
+	TSharedPtr<SDockTab> DocumentTab = DocumentManager->OpenDocument(Payload, bNewGraph ? FDocumentTracker::OpenNewDocument : FDocumentTracker::RestorePreviousDocument);
+
+	if(CustomAsset->LastEditedDocuments.Num() > 0)
+	{
+		TSharedRef<SGraphEditor> GraphEditor = StaticCastSharedRef<SGraphEditor>(DocumentTab->GetContent());
+		GraphEditor->SetViewLocation(CustomAsset->LastEditedDocuments[0].SavedViewOffset, CustomAsset->LastEditedDocuments[0].SavedZoomAmount);
+	}
+
+	// const bool bIncreaseVersionNum = false;
+	// if(bNewGraph)
+	// {
+	// 	MyGraph->UpdateAsset(UBehaviorTreeGraph::ClearDebuggerFlags | UBehaviorTreeGraph::KeepRebuildCounter);
+	// 	RefreshBlackboardViewsAssociatedObject();
+	// }
+	// else
+	// {
+	// 	MyGraph->UpdateAsset(UBehaviorTreeGraph::KeepRebuildCounter);
+	// 	RefreshDebugger();
+	// }
+
+	// FAbortDrawHelper EmptyMode;
+	// bShowDecoratorRangeLower = false;
+	// bShowDecoratorRangeSelf = false;
+	// bSelectedNodeIsInjected = false;
+	// bSelectedNodeIsRootLevel = false;
+	// MyGraph->UpdateAbortHighlight(EmptyMode, EmptyMode);
+}
+
 //Custom
 
 // void FCustomAssetEditorToolkit::BindCommonCommands() const
 // {
-	// ToolkitCommands->MapAction(FCustomAssetCommands::Get().Action1,
-	// 		FExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CreateNewNode),
-	// 		FCanExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CanCreateNewNode)
-	// 		);
+// ToolkitCommands->MapAction(FCustomAssetCommands::Get().Action1,
+// 		FExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CreateNewNode),
+// 		FCanExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CanCreateNewNode)
+// 		);
 // }
 
 void FCustomAssetEditorToolkit::CreateNewNode() const
 {
 	const FText DialogText = FText::Format(
-							LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
-							FText::FromString(TEXT("FSimpleEditorsModule::PluginButtonClicked()")),
-							FText::FromString(TEXT("SimpleEditors.cpp"))
-					);
+		LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
+		FText::FromString(TEXT("FSimpleEditorsModule::PluginButtonClicked()")),
+		FText::FromString(TEXT("SimpleEditors.cpp"))
+	);
 	FMessageDialog::Debugf(DialogText);
 }
 
@@ -283,6 +404,7 @@ bool FCustomAssetEditorToolkit::CanCreateNewNode() const
 {
 	return true;
 }
+
 void FCustomAssetEditorToolkit::CreateInternalWidgets()
 {
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(
@@ -314,8 +436,8 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnEditable()
 	return
 		SNew(SVerticalBox)
 		+ SVerticalBox::Slot()
-		.FillHeight(1.0f)
-		.HAlign(HAlign_Fill)
+		  .FillHeight(1.0f)
+		  .HAlign(HAlign_Fill)
 		[
 			SNew(SCustomAssetEditor, CustomAsset, Style)
 		];

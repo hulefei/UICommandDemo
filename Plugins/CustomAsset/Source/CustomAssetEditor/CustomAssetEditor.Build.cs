@@ -33,7 +33,7 @@ public class CustomAssetEditor : ModuleRules
 				"CustomAsset",
 				"Kismet",
 				"PropertyEditor",
-				"BehaviorTreeEditor"
+				"BehaviorTreeEditor",
 			});
 		
 		PrivateIncludePathModuleNames.AddRange(

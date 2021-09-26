@@ -11,7 +11,7 @@ FCustomAssetDetailsSummoner::FCustomAssetDetailsSummoner(TSharedPtr<FCustomAsset
 : FWorkflowTabFactory(FCustomAssetEditorTabs::CustomAssetDetailsID, InCustomAssetEditorPtr)
 	, CustomAssetEditorToolkitPtr(InCustomAssetEditorPtr)
 {
-	TabLabel = LOCTEXT("CustomEditorLabel", "Properties");
+	TabLabel = LOCTEXT("CustomPropertiesLabel", "Properties");
 	TabIcon = FSlateIcon(FEditorStyle::GetStyleSetName(), "Kismet.Tabs.Components");
 	bIsSingleton = true;
 	ViewMenuDescription = LOCTEXT("CustomEditorView", "Details");
