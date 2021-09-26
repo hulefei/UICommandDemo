@@ -32,7 +32,8 @@ public class CustomAssetEditor : ModuleRules
 				"UnrealEd",
 				"CustomAsset",
 				"Kismet",
-				"PropertyEditor"
+				"PropertyEditor",
+				"BehaviorTreeEditor"
 			});
 		
 		PrivateIncludePathModuleNames.AddRange(

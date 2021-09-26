@@ -16,4 +16,6 @@ class CUSTOMASSET_API UCustomAsset : public UObject
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=NewAsset)
 	FText Text;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=NewAsset)
+	int32 Age;
 };

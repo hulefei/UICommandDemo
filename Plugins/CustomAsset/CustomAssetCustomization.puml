@@ -1,0 +1,12 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+CustomAssetEditor -> CustomAssetEditor: StartupModule
+CustomAssetEditor -> FModuleManager: LoadModuleChecked
+CustomAssetEditor -> FModuleManager: RegisterCustomClassLayout(UCustomAsset::StaticClass()->GetFName(), FCustomAssetCustomization)
+CustomAssetEditor -> FCustomAssetCustomization: MakeInstance
+FCustomAssetCustomization -> FCustomAssetCustomization: CustomizeDetails 
+
+@enduml

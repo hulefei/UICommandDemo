@@ -2,10 +2,12 @@
 #include "IAssetTools.h"
 #include "IAssetTypeActions.h"
 #include "AssetTools/CustomAssetActions.h"
+#include "DetailCustomizations/CustomAssetCustomization.h"
 #include "Modules/ModuleInterface.h"
 #include "Templates/SharedPointer.h"
 #include "Modules/ModuleManager.h"
 #include "Styles/CustomAssetEditorStyle.h"
+#include "DetailCustomizations/CustomAssetView.h"
 
 #define LOCTEXT_NAMESPACE "FCustomAssetEditorModule"
 
@@ -18,6 +20,15 @@ class FCustomAssetEditorModule
 	{
 		Style = MakeShareable(new FCustomAssetEditorStyle());
 		RegisterAssetTools();
+
+		// FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+		// PropertyModule.RegisterCustomPropertyTypeLayout("CustomAsset", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCustomAssetView::MakeInstance));
+		// PropertyModule.NotifyCustomizationModuleChanged();
+		auto& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+		PropertyModule.RegisterCustomClassLayout(
+			UCustomAsset::StaticClass()->GetFName(),
+			FOnGetDetailCustomizationInstance::CreateStatic(&FCustomAssetCustomization::MakeInstance)
+		);
 	}
 	virtual void ShutdownModule() override
 	{
