@@ -37,9 +37,9 @@ FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 						                                                       ETabState::OpenedTab)
 					                                                       ->SetHideTabWell(true)
 					                                                       ->AddTab(
-																			FCustomAssetEditorTabs::GraphEditorID,
-																			ETabState::OpenedTab)
-																		->SetHideTabWell(true)
+						                                                       FCustomAssetEditorTabs::CustomAssetGraphEditorID,
+						                                                       ETabState::ClosedTab)
+					                                                       ->SetHideTabWell(true)
 				                                                       )
 				                                                       ->Split
 				                                                       (
@@ -77,7 +77,7 @@ void FCustomAssetEditorApplicationMode::PreDeactivateMode()
 	check(CustomAssetEditor.IsValid());
 	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
 
-	// CustomAssetEditorPtr->SaveEditedObjectState();
+	CustomAssetEditorPtr->SaveEditedObjectState();
 }
 
 void FCustomAssetEditorApplicationMode::PostActivateMode()

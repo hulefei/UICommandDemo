@@ -6,6 +6,7 @@
 
 #include "CustomAsset.h"
 #include "WorkflowOrientedApp/WorkflowCentricApplication.h"
+#include "WorkflowOrientedApp/WorkflowTabFactory.h"
 
 
 class FCustomAssetEditorToolbar;
@@ -83,6 +84,8 @@ public:
 	void CreateInternalWidgets();
 	void OnGraphEditorFocused(const TSharedRef<SGraphEditor>& InGraphEditor);
 	void RestoreBehaviorTree();
+	void SaveEditedObjectState() const;
+	
 	UCustomAsset* GetCustomAsset() const 
 	{
 		return CustomAsset; 
@@ -103,6 +106,7 @@ private:
 	TSharedRef<ISlateStyle> Style;
 
 	TSharedPtr<class FDocumentTracker> DocumentManager;
+	TWeakPtr<FDocumentTabFactory> GraphEditorTabFactoryPtr;
 	TSharedPtr<class IDetailsView> DetailsView;
 
 public:

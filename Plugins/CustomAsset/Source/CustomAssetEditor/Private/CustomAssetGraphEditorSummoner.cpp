@@ -9,7 +9,7 @@
 FCustomAssetGraphEditorSummoner::FCustomAssetGraphEditorSummoner(
 	TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditorPtr,
 	FOnCreateGraphEditorWidget CreateGraphEditorWidgetCallback)
-	: FDocumentTabFactoryForObjects<UEdGraph>(FCustomAssetEditorTabs::GraphEditorID, InCustomAssetEditorPtr)
+	: FDocumentTabFactoryForObjects<UEdGraph>(FCustomAssetEditorTabs::CustomAssetGraphEditorID, InCustomAssetEditorPtr)
 	  , CustomAssetEditorPtr(InCustomAssetEditorPtr)
 	  , OnCreateGraphEditorWidget(CreateGraphEditorWidgetCallback)
 {

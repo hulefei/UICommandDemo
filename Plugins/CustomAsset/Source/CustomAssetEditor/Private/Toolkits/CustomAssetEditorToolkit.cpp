@@ -122,47 +122,20 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 		ToolbarBuilder = MakeShareable(new FCustomAssetEditorToolbar(SharedThis(this)));
 	}
 
-	// FCustomAssetCommands::Register();
-	// BindCommonCommands();
 	CreateInternalWidgets();
-	// TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
-	// if(!DocumentManager.IsValid())
-	// {
-	// 	DocumentManager = MakeShareable(new FDocumentTracker);
-	// 	DocumentManager->Initialize(ThisPtr);
-	//
-	// 	CreateInternalWidgets();
-	// 	
-	// 	// Register the document factories
-	// 	{
-	// 		// FCustomAssetSummoner* CustomAssetSummoner = new FCustomAssetSummoner(ThisPtr);
-	// 		// TSharedPtr<FDocumentTabFactory> GraphEditorFactory = MakeShareable(CustomAssetSummoner);
-	// 		
-	// 		// Also store off a reference to the grapheditor factory so we can find all the tabs spawned by it later.
-	// 		// GraphEditorTabFactoryPtr = GraphEditorFactory;
-	// 		// DocumentManager->RegisterDocumentFactory(GraphEditorFactory);
-	// 	}
-	// }
 
 	const TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
 	if (!DocumentManager.IsValid())
 	{
 		DocumentManager = MakeShareable(new FDocumentTracker);
 		DocumentManager->Initialize(ThisPtr);
-		
-		TSharedRef<FDocumentTabFactory> GraphEditorFactory = MakeShareable(new FCustomAssetGraphEditorSummoner(ThisPtr,
-			FCustomAssetGraphEditorSummoner::FOnCreateGraphEditorWidget::CreateSP(
-				this, &FCustomAssetEditorToolkit::CreateGraphEditorWidget)
-		));
-		DocumentManager->RegisterDocumentFactory(GraphEditorFactory);
 
-		CustomAsset->CustomAssetGraph = FBlueprintEditorUtils::CreateNewGraph(CustomAsset, TEXT("Custom Asset"),
-		                                                     UCustomAssetGraph::StaticClass(),
-		                                                     UEdGraphSchema_CustomAsset::StaticClass());
-		TSharedRef<FTabPayload_UObject > Payload = FTabPayload_UObject::Make(CustomAsset->CustomAssetGraph);
-		// TSharedPtr<SDockTab> DocumentTab = DocumentManager->OpenDocument(Payload, bNewGraph ? FDocumentTracker::OpenNewDocument : 
-		// FDocumentTracker::RestorePreviousDocument);
-		// TSharedPtr<SDockTab> DocumentTab = DocumentManager->OpenDocument(Payload, FDocumentTracker::OpenNewDocument);
+		const TSharedRef<FDocumentTabFactory> GraphEditorFactory = MakeShareable(new FCustomAssetGraphEditorSummoner(ThisPtr,
+		                                                                                                             FCustomAssetGraphEditorSummoner::FOnCreateGraphEditorWidget::CreateSP(
+			                                                                                                             this, &FCustomAssetEditorToolkit::CreateGraphEditorWidget)
+		));
+		GraphEditorTabFactoryPtr = GraphEditorFactory;
+		DocumentManager->RegisterDocumentFactory(GraphEditorFactory);
 	}
 
 	AddApplicationMode(CustomAssetMode, MakeShareable(new FCustomAssetEditorApplicationMode(SharedThis(this))));
@@ -378,6 +351,15 @@ void FCustomAssetEditorToolkit::RestoreBehaviorTree()
 	// bSelectedNodeIsInjected = false;
 	// bSelectedNodeIsRootLevel = false;
 	// MyGraph->UpdateAbortHighlight(EmptyMode, EmptyMode);
+}
+
+void FCustomAssetEditorToolkit::SaveEditedObjectState() const
+{
+	// Clear currently edited documents
+	CustomAsset->LastEditedDocuments.Empty();
+
+	// Ask all open documents to save their state, which will update LastEditedDocuments
+	DocumentManager->SaveAllState();
 }
 
 //Custom

@@ -7,4 +7,4 @@ const FName FCustomAssetEditorTabs::CustomAssetDetailsID(TEXT("CustomAsset_Prope
 const FName FCustomAssetEditorTabs::CustomAssetEditorID(TEXT("CustomAsset_Editor"));
 
 // Document tab identifiers
-const FName FCustomAssetEditorTabs::GraphEditorID(TEXT("Document"));
+const FName FCustomAssetEditorTabs::CustomAssetGraphEditorID(TEXT("Document"));
