@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant CustomAssetEditorToolkit as Toolkit
+
+Toolkit -> Toolkit: Initialize
+Toolkit -> FDocumentTracker: new
+Toolkit -> FDocumentTracker: Initialize
+Toolkit -> FDocumentTabFactoryForObjects: new
+Toolkit -> DocumentManager: RegisterDocumentFactory(FDocumentTabFactoryForObjects)
+Mode -> FTabManager: NewLayout
+Mode -> Mode: PreDeactivateMode
+Mode -> Toolkit: SaveEditedObjectState
+
+Mode -> Mode: PostActivateMode
+Mode -> Toolkit: RestoreBehaviorTree
+Toolkit -> FBlueprintEditorUtils: CreateNewGraph
+Toolkit -> UEdGraphSchema: CreateDefaultNodesForGraph
+Toolkit -> DocumentManager: OpenDocument
+
+
+
+@enduml

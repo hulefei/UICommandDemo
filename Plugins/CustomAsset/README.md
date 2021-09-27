@@ -10,4 +10,6 @@
 ## CustomAssetCustomization
 ![CustomAssetCustomization](CustomAssetCustomization.png)
 
+## CustomAssetGraph
+![CustomAssetGraph](CustomAssetGraph.png)
 
