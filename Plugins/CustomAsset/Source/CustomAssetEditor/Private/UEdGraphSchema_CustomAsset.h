@@ -27,5 +27,8 @@ class CUSTOMASSETEDITOR_API UEdGraphSchema_CustomAsset : public UEdGraphSchema
 	virtual bool IsCacheVisualizationOutOfDate(int32 InVisualizationCacheID) const override;
 	virtual int32 GetCurrentVisualizationCacheID() const override;
 	virtual void ForceVisualizationCacheClear() const override;
+	virtual bool TryCreateConnection(UEdGraphPin* A, UEdGraphPin* B) const override;
 	//~ End EdGraphSchema Interface
+
+	
 };

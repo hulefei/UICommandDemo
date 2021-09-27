@@ -97,7 +97,9 @@ private:
 	TSharedRef<SDockTab> HandleTabManagerSpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier);
 	// void BindCommonCommands() const;
 	TSharedRef<SGraphEditor> CreateGraphEditorWidget(UEdGraph* InGraph);
-	
+	bool CanDeleteSelectedWidgets();
+	void DeleteSelectedWidgets();
+	void OnSelectedNodesChanged(const TSet<class UObject*>& NewSelection);
 private:
 	/** The text asset being edited. */
 	UCustomAsset* CustomAsset = nullptr;
@@ -108,6 +110,12 @@ private:
 	TSharedPtr<class FDocumentTracker> DocumentManager;
 	TWeakPtr<FDocumentTabFactory> GraphEditorTabFactoryPtr;
 	TSharedPtr<class IDetailsView> DetailsView;
+	/** Command list for handling widget actions in the WidgetBlueprintEditor */
+	TSharedPtr< FUICommandList > CustomAssetCommandList;
+	/** Currently focused graph */
+	TWeakPtr<SGraphEditor> UpdateGraphEdPtr;
+	/** The currently selected preview widgets in the preview GUI */
+	TSet< UObject* > SelectedWidgets;
 
 public:
 	/** Modes in mode switcher */

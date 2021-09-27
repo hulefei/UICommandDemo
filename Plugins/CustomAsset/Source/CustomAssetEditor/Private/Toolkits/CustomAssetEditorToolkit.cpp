@@ -16,6 +16,7 @@
 #include "CustomAssetGraphEditorSummoner.h"
 #include "CustomAssetGraphNode.h"
 #include "UEdGraphSchema_CustomAsset.h"
+#include "Framework/Commands/GenericCommands.h"
 #include "Kismet2/BlueprintEditorUtils.h"
 #include "UObject/NameTypes.h"
 #include "Widgets/Docking/SDockTab.h"
@@ -124,6 +125,12 @@ void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InCustomAsset, const ET
 	}
 
 	CreateInternalWidgets();
+
+	CustomAssetCommandList = MakeShareable(new FUICommandList);
+	CustomAssetCommandList->MapAction(FGenericCommands::Get().Delete,
+		FExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::DeleteSelectedWidgets),
+		FCanExecuteAction::CreateSP(this, &FCustomAssetEditorToolkit::CanDeleteSelectedWidgets)
+		);
 
 	const TSharedPtr<FCustomAssetEditorToolkit> ThisPtr(SharedThis(this));
 	if (!DocumentManager.IsValid())
@@ -266,7 +273,7 @@ TSharedRef<SGraphEditor> FCustomAssetEditorToolkit::CreateGraphEditorWidget(UEdG
 	check(InGraph != NULL);
 	// CreateCommandList();
 	SGraphEditor::FGraphEditorEvents InEvents;
-	// InEvents.OnSelectionChanged = SGraphEditor::FOnSelectionChanged::CreateSP(this, &FTestEditor::OnSelectedNodesChanged);
+	InEvents.OnSelectionChanged = SGraphEditor::FOnSelectionChanged::CreateSP(this, &FCustomAssetEditorToolkit::OnSelectedNodesChanged);
 	// InEvents.OnNodeDoubleClicked = FSingleNodeEvent::CreateSP(this, &FTestEditor::OnNodeDoubleClicked);
 	// InEvents.OnTextCommitted = FOnNodeTextCommitted::CreateSP(this, &FTestEditor::OnNodeTitleCommitted);
 
@@ -290,7 +297,8 @@ TSharedRef<SGraphEditor> FCustomAssetEditorToolkit::CreateGraphEditorWidget(UEdG
 	// Make full graph editor
 	const bool bGraphIsEditable = InGraph->bEditable;
 	return SNew(SGraphEditor)
-    		//.AdditionalCommands(GraphEditorCommands)
+    		.AdditionalCommands(CustomAssetCommandList)
+			.GraphToEdit(InGraph)
     		// .IsEditable(this, &FTestEditor::InEditingMode, bGraphIsEditable)
     		// .Appearance(this, &FTestEditor::GetGraphAppearance)
     		.TitleBar(TitleBarWidget)
@@ -298,8 +306,34 @@ TSharedRef<SGraphEditor> FCustomAssetEditorToolkit::CreateGraphEditorWidget(UEdG
     		.GraphEvents(InEvents);
 }
 
+bool FCustomAssetEditorToolkit::CanDeleteSelectedWidgets()
+{
+	return true;
+}
+
+void FCustomAssetEditorToolkit::DeleteSelectedWidgets()
+{
+	UE_LOG(LogTemp, Log, TEXT("DeleteSelectedWidgets"));
+	for (auto Node : SelectedWidgets)
+	{
+		auto SNode = static_cast<UEdGraphNode*>(Node);
+		check(SNode);
+		SNode->DestroyNode();
+	}
+}
+
+void FCustomAssetEditorToolkit::OnSelectedNodesChanged(const TSet<UObject*>& NewSelection)
+{
+	SelectedWidgets = NewSelection;
+}
+
 void FCustomAssetEditorToolkit::OnGraphEditorFocused(const TSharedRef<SGraphEditor>& InGraphEditor)
 {
+	UpdateGraphEdPtr = InGraphEditor;
+
+	FGraphPanelSelectionSet CurrentSelection;
+	CurrentSelection = InGraphEditor->GetSelectedNodes();
+	// OnSelectedNodesChanged(CurrentSelection);
 }
 
 void FCustomAssetEditorToolkit::RestoreBehaviorTree()
