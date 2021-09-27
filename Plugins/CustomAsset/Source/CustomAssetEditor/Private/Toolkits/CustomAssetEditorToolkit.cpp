@@ -12,6 +12,7 @@
 #include "CustomAssetEditorToolbar.h"
 #include "CustomAssetTestApplicationMode.h"
 // #include "CustomAssetSummoner.h"
+#include "BlueprintEditor.h"
 #include "CustomAssetGraph.h"
 #include "CustomAssetGraphEditorSummoner.h"
 #include "CustomAssetGraphNode.h"
@@ -300,7 +301,7 @@ TSharedRef<SGraphEditor> FCustomAssetEditorToolkit::CreateGraphEditorWidget(UEdG
     		.AdditionalCommands(CustomAssetCommandList)
 			.GraphToEdit(InGraph)
     		// .IsEditable(this, &FTestEditor::InEditingMode, bGraphIsEditable)
-    		// .Appearance(this, &FTestEditor::GetGraphAppearance)
+    		.Appearance(this, &FCustomAssetEditorToolkit::GetGraphAppearance)
     		.TitleBar(TitleBarWidget)
     		.GraphToEdit(InGraph)
     		.GraphEvents(InEvents);
@@ -325,6 +326,13 @@ void FCustomAssetEditorToolkit::DeleteSelectedWidgets()
 void FCustomAssetEditorToolkit::OnSelectedNodesChanged(const TSet<UObject*>& NewSelection)
 {
 	SelectedWidgets = NewSelection;
+}
+
+FGraphAppearanceInfo FCustomAssetEditorToolkit::GetGraphAppearance() const
+{
+	FGraphAppearanceInfo AppearanceInfo;
+	AppearanceInfo.CornerText = LOCTEXT("AppearanceCornerText", "CUSTOM ASSET");
+	return AppearanceInfo;
 }
 
 void FCustomAssetEditorToolkit::OnGraphEditorFocused(const TSharedRef<SGraphEditor>& InGraphEditor)

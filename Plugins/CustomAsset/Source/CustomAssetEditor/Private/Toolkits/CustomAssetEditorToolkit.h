@@ -100,6 +100,8 @@ private:
 	bool CanDeleteSelectedWidgets();
 	void DeleteSelectedWidgets();
 	void OnSelectedNodesChanged(const TSet<class UObject*>& NewSelection);
+	//定义Graph右下角样式
+	FGraphAppearanceInfo GetGraphAppearance() const;
 private:
 	/** The text asset being edited. */
 	UCustomAsset* CustomAsset = nullptr;

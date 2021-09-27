@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant CustomAssetEditorToolkit as Toolkit
+participant UCustomAssetGraphNode as GraphNode
+
+ 
+Toolkit -> ToolbarBuilder: CreateNewNode
+Toolkit -> GraphNode: new(UEdGraph, FVector2D)
+Toolkit -> Toolkit: RestoreBehaviorTree
+Toolkit -> FBlueprintEditorUtils: CreateNewGraph(UEdGraph, UEdGraphSchema)
+FBlueprintEditorUtils -> UEdGraph
+UEdGraph -> UEdGraphSchema: GetSchema
+UEdGraphSchema -> UEdGraph: CreateDefaultNodesForGraph
+
+UEdGraphSchema -> UEdGraphSchema.GetContextMenuActions: 创建menu
+UEdGraphSchema -> UEdGraphSchema.CanCreateConnection
+UEdGraphSchema -> UEdGraphSchema.CanMergeNodes
+UEdGraphSchema -> UEdGraphSchema.GetPinTypeColor
+UEdGraphSchema -> UEdGraphSchema.CreateConnectionDrawingPolicy
+UEdGraphSchema -> UEdGraphSchema.TryCreateConnection
+
+Toolkit -> Toolkit: Initialize
+Toolkit -> FUICommandList: new
+FUICommandList -> Toolkit: MapAction
+
+Toolkit -> FDocumentTabFactoryForObjects: new(CreateGraphEditorWidget)
+FDocumentTabFactoryForObjects -> SGraphEditor: SNew
+SGraphEditor -> OnSelectionChanged: InEvents
+OnSelectionChanged -> OnSelectionChanged: 保存选中的对象
+
+@enduml

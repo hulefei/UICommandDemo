@@ -59,8 +59,8 @@ const FPinConnectionResponse UEdGraphSchema_CustomAsset::CanMergeNodes(const UEd
 
 FLinearColor UEdGraphSchema_CustomAsset::GetPinTypeColor(const FEdGraphPinType& PinType) const
 {
-	FLinearColor Color;
-	return Color;
+	// FLinearColor Color;
+	return FLinearColor::Red;
 }
 
 FConnectionDrawingPolicy* UEdGraphSchema_CustomAsset::CreateConnectionDrawingPolicy(int32 InBackLayerID,

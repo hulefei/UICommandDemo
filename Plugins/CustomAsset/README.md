@@ -13,3 +13,5 @@
 ## CustomAssetGraph
 ![CustomAssetGraph](CustomAssetGraph.png)
 
+## GraphNode
+![GraphNode](GraphNode.png)
