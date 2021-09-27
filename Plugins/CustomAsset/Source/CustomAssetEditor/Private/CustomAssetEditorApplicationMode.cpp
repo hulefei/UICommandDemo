@@ -78,6 +78,7 @@ void FCustomAssetEditorApplicationMode::PreDeactivateMode()
 	TSharedPtr<FCustomAssetEditorToolkit> CustomAssetEditorPtr = CustomAssetEditor.Pin();
 
 	CustomAssetEditorPtr->SaveEditedObjectState();
+
 }
 
 void FCustomAssetEditorApplicationMode::PostActivateMode()
@@ -86,5 +87,7 @@ void FCustomAssetEditorApplicationMode::PostActivateMode()
 	TSharedPtr<FCustomAssetEditorToolkit> BehaviorTreeEditorPtr = CustomAssetEditor.Pin();
 	BehaviorTreeEditorPtr->RestoreBehaviorTree();
 
+	
+	
 	FApplicationMode::PostActivateMode();
 }

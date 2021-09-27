@@ -14,6 +14,7 @@
 // #include "CustomAssetSummoner.h"
 #include "CustomAssetGraph.h"
 #include "CustomAssetGraphEditorSummoner.h"
+#include "CustomAssetGraphNode.h"
 #include "UEdGraphSchema_CustomAsset.h"
 #include "Kismet2/BlueprintEditorUtils.h"
 #include "UObject/NameTypes.h"
@@ -374,12 +375,15 @@ void FCustomAssetEditorToolkit::SaveEditedObjectState() const
 
 void FCustomAssetEditorToolkit::CreateNewNode() const
 {
-	const FText DialogText = FText::Format(
-		LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
-		FText::FromString(TEXT("FSimpleEditorsModule::PluginButtonClicked()")),
-		FText::FromString(TEXT("SimpleEditors.cpp"))
-	);
-	FMessageDialog::Debugf(DialogText);
+	// const FText DialogText = FText::Format(
+	// 	LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
+	// 	FText::FromString(TEXT("FSimpleEditorsModule::PluginButtonClicked()")),
+	// 	FText::FromString(TEXT("SimpleEditors.cpp"))
+	// );
+	// FMessageDialog::Debugf(DialogText);
+
+	UCustomAssetGraph* MyGraph = Cast<UCustomAssetGraph>(CustomAsset->CustomAssetGraph);
+	UCustomAssetGraphNode::CreateGraphNode(MyGraph, FVector2D::ZeroVector);
 }
 
 bool FCustomAssetEditorToolkit::CanCreateNewNode() const

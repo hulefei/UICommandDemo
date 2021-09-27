@@ -20,6 +20,4 @@ Toolkit -> FBlueprintEditorUtils: CreateNewGraph
 Toolkit -> UEdGraphSchema: CreateDefaultNodesForGraph
 Toolkit -> DocumentManager: OpenDocument
 
-
-
 @enduml
