@@ -1,4 +1,5 @@
 #include "AssetToolsModule.h"
+#include "CustomAssetGraphNode.h"
 #include "IAssetTools.h"
 #include "IAssetTypeActions.h"
 #include "AssetTools/CustomAssetActions.h"
@@ -29,6 +30,9 @@ class FCustomAssetEditorModule
 			UCustomAsset::StaticClass()->GetFName(),
 			FOnGetDetailCustomizationInstance::CreateStatic(&FCustomAssetCustomization::MakeInstance)
 		);
+
+		CustomAssetNodeFactory = MakeShareable(new FCustomAssetGraphNodeFactory());
+		FEdGraphUtilities::RegisterVisualNodeFactory(CustomAssetNodeFactory);
 	}
 	virtual void ShutdownModule() override
 	{
@@ -74,6 +78,9 @@ private:
 
 	/** Holds the plug-ins style set. */
 	TSharedPtr<ISlateStyle> Style;
+
+	TSharedPtr<FCustomAssetGraphNodeFactory> CustomAssetNodeFactory;
+	// TSharedPtr<FSegmentGraphPinFactory> SegmentPinFactory;
 };
 
 #undef LOCTEXT_NAMESPACE

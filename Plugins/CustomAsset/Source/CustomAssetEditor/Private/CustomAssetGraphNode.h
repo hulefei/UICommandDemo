@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "EdGraphUtilities.h"
+#include "SGraphNode.h"
 #include "UObject/Object.h"
 #include "CustomAssetGraphNode.generated.h"
 
@@ -18,7 +21,38 @@ public:
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FText GetTooltipText() const override;
+	virtual TSharedPtr<SGraphNode> CreateVisualWidget() override { return SGraphNodePtr; }
 	//~ End UEdGraphNode Interface
 
-	static UEdGraphNode* CreateGraphNode(class UEdGraph* ParentGraph, const FVector2D Location);
+	static UCustomAssetGraphNode* CreateGraphNode(class UEdGraph* ParentGraph, const FVector2D Location);
+
+	TSharedPtr<SGraphNode> SGraphNodePtr;
+};
+
+class SCustomAssetGraphNode : public SGraphNode
+{
+public:
+	SLATE_BEGIN_ARGS(SCustomAssetGraphNode){}
+	SLATE_END_ARGS()
+
+	void Construct(const FArguments& InArgs, class UCustomAssetGraphNode* InNode);
+
+protected:
+	// SGraphNode interface
+	virtual TSharedRef<SWidget> CreateNodeContentArea() override;
+	// End of SGraphNode interface
+};
+
+// Custom node factory
+class FCustomAssetGraphNodeFactory : public FGraphPanelNodeFactory
+{
+	virtual TSharedPtr<class SGraphNode> CreateNode(UEdGraphNode* Node) const override
+	{
+		if (UCustomAssetGraphNode* CustomAssetGraphNode = Cast<UCustomAssetGraphNode>(Node))
+		{
+			return SNew(SCustomAssetGraphNode, CustomAssetGraphNode);
+		}
+
+		return nullptr;
+	}
 };
