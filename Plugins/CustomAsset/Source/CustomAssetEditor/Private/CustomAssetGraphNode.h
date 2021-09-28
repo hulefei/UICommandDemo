@@ -27,7 +27,13 @@ public:
 
 	static UCustomAssetGraphNode* CreateGraphNode(class UEdGraph* ParentGraph, const FVector2D Location);
 
+	void UpdatePins();
+	
 	SGraphNode* SGraphNodePtr;
+	UEdGraphPin* StartPin;
+	UEdGraphPin* StartPin2;
+	UEdGraphPin* EndPin;
+	UEdGraphPin* EndPin2;
 };
 
 class SCustomAssetGraphNode : public SGraphNode

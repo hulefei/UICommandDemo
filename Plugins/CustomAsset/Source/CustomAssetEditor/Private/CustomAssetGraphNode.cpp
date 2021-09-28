@@ -15,8 +15,8 @@ UCustomAssetGraphNode::UCustomAssetGraphNode(const FObjectInitializer& ObjectIni
 
 void UCustomAssetGraphNode::AllocateDefaultPins()
 {
-	CreatePin(EGPD_Input, UCustomAssetEditorTypes::PinCategory_MultipleNodes, TEXT("In"));
-	CreatePin(EGPD_Output, UCustomAssetEditorTypes::PinCategory_MultipleNodes, TEXT("Out"));
+	// CreatePin(EGPD_Input, UCustomAssetEditorTypes::PinCategory_MultipleNodes, TEXT("In"));
+	// CreatePin(EGPD_Output, UCustomAssetEditorTypes::PinCategory_MultipleNodes, TEXT("Out"));
 }
 
 FText UCustomAssetGraphNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
@@ -54,12 +54,34 @@ UCustomAssetGraphNode* UCustomAssetGraphNode::CreateGraphNode(class UEdGraph* Pa
 	// return NodeTemplate;
 }
 
+void UCustomAssetGraphNode::UpdatePins()
+{
+	if (FindPin(FName(TEXT("in2"))) == nullptr)
+	{
+		StartPin = CreatePin(EEdGraphPinDirection::EGPD_Input, FName(TEXT("in1")), FName(TEXT("in2")));	
+	}
+	if (FindPin(FName(TEXT("in2_2"))) == nullptr)
+	{
+		StartPin2 = CreatePin(EEdGraphPinDirection::EGPD_Input, FName(TEXT("in1_2")), FName(TEXT("in2_2")));	
+	}
+	if (FindPin(FName(TEXT("out2"))) == nullptr)
+	{
+		EndPin = CreatePin(EEdGraphPinDirection::EGPD_Output, FName(TEXT("out1")), FName(TEXT("out2")));
+	}
+	if (FindPin(FName(TEXT("out2_2"))) == nullptr)
+	{
+		EndPin2 = CreatePin(EEdGraphPinDirection::EGPD_Output, FName(TEXT("out1_2")), FName(TEXT("out2_2")));
+	}
+
+	SGraphNodePtr->UpdateGraphNode();
+}
+
 // ~SCustomAssetGraphNode
 void SCustomAssetGraphNode::Construct(const FArguments& InArgs, UCustomAssetGraphNode* InNode)
 {
 	GraphNode = InNode;
 	InNode->SGraphNodePtr = this;
-	// InNode->UpdatePins();
+	InNode->UpdatePins();
 	UpdateGraphNode();
 }
 
