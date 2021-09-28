@@ -341,7 +341,7 @@ void FCustomAssetEditorToolkit::OnGraphEditorFocused(const TSharedRef<SGraphEdit
 
 	FGraphPanelSelectionSet CurrentSelection;
 	CurrentSelection = InGraphEditor->GetSelectedNodes();
-	// OnSelectedNodesChanged(CurrentSelection);
+	OnSelectedNodesChanged(CurrentSelection);
 }
 
 void FCustomAssetEditorToolkit::RestoreBehaviorTree()
