@@ -2,16 +2,19 @@
 
 ## Workflow
 
-![wolkflow](Workflow.png)
+![wolkflow](Documents/Workflow.png)
 
 ## MenuTool
-![MenuTool](MenuTool.png)
+![MenuTool](Documents/MenuTool.png)
 
 ## CustomAssetCustomization
-![CustomAssetCustomization](CustomAssetCustomization.png)
+![CustomAssetCustomization](Documents/CustomAssetCustomization.png)
 
 ## CustomAssetGraph
-![CustomAssetGraph](CustomAssetGraph.png)
+![CustomAssetGraph](Documents/CustomAssetGraph.png)
 
 ## GraphNode
-![GraphNode](GraphNode.png)
+![GraphNode](Documents/GraphNode.png)
+
+## CustomGraphNode
+![CustomGraphNode](Documents/CustomGraphNode.png)

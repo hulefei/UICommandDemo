@@ -19,7 +19,7 @@ protected:
 
 	virtual const FSlateBrush*
 	GetTabIconForObject(const FWorkflowTabSpawnInfo& Info, UEdGraph* DocumentID) const override;
-	void SaveState(TSharedPtr<SDockTab> Tab, TSharedPtr<FTabPayload> Payload) const;
+	virtual void SaveState(TSharedPtr<SDockTab> Tab, TSharedPtr<FTabPayload> Payload) const override;
 	
 	TWeakPtr<class FCustomAssetEditorToolkit> CustomAssetEditorPtr;
 	FOnCreateGraphEditorWidget OnCreateGraphEditorWidget;
