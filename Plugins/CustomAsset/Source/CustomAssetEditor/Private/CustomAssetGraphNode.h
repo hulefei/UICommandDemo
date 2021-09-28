@@ -30,10 +30,10 @@ public:
 	void UpdatePins();
 	
 	SGraphNode* SGraphNodePtr;
-	UEdGraphPin* StartPin;
-	UEdGraphPin* StartPin2;
-	UEdGraphPin* EndPin;
-	UEdGraphPin* EndPin2;
+	UEdGraphPin* StartPin = nullptr;
+	UEdGraphPin* StartPin2 = nullptr;
+	UEdGraphPin* EndPin = nullptr;
+	UEdGraphPin* EndPin2 = nullptr;
 };
 
 class SCustomAssetGraphNode : public SGraphNode

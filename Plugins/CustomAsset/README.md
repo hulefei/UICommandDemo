@@ -15,3 +15,6 @@
 
 ## GraphNode
 ![GraphNode](GraphNode.png)
+
+## CustomGraphNode
+![CustomGraphNode](CustomGraphNode.png)

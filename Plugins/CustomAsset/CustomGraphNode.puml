@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant CustomAssetEditor as EditorModule
+
+participant CustomAssetEditorToolkit as Toolkit
+participant UCustomAssetGraphNode as GraphNode
+
+
+EditorModule -> FEdGraphUtilities: RegisterVisualNodeFactory(FGraphPanelNodeFactory)
+EditorModule -> FEdGraphUtilities: RegisterVisualNodeFactory(FGraphPanelPinFactory)
+
+FGraphPanelNodeFactory -> SCustomAssetGraphNode: SNew(SCustomAssetGraphNode)
+FGraphPanelPinFactory -> UCustomAssetGraphNode: SNew(SGraphPinExec)
+SCustomAssetGraphNode -> SCustomAssetGraphNode: CreateNodeContentArea
+UCustomAssetGraphNode -> UCustomAssetGraphNode: AllocateDefaultPins
+UCustomAssetGraphNode -> UCustomAssetGraphNode: GetNodeTitle
+UCustomAssetGraphNode -> UCustomAssetGraphNode: GetTooltipText
+
+
+
+@enduml
