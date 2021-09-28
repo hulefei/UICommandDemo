@@ -58,7 +58,7 @@ UCustomAssetGraphNode* UCustomAssetGraphNode::CreateGraphNode(class UEdGraph* Pa
 void SCustomAssetGraphNode::Construct(const FArguments& InArgs, UCustomAssetGraphNode* InNode)
 {
 	GraphNode = InNode;
-	InNode->SGraphNodePtr = SharedThis(this);
+	InNode->SGraphNodePtr = this;
 	// InNode->UpdatePins();
 	UpdateGraphNode();
 }

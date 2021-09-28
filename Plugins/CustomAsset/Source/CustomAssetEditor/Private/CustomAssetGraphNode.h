@@ -6,6 +6,7 @@
 
 #include "EdGraphUtilities.h"
 #include "SGraphNode.h"
+#include "KismetPins/SGraphPinExec.h"
 #include "UObject/Object.h"
 #include "CustomAssetGraphNode.generated.h"
 
@@ -21,12 +22,12 @@ public:
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FText GetTooltipText() const override;
-	virtual TSharedPtr<SGraphNode> CreateVisualWidget() override { return SGraphNodePtr; }
+	// virtual TSharedPtr<SGraphNode> CreateVisualWidget() override { return MakeShareable(SGraphNodePtr); }
 	//~ End UEdGraphNode Interface
 
 	static UCustomAssetGraphNode* CreateGraphNode(class UEdGraph* ParentGraph, const FVector2D Location);
 
-	TSharedPtr<SGraphNode> SGraphNodePtr;
+	SGraphNode* SGraphNodePtr;
 };
 
 class SCustomAssetGraphNode : public SGraphNode
@@ -53,6 +54,21 @@ class FCustomAssetGraphNodeFactory : public FGraphPanelNodeFactory
 			return SNew(SCustomAssetGraphNode, CustomAssetGraphNode);
 		}
 
+		return nullptr;
+	}
+};
+
+// Custom pin factory
+class FCustomAssetGraphPinFactory : public FGraphPanelPinFactory
+{
+public:
+	virtual TSharedPtr<class SGraphPin> CreatePin(class UEdGraphPin* Pin) const override
+	{
+		UEdGraphNode* Node = Pin->GetOwningNode();
+		if(Node && Node->IsA<UCustomAssetGraphNode>())
+		{
+			return SNew(SGraphPinExec, Pin);
+		}
 		return nullptr;
 	}
 };

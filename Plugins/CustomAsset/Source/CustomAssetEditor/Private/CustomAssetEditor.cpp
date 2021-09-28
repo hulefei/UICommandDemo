@@ -32,7 +32,9 @@ class FCustomAssetEditorModule
 		);
 
 		CustomAssetNodeFactory = MakeShareable(new FCustomAssetGraphNodeFactory());
+		CustomAssetPinFactory = MakeShareable(new FCustomAssetGraphPinFactory());
 		FEdGraphUtilities::RegisterVisualNodeFactory(CustomAssetNodeFactory);
+		FEdGraphUtilities::RegisterVisualPinFactory(CustomAssetPinFactory);
 	}
 	virtual void ShutdownModule() override
 	{
@@ -80,7 +82,7 @@ private:
 	TSharedPtr<ISlateStyle> Style;
 
 	TSharedPtr<FCustomAssetGraphNodeFactory> CustomAssetNodeFactory;
-	// TSharedPtr<FSegmentGraphPinFactory> SegmentPinFactory;
+	TSharedPtr<FCustomAssetGraphPinFactory> CustomAssetPinFactory;
 };
 
 #undef LOCTEXT_NAMESPACE
