@@ -5,7 +5,7 @@
 
 void UTickTimeline::Tick(float DeltaTime)
 {
-	UE_LOG(LogTemp, Log, TEXT("DeltaTime:%f"), DeltaTime);
+	// UE_LOG(LogTemp, Log, TEXT("DeltaTime:%f"), DeltaTime);
 }
 
 bool UTickTimeline::IsTickable() const
