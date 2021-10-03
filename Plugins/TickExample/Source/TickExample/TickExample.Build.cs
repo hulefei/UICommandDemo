@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class UICommand : ModuleRules
+public class TickExample : ModuleRules
 {
-	public UICommand(ReadOnlyTargetRules Target) : base(Target)
+	public TickExample(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -25,7 +25,7 @@ public class UICommand : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core", "EditorSubsystem",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -38,8 +38,7 @@ public class UICommand : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"Projects",
-				// ... add prTickExampleivate dependencies that you statically link with here ...	
+				// ... add private dependencies that you statically link with here ...	
 			}
 			);
 		

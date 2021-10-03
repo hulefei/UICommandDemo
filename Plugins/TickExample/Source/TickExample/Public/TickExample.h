@@ -5,19 +5,15 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FUICommandModule : public IModuleInterface
+class FTickExampleModule : public IModuleInterface
 {
 public:
 
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
-	//CommandA所对应的操作
-	void CommandAAction();
-
-	TSharedPtr<class FUICommandList> PluginCommandList;
 
 private:
-	// class UTickTimeline* TickTimeline = nullptr;
-	// FDelegateHandle MyTickerHandle;
+	class UTickTimeline* TickTimeline = nullptr;
+	class UTickTimelineObject* TickTimelineObject = nullptr;
 };

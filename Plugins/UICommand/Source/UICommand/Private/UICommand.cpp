@@ -12,6 +12,8 @@
 #define LOCTEXT_NAMESPACE "FUICommandModule"
 
 
+class UTickTimeline;
+
 void FUICommandModule::StartupModule()
 {
 	FTestCommands::Register();
@@ -103,6 +105,7 @@ void FUICommandModule::ShutdownModule()
 void FUICommandModule::CommandAAction()
 {
 	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString("Execute CommandA"));
+	// TickTimeline = NewObject<UTickTimeline>();
 }
 
 #undef LOCTEXT_NAMESPACE
