@@ -11,6 +11,6 @@ void UTickTimelineObject::Start()
 
 bool UTickTimelineObject::Tick(float DeltaTime)
 {
-	UE_LOG(LogTemp, Display, TEXT("UTickTimelineObject Tick, %f."), DeltaTime);
+	// UE_LOG(LogTemp, Display, TEXT("UTickTimelineObject Tick, %f."), DeltaTime);
 	return true;
 }

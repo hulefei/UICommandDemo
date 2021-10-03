@@ -17,7 +17,7 @@ void UMyEditorSubsystem::Deinitialize()
 
 void UMyEditorSubsystem::Tick(float DeltaTime)
 {
-	UE_LOG(LogTemp, Log, TEXT("UMyEditorSubsystem::Tick"));
+	// UE_LOG(LogTemp, Log, TEXT("UMyEditorSubsystem::Tick"));
 }
 
 bool UMyEditorSubsystem::IsTickable() const
