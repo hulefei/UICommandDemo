@@ -7,5 +7,5 @@
 
 UActionNode::UActionNode(const FObjectInitializer& ObjectInitializer)
 {
-	StreamableManager = new FStreamableManager();
+	StreamableManager = MakeShareable(new FStreamableManager());
 }

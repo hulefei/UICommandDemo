@@ -27,26 +27,6 @@ void AEntryActor::BeginPlay()
 	UBranchActionNode* BranchActionNode = NewObject<UBranchActionNode>(this);
 	BranchActionNode->Init();
 	ActionNodeSubsystem->ExecAction(BranchActionNode);
-
-	// auto a = MakeShareable(new FStreamableManager());
-	// const auto StreamableManager = new FStreamableManager();
-	// const FStringAssetReference BlueprintReference(TEXT("Blueprint'/Game/BridgeActor_BP.BridgeActor_BP'"));
-	// auto ActionBlueprint = Cast<UBlueprint>(StreamableManager->LoadSynchronous(BlueprintReference));
-	// const FVector Location(-3000, -3000, -3000);
-	// FActorSpawnParameters SpawnParams;
-	// SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	// SpawnParams.Owner = this;
-	//
-	//
-	// auto xBridgeActor = GetWorld()->SpawnActor<ABridgeActor>(
-	// 	ActionBlueprint->GeneratedClass, Location, FRotator::ZeroRotator, SpawnParams);
-	// if (xBridgeActor == nullptr)
-	// {
-	// 	UE_LOG(LogTemp, Log, TEXT("xBridgeActor == nullptr"));
-	// } else
-	// {
-	// 	UE_LOG(LogTemp, Log, TEXT("xBridgeActor != nullptr"));
-	// }
 }
 
 // Called every frame

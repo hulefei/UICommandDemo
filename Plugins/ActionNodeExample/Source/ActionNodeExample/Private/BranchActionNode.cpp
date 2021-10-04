@@ -15,19 +15,11 @@ void UBranchActionNode::Init()
 	const FActorSpawnParameters SpawnParams;
 	BridgeActor = GetWorld()->SpawnActor<ABridgeActor>(
 		ActionBlueprint->GeneratedClass, Location, FRotator::ZeroRotator, SpawnParams);
-	if (BridgeActor == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("xBridgeActor == nullptr"));
-	} else
-	{
-		UE_LOG(LogTemp, Log, TEXT("xBridgeActor != nullptr"));
-	}
 }
 
 void UBranchActionNode::Execute()
 {
-	Super::Execute();
-
 	check(BridgeActor)
-	BridgeActor->DispatchEvent(FName(TEXT("test1")));
+	const int32 NextIndex = BridgeActor->DispatchEvent(FName(TEXT("test2")));
+	UE_LOG(LogTemp, Log, TEXT("NextIndex:%d"), NextIndex);
 }

@@ -25,5 +25,5 @@ public:
 
 	// ~Core
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DispatchEvent(FName EventName);
+	int32 DispatchEvent(FName EventName);
 };

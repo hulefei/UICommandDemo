@@ -15,10 +15,15 @@ class ACTIONNODEEXAMPLE_API UActionNode : public UObject
 {
 	GENERATED_BODY()
 
-	public:
+public:
 	explicit UActionNode(const FObjectInitializer& ObjectInitializer);
-	public:
-	virtual void Execute() {};
 
-	FStreamableManager* StreamableManager = nullptr;
+	virtual void Execute()
+	{
+	};
+
+	TSharedPtr<FStreamableManager> StreamableManager;
+
+protected:
+	TArray<int32> Next;
 };
