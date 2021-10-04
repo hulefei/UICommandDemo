@@ -3,12 +3,7 @@
 
 #include "TickTimeline.h"
 
-void UTickTimeline::Tick(float DeltaTime)
+void FTickTimeline::TickTimeline(float DeltaTime)
 {
-	// UE_LOG(LogTemp, Log, TEXT("DeltaTime:%f"), DeltaTime);
-}
-
-bool UTickTimeline::IsTickable() const
-{
-	return FTickableGameObject::IsTickable();
+	UE_LOG(LogTemp, Log, TEXT("FTickTimeline::TickTimeline:%f"), DeltaTime);
 }

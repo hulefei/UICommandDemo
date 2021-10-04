@@ -3,22 +3,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Object.h"
-#include "Tickable.h"
+
 #include "TickTimeline.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class TICKEXAMPLE_API UTickTimeline : public UObject, public FTickableGameObject
+USTRUCT()
+struct FTickTimeline
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
+
+private:
+	/** Whether timeline should loop when it reaches the end, or stop */
+	UPROPERTY()
+	uint8 bLooping:1;
+
+	/** If playback should move the current position backwards instead of forwards */
+	UPROPERTY()
+	uint8 bReversePlayback:1;
 
 public:
-	// Begin FTickableGameObject Interface.
-	virtual void Tick(float DeltaTime) override;
-	virtual bool IsTickable() const override;
-	virtual TStatId GetStatId() const override {RETURN_QUICK_DECLARE_CYCLE_STAT(threadname, STATGROUP_Tickables);}
-	// End FTickableGameObject Interface.
+	FTickTimeline()
+		: bLooping(false)
+		, bReversePlayback(false)
+	{
+	}
+
+	void TickTimeline(float DeltaTime);
 };

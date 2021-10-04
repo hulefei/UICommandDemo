@@ -11,7 +11,7 @@ void FTickExampleModule::StartupModule()
 {
 	// TickTimelineObject = NewObject<UTickTimelineObject>();
 	// TickTimelineObject->Start();
-	TickTimeline = NewObject<UTickTimeline>();
+	// TickTimeline = NewObject<UTickTimeline>();
 }
 
 void FTickExampleModule::ShutdownModule()

@@ -14,6 +14,5 @@ public:
 	virtual void ShutdownModule() override;
 
 private:
-	class UTickTimeline* TickTimeline = nullptr;
 	class UTickTimelineObject* TickTimelineObject = nullptr;
 };
