@@ -22,6 +22,7 @@ class ACTIONNODEEXAMPLE_API UBranchActionNode : public UActionNode
 	// UBranchActionNode(const FObjectInitializer& ObjectInitializer);
 	virtual void Execute() override;
 	void Init();
+	void Deinitialization();
 
 	UPROPERTY()
 	UBlueprint* ActionBlueprint;

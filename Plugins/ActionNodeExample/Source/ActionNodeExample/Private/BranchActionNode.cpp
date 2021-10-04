@@ -15,11 +15,32 @@ void UBranchActionNode::Init()
 	const FActorSpawnParameters SpawnParams;
 	BridgeActor = GetWorld()->SpawnActor<ABridgeActor>(
 		ActionBlueprint->GeneratedClass, Location, FRotator::ZeroRotator, SpawnParams);
+
+	OnActionNodeFinished.BindLambda([](UActionNode* ActionNode)-> void
+	{
+		if (ActionNode != nullptr)
+		{
+			UE_LOG(LogTemp, Log, TEXT("ActionNode != nullptr"));
+		} else
+		{
+			UE_LOG(LogTemp, Log, TEXT("ActionNode == nullptr"));
+		}
+	});
+}
+
+void UBranchActionNode::Deinitialization()
+{
+	OnActionNodeFinished.Unbind();
 }
 
 void UBranchActionNode::Execute()
 {
 	check(BridgeActor)
-	const int32 NextIndex = BridgeActor->DispatchEvent(FName(TEXT("test2")));
-	UE_LOG(LogTemp, Log, TEXT("NextIndex:%d"), NextIndex);
+	int32 NextIndex = -1;
+	UActionNode* ActionNode = nullptr;
+	if (BridgeActor->DispatchEvent(FName(TEXT("test2")), NextIndex))
+	{
+		ActionNode = NewObject<UActionNode>();
+	}
+	OnActionNodeFinished.ExecuteIfBound(ActionNode);
 }

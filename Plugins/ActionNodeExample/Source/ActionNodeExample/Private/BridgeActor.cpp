@@ -24,9 +24,10 @@ void ABridgeActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-int32 ABridgeActor::DispatchEvent_Implementation(FName EventName)
+bool ABridgeActor::DispatchEvent_Implementation(FName EventName, int32& OutIntValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("DispatchEvent not Implementation "));
-	return -1;
+	OutIntValue = -1;
+	return false;
 }
 

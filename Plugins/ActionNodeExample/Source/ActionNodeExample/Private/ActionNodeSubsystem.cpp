@@ -12,7 +12,8 @@ void UActionNodeSubsystem::ExecAction(UActionNode* ActionNode)
 	if (BranchActionNode != nullptr)
 	{
 		BranchActionNode->Execute();
+	} else
+	{
+		UE_LOG(LogTemp, Log, TEXT("ActionNode not Support"));
 	}
-
-	UE_LOG(LogTemp, Log, TEXT("ActionNode not Support"));
 }

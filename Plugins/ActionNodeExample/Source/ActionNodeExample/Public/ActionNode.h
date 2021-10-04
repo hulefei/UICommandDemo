@@ -7,9 +7,12 @@
 #include "ActionNode.generated.h"
 
 struct FStreamableManager;
+class UActionNode;
+DECLARE_DELEGATE_OneParam(FOnActionNodeFinished, UActionNode*)
 /**
  * 
  */
+
 UCLASS()
 class ACTIONNODEEXAMPLE_API UActionNode : public UObject
 {
@@ -25,5 +28,6 @@ public:
 	TSharedPtr<FStreamableManager> StreamableManager;
 
 protected:
+	FOnActionNodeFinished OnActionNodeFinished;
 	TArray<int32> Next;
 };
