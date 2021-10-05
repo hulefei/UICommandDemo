@@ -38,6 +38,8 @@ void FTickTimeline::TimelineTick(float DeltaTime)
 {
 	bool bIsFinished = false;
 
+	UE_LOG(LogTemp, Log, TEXT("FTickTimeline::TimelineTick"));
+	
 	if (bPlaying)
 	{
 		const uint32 TimelineFrameNum = GetTimelineFrameNum();
@@ -71,5 +73,6 @@ void FTickTimeline::SetPlaybackPosition(uint32 NewPosition, bool bFireEvents, bo
 
 void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)
 {
+	UE_LOG(LogTemp, Log, TEXT("FTickTimeline::SetTickTimelineFinishedFunc"));
 	TickTimelineFinishedFunc = NewTickTimelineFinishedFunc;
 }
