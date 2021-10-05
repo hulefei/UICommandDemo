@@ -13,6 +13,7 @@ void UBranchActionNode::Init()
 	// auto BlueprintClass = ActionBlueprint->GetBlueprintClass();
 	const FVector Location(-3000, -3000, -3000);
 	const FActorSpawnParameters SpawnParams;
+	//TODO
 	BridgeActor = GetWorld()->SpawnActor<ABridgeActor>(
 		ActionBlueprint->GeneratedClass, Location, FRotator::ZeroRotator, SpawnParams);
 

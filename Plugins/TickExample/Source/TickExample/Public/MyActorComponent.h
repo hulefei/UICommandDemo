@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TickTimelineComponent.h"
+#include "TickTimeline.h"
 #include "Components/SceneComponent.h"
 #include "MyActorComponent.generated.h"
 
-
 class AMyBaseActor;
+
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class TICKEXAMPLE_API UMyActorComponent : public USceneComponent
+class TICKEXAMPLE_API UMyActorComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -26,13 +27,26 @@ public:
 	FTickTimeline TickTimeline;
 
 	virtual void Activate(bool bReset=false) override;
+	virtual void Deactivate() override;
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	//设置TickTimeline
+	UFUNCTION(BlueprintCallable)
+	void ResetTimeline(const int32 InFrameNum, const bool InbLooping);
+	UFUNCTION(BlueprintCallable)
+	void Play();
+	UFUNCTION(BlueprintCallable)
+	void PlayFromStart();
+	UFUNCTION(BlueprintCallable)
+	void Stop();
+
+	/** Set the delegate to call when timeline is finished */
+	UFUNCTION(BlueprintCallable)
+	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
 };

@@ -2,9 +2,6 @@
 
 #include "TickExample.h"
 
-#include "TickTimeline.h"
-#include "TickTimelineObject.h"
-
 #define LOCTEXT_NAMESPACE "FTickExampleModule"
 
 void FTickExampleModule::StartupModule()

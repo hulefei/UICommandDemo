@@ -7,11 +7,6 @@
 AMyBaseActor::AMyBaseActor(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-
-	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActorComp"));
-	MyActorComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
