@@ -26,7 +26,7 @@ class TICKEXAMPLE_API ATickEntryActor : public AActor
 	virtual void Tick(float DeltaTime) override;
 	
 	UFUNCTION(BlueprintCallable)
-	virtual void OnTickTimelineEventHandle();
+	virtual void OnTickTimelineUpdateEventHandle(int32 Position);
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void OnTickTimelineFinishedEventHandle();

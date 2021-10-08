@@ -18,8 +18,8 @@ void ATickEntryActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	FOnTickTimelineEvent OnTickTimelineEvent;
-	OnTickTimelineEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineEventHandle);
+	FOnTickTimelineUpdateEvent OnTickTimelineEvent;
+	OnTickTimelineEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineUpdateEventHandle);
 
 	FOnTickTimelineEvent OnTickTimelineFinishedEvent;
 	OnTickTimelineFinishedEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineFinishedEventHandle);
@@ -38,9 +38,9 @@ void ATickEntryActor::Tick(float DeltaTime)
 }
 
 
-void ATickEntryActor::OnTickTimelineEventHandle()
+void ATickEntryActor::OnTickTimelineUpdateEventHandle(int32 Position)
 {
-	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle"));
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle:%d"), Position);
 }
 
 void ATickEntryActor::OnTickTimelineFinishedEventHandle()

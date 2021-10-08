@@ -64,7 +64,7 @@ void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTick
 	TickTimeline.SetTickTimelineFinishedFunc(NewTickTimelineFinishedFunc);
 }
 
-void UMyActorComponent::SetTickTimelinePostUpdateFunc(FOnTickTimelineEvent NewTimelinePostUpdateFunc)
+void UMyActorComponent::SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc)
 {
 	TickTimeline.SetTimelinePostUpdateFunc(NewTimelinePostUpdateFunc);
 }

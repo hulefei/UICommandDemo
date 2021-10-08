@@ -49,14 +49,18 @@ void FTickTimeline::TimelineTick(float DeltaTime)
 			if (bLooping)
 			{
 				NewPosition = 0;
-			}else
+			}
+			else
 			{
 				NewPosition = TimelineFrameNum;
 				Stop();
 				bIsFinished = true;
 			}
+		} else
+		{
+			//只有小于等于最大帧数时才执行
+			SetPlaybackPosition(NewPosition, true);		
 		}
-		SetPlaybackPosition(NewPosition, true);
 	}
 
 	if (bIsFinished)
@@ -69,11 +73,11 @@ void FTickTimeline::TimelineTick(float DeltaTime)
 void FTickTimeline::SetPlaybackPosition(int32 NewPosition, bool bFireEvents, bool bFireUpdate)
 {
 	Position = NewPosition;
-	
+
 	// Execute the delegate to say that all properties are updated
 	if (bFireUpdate)
 	{
-		TimelinePostUpdateFunc.ExecuteIfBound();
+		TickTimelinePostUpdateFunc.ExecuteIfBound(NewPosition);
 	}
 }
 
@@ -82,7 +86,7 @@ void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTime
 	TickTimelineFinishedFunc = NewTickTimelineFinishedFunc;
 }
 
-void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineEvent NewTimelinePostUpdateFunc)
+void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc)
 {
-	TimelinePostUpdateFunc = NewTimelinePostUpdateFunc;
+	TickTimelinePostUpdateFunc = NewTimelinePostUpdateFunc;
 }

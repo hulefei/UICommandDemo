@@ -9,10 +9,13 @@
 
 /** Signature of function to handle a timeline 'event' */
 DECLARE_DYNAMIC_DELEGATE(FOnTickTimelineEvent);
+/** Signature of function to handle timeline 'update event' */
+DECLARE_DYNAMIC_DELEGATE_OneParam( FOnTickTimelineUpdateEvent, int32, Output );
 
 /** Static version of delegate to handle a timeline 'event' */
-DECLARE_DELEGATE(FOnTimelineEventStatic);
-
+DECLARE_DELEGATE(FOnTickTimelineEventStatic);
+/** Static version of delegate to handle a timeline 'update event' */
+DECLARE_DELEGATE_OneParam(FOnTickTimelineUpdateEventStatic, int32);
 
 
 USTRUCT()
@@ -58,20 +61,24 @@ public:
 
 	/** Called whenever this timeline is playing and updates - done after all delegates are executed and variables updated  */
 	UPROPERTY(NotReplicated)
-	FOnTickTimelineEvent TimelinePostUpdateFunc;
+	FOnTickTimelineUpdateEvent TickTimelinePostUpdateFunc;
 	
-	UPROPERTY()
+	UPROPERTY(NotReplicated)
 	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
 	FOnTickTimelineEvent TickTimelineFinishedFunc;
+
 
 	/** Set the delegate to call when timeline is finished */
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
 
 	/** Set the delegate to call after each timeline tick */
-	void SetTimelinePostUpdateFunc(FOnTickTimelineEvent NewTimelinePostUpdateFunc);
+	void SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc);
 
 private:
 	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
-	FOnTimelineEventStatic TickTimelineFinishFuncStatic;
+	FOnTickTimelineEventStatic TickTimelineFinishFuncStatic;
+
+	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
+	FOnTickTimelineUpdateEventStatic TickTimelineUpdateFuncStatic;
 	
 };

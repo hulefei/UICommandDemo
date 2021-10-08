@@ -51,5 +51,5 @@ public:
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
 
 	/** Set the delegate to call after each timeline tick */
-	void SetTickTimelinePostUpdateFunc(FOnTickTimelineEvent NewTimelinePostUpdateFunc);
+	void SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc);
 };
