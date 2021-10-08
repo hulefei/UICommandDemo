@@ -2,9 +2,8 @@
 
 
 #include "TickEntryActor.h"
-#include "MyActorComponent.h"
-#include "TickEntryActor.h"
 
+#include "MyActorComponent.h"
 
 // Sets default values
 ATickEntryActor::ATickEntryActor()

@@ -22,6 +22,7 @@ void UBranchActionNode::Init()
 		if (ActionNode != nullptr)
 		{
 			UE_LOG(LogTemp, Log, TEXT("ActionNode != nullptr"));
+			ActionNode->Execute();
 		} else
 		{
 			UE_LOG(LogTemp, Log, TEXT("ActionNode == nullptr"));
