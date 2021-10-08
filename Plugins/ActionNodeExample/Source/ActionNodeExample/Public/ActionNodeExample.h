@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Modules/ModuleManager.h"
+
+#include "ActionNodeLogs.h"
 
 class FActionNodeExampleModule : public IModuleInterface
 {

@@ -9,7 +9,7 @@
 #include "EntryActionNode.h"
 #include "PrintActionNode.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogActionNode, Log, All)
+#include "ActionNodeLogs.h"
 
 UActionNode::UActionNode(const FObjectInitializer& ObjectInitializer)
 {

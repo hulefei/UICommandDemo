@@ -3,7 +3,7 @@
 
 #include "PrintActionNode.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogActionNode, Log, All)
+#include "ActionNodeLogs.h"
 
 void UPrintActionNode::Execute()
 {
