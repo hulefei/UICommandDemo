@@ -8,7 +8,6 @@
 #include "GameFramework/Actor.h"
 #include "EntryActor.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogActionNode, Log, All);
 
 UCLASS()
 class ACTIONNODEEXAMPLE_API AEntryActor : public AActor

@@ -28,7 +28,7 @@ void AEntryActor::BeginPlay()
 	EntryActionData.Id = 1;
 	EntryActionData.Name = FName(TEXT("Name1"));
 	EntryActionData.Type = FActionType::Entry;
-	EntryActionData.Next.Add(3);
+	EntryActionData.Next.Add(2);
 
 	FActionData ActionData2{};
 	ActionData2.Id = 2;
