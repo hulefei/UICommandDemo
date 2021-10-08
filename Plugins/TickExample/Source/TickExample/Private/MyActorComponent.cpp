@@ -7,6 +7,8 @@
 UMyActorComponent::UMyActorComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
+	PrimaryComponentTick.TickGroup = TG_PrePhysics;
 }
 
 void UMyActorComponent::Activate(bool bReset)
@@ -65,6 +67,16 @@ void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTick
 }
 
 void UMyActorComponent::SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc)
+{
+	TickTimeline.SetTimelinePostUpdateFunc(NewTimelinePostUpdateFunc);
+}
+
+void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTickTimelineFinishedFunc)
+{
+	TickTimeline.SetTickTimelineFinishedFunc(NewTickTimelineFinishedFunc);
+}
+
+void UMyActorComponent::SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc)
 {
 	TickTimeline.SetTimelinePostUpdateFunc(NewTimelinePostUpdateFunc);
 }

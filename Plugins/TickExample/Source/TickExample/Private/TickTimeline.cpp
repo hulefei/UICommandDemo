@@ -65,8 +65,8 @@ void FTickTimeline::TimelineTick(float DeltaTime)
 
 	if (bIsFinished)
 	{
-		//TODO: call finished
-		TickTimelineFinishedFunc.ExecuteIfBound();
+		TickTimelineFinishFunc.ExecuteIfBound();
+		TickTimelineFinishFuncStatic.ExecuteIfBound();
 	}
 }
 
@@ -78,15 +78,26 @@ void FTickTimeline::SetPlaybackPosition(int32 NewPosition, bool bFireEvents, boo
 	if (bFireUpdate)
 	{
 		TickTimelinePostUpdateFunc.ExecuteIfBound(NewPosition);
+		TickTimelinePostUpdateFuncStatic.ExecuteIfBound(NewPosition);
 	}
 }
 
 void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)
 {
-	TickTimelineFinishedFunc = NewTickTimelineFinishedFunc;
+	TickTimelineFinishFunc = NewTickTimelineFinishedFunc;
 }
 
 void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc)
 {
 	TickTimelinePostUpdateFunc = NewTimelinePostUpdateFunc;
+}
+
+void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTickTimelineFinishedFunc)
+{
+	TickTimelineFinishFuncStatic = NewTickTimelineFinishedFunc;
+}
+
+void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc)
+{
+	TickTimelinePostUpdateFuncStatic = NewTimelinePostUpdateFunc;
 }

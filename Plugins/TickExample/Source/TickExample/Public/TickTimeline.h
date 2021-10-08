@@ -59,26 +59,31 @@ public:
 	//设置timeline当前位置
 	void SetPlaybackPosition(int32 NewPosition, bool bFireEvents, bool bFireUpdate = true);
 
-	/** Called whenever this timeline is playing and updates - done after all delegates are executed and variables updated  */
-	UPROPERTY(NotReplicated)
-	FOnTickTimelineUpdateEvent TickTimelinePostUpdateFunc;
-	
-	UPROPERTY(NotReplicated)
-	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
-	FOnTickTimelineEvent TickTimelineFinishedFunc;
-
-
 	/** Set the delegate to call when timeline is finished */
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
 
 	/** Set the delegate to call after each timeline tick */
 	void SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc);
 
+	/** Set the delegate to call when timeline is finished */
+	void SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTickTimelineFinishedFunc);
+
+	/** Set the delegate to call after each timeline tick */
+	void SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc);
+
 private:
+	/** Called whenever this timeline is playing and updates - done after all delegates are executed and variables updated  */
+	UPROPERTY(NotReplicated)
+	FOnTickTimelineUpdateEvent TickTimelinePostUpdateFunc;
+	
+	UPROPERTY(NotReplicated)
+	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
+	FOnTickTimelineEvent TickTimelineFinishFunc;
+	
 	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
 	FOnTickTimelineEventStatic TickTimelineFinishFuncStatic;
 
 	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
-	FOnTickTimelineUpdateEventStatic TickTimelineUpdateFuncStatic;
+	FOnTickTimelineUpdateEventStatic TickTimelinePostUpdateFuncStatic;
 	
 };

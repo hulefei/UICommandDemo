@@ -47,9 +47,14 @@ public:
 	void Stop();
 
 	/** Set the delegate to call when timeline is finished */
-	UFUNCTION(BlueprintCallable)
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
 
 	/** Set the delegate to call after each timeline tick */
 	void SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc);
+
+	/** Set the delegate to call when timeline is finished */
+	void SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTickTimelineFinishedFunc);
+
+	/** Set the delegate to call after each timeline tick */
+	void SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc);
 };
