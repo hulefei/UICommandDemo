@@ -55,11 +55,16 @@ void UMyActorComponent::PlayFromStart()
 
 void UMyActorComponent::Stop()
 {
-	Activate();
-	TickTimeline.PlayFromStart();
+	Deactivate();
+	TickTimeline.Stop();
 }
 
 void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)
 {
 	TickTimeline.SetTickTimelineFinishedFunc(NewTickTimelineFinishedFunc);
+}
+
+void UMyActorComponent::SetTickTimelinePostUpdateFunc(FOnTickTimelineEvent NewTimelinePostUpdateFunc)
+{
+	TickTimeline.SetTimelinePostUpdateFunc(NewTimelinePostUpdateFunc);
 }

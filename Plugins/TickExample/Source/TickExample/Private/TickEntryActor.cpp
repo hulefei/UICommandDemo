@@ -16,11 +16,19 @@ ATickEntryActor::ATickEntryActor()
 // Called when the game starts or when spawned
 void ATickEntryActor::BeginPlay()
 {
+	Super::BeginPlay();
+	
 	FOnTickTimelineEvent OnTickTimelineEvent;
 	OnTickTimelineEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineEventHandle);
-	MyActorComponent->SetTickTimelineFinishedFunc(OnTickTimelineEvent);
 
-	Super::BeginPlay();
+	FOnTickTimelineEvent OnTickTimelineFinishedEvent;
+	OnTickTimelineFinishedEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineFinishedEventHandle);
+	
+	MyActorComponent->SetTickTimelineFinishedFunc(OnTickTimelineFinishedEvent);
+	MyActorComponent->SetTickTimelinePostUpdateFunc(OnTickTimelineEvent);
+
+	MyActorComponent->ResetTimeline(100);
+	MyActorComponent->PlayFromStart();
 }
 
 // Called every frame
@@ -33,4 +41,9 @@ void ATickEntryActor::Tick(float DeltaTime)
 void ATickEntryActor::OnTickTimelineEventHandle()
 {
 	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle"));
+}
+
+void ATickEntryActor::OnTickTimelineFinishedEventHandle()
+{
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineFinishedEventHandle"));
 }

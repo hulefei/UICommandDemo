@@ -3,6 +3,7 @@
 
 #include "TickTimeline.h"
 
+// DEFINE_LOG_CATEGORY_STATIC(LogTickExample, Log, All);
 
 void FTickTimeline::ConstructTimeline()
 {
@@ -26,6 +27,7 @@ void FTickTimeline::Play()
 
 void FTickTimeline::PlayFromStart()
 {
+	Position = 0;
 	bPlaying = true;
 }
 
@@ -38,12 +40,10 @@ void FTickTimeline::TimelineTick(float DeltaTime)
 {
 	bool bIsFinished = false;
 
-	UE_LOG(LogTemp, Log, TEXT("FTickTimeline::TimelineTick"));
-	
 	if (bPlaying)
 	{
-		const uint32 TimelineFrameNum = GetTimelineFrameNum();
-		float NewPosition = Position + 1;
+		const int32 TimelineFrameNum = GetTimelineFrameNum();
+		int32 NewPosition = Position + 1;
 		if (NewPosition > TimelineFrameNum)
 		{
 			if (bLooping)
@@ -66,13 +66,23 @@ void FTickTimeline::TimelineTick(float DeltaTime)
 	}
 }
 
-void FTickTimeline::SetPlaybackPosition(uint32 NewPosition, bool bFireEvents, bool bFireUpdate)
+void FTickTimeline::SetPlaybackPosition(int32 NewPosition, bool bFireEvents, bool bFireUpdate)
 {
 	Position = NewPosition;
+	
+	// Execute the delegate to say that all properties are updated
+	if (bFireUpdate)
+	{
+		TimelinePostUpdateFunc.ExecuteIfBound();
+	}
 }
 
 void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)
 {
-	UE_LOG(LogTemp, Log, TEXT("FTickTimeline::SetTickTimelineFinishedFunc"));
 	TickTimelineFinishedFunc = NewTickTimelineFinishedFunc;
+}
+
+void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineEvent NewTimelinePostUpdateFunc)
+{
+	TimelinePostUpdateFunc = NewTimelinePostUpdateFunc;
 }

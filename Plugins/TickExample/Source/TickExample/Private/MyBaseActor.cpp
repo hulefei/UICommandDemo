@@ -21,4 +21,3 @@ void AMyBaseActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

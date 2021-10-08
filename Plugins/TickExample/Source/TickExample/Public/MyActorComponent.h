@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TickTimeline.h"
-#include "Components/SceneComponent.h"
+
 #include "MyActorComponent.generated.h"
 
 class AMyBaseActor;
@@ -38,7 +38,7 @@ public:
 
 	//设置TickTimeline
 	UFUNCTION(BlueprintCallable)
-	void ResetTimeline(const int32 InFrameNum, const bool InbLooping);
+	void ResetTimeline(const int32 InFrameNum, const bool InbLooping = false);
 	UFUNCTION(BlueprintCallable)
 	void Play();
 	UFUNCTION(BlueprintCallable)
@@ -49,4 +49,7 @@ public:
 	/** Set the delegate to call when timeline is finished */
 	UFUNCTION(BlueprintCallable)
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
+
+	/** Set the delegate to call after each timeline tick */
+	void SetTickTimelinePostUpdateFunc(FOnTickTimelineEvent NewTimelinePostUpdateFunc);
 };
