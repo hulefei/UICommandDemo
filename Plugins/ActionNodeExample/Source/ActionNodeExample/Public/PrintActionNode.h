@@ -4,13 +4,18 @@
 
 #include "CoreMinimal.h"
 
+#include "ActionNode.h"
+
 #include "PrintActionNode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ACTIONNODEEXAMPLE_API UPrintActionNode : public UObject
+class ACTIONNODEEXAMPLE_API UPrintActionNode : public UActionNode
 {
 	GENERATED_BODY()
+
+	public:
+	virtual void Execute() override;
 };

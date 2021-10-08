@@ -4,13 +4,21 @@
 
 #include "CoreMinimal.h"
 
+#include "ActionNode.h"
+
 #include "EntryActionNode.generated.h"
+
+struct FActionData;
 
 /**
  * 
  */
+
 UCLASS()
-class ACTIONNODEEXAMPLE_API UEntryActionNode : public UObject
+class ACTIONNODEEXAMPLE_API UEntryActionNode : public UActionNode
 {
 	GENERATED_BODY()
+
+public:
+	virtual void Execute() override;
 };

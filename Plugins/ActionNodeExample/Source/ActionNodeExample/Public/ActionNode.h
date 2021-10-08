@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "ActionData.h"
 #include "UObject/Object.h"
 #include "ActionNode.generated.h"
 
@@ -20,14 +22,24 @@ class ACTIONNODEEXAMPLE_API UActionNode : public UObject
 
 public:
 	explicit UActionNode(const FObjectInitializer& ObjectInitializer);
-
-	virtual void Execute()
-	{
-	};
+	
+	virtual void Execute() { };
+	virtual void Init(const FActionData InActionData, const TMap<int32, FActionData> InActionDataMap);
+	
+	static UActionNode* CreateActionNode(const FActionData ActionData, const TMap<int32, FActionData> InActionDataMap);
 
 	TSharedPtr<FStreamableManager> StreamableManager;
 
 protected:
+	
+	virtual UActionNode* CreateNextActionNode();
+
+	static void ExecuteNextActionNode(UActionNode* NextActionNode);
+	
 	FOnActionNodeFinished OnActionNodeFinished;
-	TArray<int32> Next;
+
+	FActionData ActionData;
+	TMap<int32, FActionData> ActionDataMap;
+
+	
 };
