@@ -31,6 +31,7 @@ void UMyActorComponent::BeginPlay()
 	MyBaseActor = GetWorld()->SpawnActor<AMyBaseActor>(ActorBlueprint, Parameters);
 }
 
+
 void UMyActorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                       FActorComponentTickFunction* ThisTickFunction)
 {
@@ -59,6 +60,11 @@ void UMyActorComponent::Stop()
 {
 	Deactivate();
 	TickTimeline.Stop();
+}
+
+void UMyActorComponent::AddEvent(int32 Keyframe, FOnTickTimelineEvent EventFunc)
+{
+	TickTimeline.AddEvent(Keyframe, EventFunc);
 }
 
 void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)

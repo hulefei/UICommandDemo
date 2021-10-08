@@ -9,7 +9,6 @@
 
 class AMyBaseActor;
 
-
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class TICKEXAMPLE_API UMyActorComponent : public UActorComponent
 {
@@ -46,6 +45,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Stop();
 
+
+	/** Add a callback event to the timeline */
+	void AddEvent(int32 Keyframe, FOnTickTimelineEvent EventFunc);
+	
 	/** Set the delegate to call when timeline is finished */
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
 

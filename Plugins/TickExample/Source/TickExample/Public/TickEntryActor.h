@@ -30,6 +30,9 @@ class TICKEXAMPLE_API ATickEntryActor : public AActor
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void OnTickTimelineFinishedEventHandle();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void OnTickTimelineEventHandle();
 	
 
 	UPROPERTY()

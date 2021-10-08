@@ -7,6 +7,7 @@
 
 void FTickTimeline::ConstructTimeline()
 {
+	Events.Empty();
 	bLooping = false;
 	bPlaying = false;
 	Position = 0;
@@ -74,6 +75,24 @@ void FTickTimeline::SetPlaybackPosition(int32 NewPosition, bool bFireEvents, boo
 {
 	Position = NewPosition;
 
+	// See which events fall into traversed region.
+	for (int32 i = 0; i < Events.Num(); i++)
+	{
+		const float EventKeyframe = Events[i].Keyframe;
+
+		// Need to be slightly careful here and make behavior for firing events symmetric when playing forwards of backwards.
+		bool bFireThisEvent = false;
+		if (EventKeyframe == Position)
+		{
+			bFireThisEvent = true;
+		}
+
+		if (bFireThisEvent)
+		{
+			Events[i].EventFunc.ExecuteIfBound();
+		}
+	}
+	
 	// Execute the delegate to say that all properties are updated
 	if (bFireUpdate)
 	{
@@ -100,4 +119,13 @@ void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTi
 void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc)
 {
 	TickTimelinePostUpdateFuncStatic = NewTimelinePostUpdateFunc;
+}
+
+void FTickTimeline::AddEvent(int32 Keyframe, FOnTickTimelineEvent Event)
+{
+	FTickTimelineEventEntry NewEntry;
+	NewEntry.Keyframe = Keyframe;
+	NewEntry.EventFunc = Event;
+
+	Events.Add(NewEntry);
 }

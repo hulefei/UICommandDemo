@@ -17,7 +17,28 @@ DECLARE_DELEGATE(FOnTickTimelineEventStatic);
 /** Static version of delegate to handle a timeline 'update event' */
 DECLARE_DELEGATE_OneParam(FOnTickTimelineUpdateEventStatic, int32);
 
+/** Struct that contains one entry for an 'event' during the timeline */
+USTRUCT()
+struct FTickTimelineEventEntry
+{
+	GENERATED_USTRUCT_BODY()
 
+	/** keyframe at which event should fire */
+	UPROPERTY()
+	int32 Keyframe;
+
+	/** Function to execute when Time is reached */
+	UPROPERTY()
+	FOnTickTimelineEvent EventFunc;
+
+
+	FTickTimelineEventEntry() : Keyframe(0)
+	{
+	}
+
+};
+
+/** Struct that contains data */
 USTRUCT()
 struct FTickTimeline
 {
@@ -37,6 +58,10 @@ private:
 	UPROPERTY()
 	int32 FrameNum;
 
+	/** Array of events that are fired at various times during the timeline */
+	UPROPERTY(NotReplicated)
+	TArray<FTickTimelineEventEntry> Events;
+
 public:
 	FTickTimeline()
 	{
@@ -52,9 +77,11 @@ public:
 	void Stop();
 	// 根据外部Tick更新Timeline
 	void TimelineTick(float DeltaTime);
+	
 	//返回Timeline 总帧数
 	int32 GetTimelineFrameNum() const { return FrameNum; }
 	//返回Timeline 当前所在帧的位置
+	
 	int32 GetTimelinePosition() const { return Position; }
 	//设置timeline当前位置
 	void SetPlaybackPosition(int32 NewPosition, bool bFireEvents, bool bFireUpdate = true);
@@ -70,6 +97,8 @@ public:
 
 	/** Set the delegate to call after each timeline tick */
 	void SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc);
+
+	void AddEvent(int32 Keyframe, FOnTickTimelineEvent Event);
 
 private:
 	/** Called whenever this timeline is playing and updates - done after all delegates are executed and variables updated  */

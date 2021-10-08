@@ -17,17 +17,22 @@ ATickEntryActor::ATickEntryActor()
 void ATickEntryActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	MyActorComponent->ResetTimeline(100);
 	
-	FOnTickTimelineUpdateEvent OnTickTimelineEvent;
-	OnTickTimelineEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineUpdateEventHandle);
+	FOnTickTimelineUpdateEvent OnTickTimelineUpdateEvent;
+	OnTickTimelineUpdateEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineUpdateEventHandle);
 
 	FOnTickTimelineEvent OnTickTimelineFinishedEvent;
 	OnTickTimelineFinishedEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineFinishedEventHandle);
+
+	FOnTickTimelineEvent OnTickTimelineEvent;
+	OnTickTimelineEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineEventHandle);
 	
 	MyActorComponent->SetTickTimelineFinishedFunc(OnTickTimelineFinishedEvent);
-	MyActorComponent->SetTickTimelinePostUpdateFunc(OnTickTimelineEvent);
+	MyActorComponent->SetTickTimelinePostUpdateFunc(OnTickTimelineUpdateEvent);
+	MyActorComponent->AddEvent(50, OnTickTimelineEvent);
 
-	MyActorComponent->ResetTimeline(100);
 	MyActorComponent->PlayFromStart();
 }
 
@@ -40,10 +45,15 @@ void ATickEntryActor::Tick(float DeltaTime)
 
 void ATickEntryActor::OnTickTimelineUpdateEventHandle(int32 Position)
 {
-	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle:%d"), Position);
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineUpdateEventHandle:%d"), Position);
 }
 
 void ATickEntryActor::OnTickTimelineFinishedEventHandle()
 {
 	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineFinishedEventHandle"));
+}
+
+void ATickEntryActor::OnTickTimelineEventHandle()
+{
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle: 50"));
 }
