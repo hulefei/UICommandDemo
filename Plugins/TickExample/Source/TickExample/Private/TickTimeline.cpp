@@ -89,7 +89,7 @@ void FTickTimeline::SetPlaybackPosition(int32 NewPosition, bool bFireEvents, boo
 
 		if (bFireThisEvent)
 		{
-			Events[i].EventFunc.ExecuteIfBound();
+			Events[i].EventFunc.ExecuteIfBound(Events[i].Name);
 		}
 	}
 	
@@ -121,9 +121,10 @@ void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic N
 	TickTimelinePostUpdateFuncStatic = NewTimelinePostUpdateFunc;
 }
 
-void FTickTimeline::AddEvent(int32 Keyframe, FOnTickTimelineEvent Event)
+void FTickTimeline::AddEvent(FName EventName, int32 Keyframe, FOnTickTimelineKeyframeEvent Event)
 {
 	FTickTimelineEventEntry NewEntry;
+	NewEntry.Name = EventName;
 	NewEntry.Keyframe = Keyframe;
 	NewEntry.EventFunc = Event;
 

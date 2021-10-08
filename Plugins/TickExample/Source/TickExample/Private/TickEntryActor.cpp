@@ -26,12 +26,12 @@ void ATickEntryActor::BeginPlay()
 	FOnTickTimelineEvent OnTickTimelineFinishedEvent;
 	OnTickTimelineFinishedEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineFinishedEventHandle);
 
-	FOnTickTimelineEvent OnTickTimelineEvent;
-	OnTickTimelineEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineEventHandle);
+	FOnTickTimelineKeyframeEvent OnTickTimelineKeyframeEvent;
+	OnTickTimelineKeyframeEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineKeyframeEventHandle);
 	
 	MyActorComponent->SetTickTimelineFinishedFunc(OnTickTimelineFinishedEvent);
 	MyActorComponent->SetTickTimelinePostUpdateFunc(OnTickTimelineUpdateEvent);
-	MyActorComponent->AddEvent(50, OnTickTimelineEvent);
+	MyActorComponent->AddEvent(FName(TEXT("TestEvent1")), 50, OnTickTimelineKeyframeEvent);
 
 	MyActorComponent->PlayFromStart();
 }
@@ -56,4 +56,9 @@ void ATickEntryActor::OnTickTimelineFinishedEventHandle()
 void ATickEntryActor::OnTickTimelineEventHandle()
 {
 	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle: 50"));
+}
+
+void ATickEntryActor::OnTickTimelineKeyframeEventHandle(FName Name)
+{
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineKeyframeEventHandle: %s"), *Name.ToString());
 }

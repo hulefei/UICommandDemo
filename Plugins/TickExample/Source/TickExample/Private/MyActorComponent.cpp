@@ -62,9 +62,9 @@ void UMyActorComponent::Stop()
 	TickTimeline.Stop();
 }
 
-void UMyActorComponent::AddEvent(int32 Keyframe, FOnTickTimelineEvent EventFunc)
+void UMyActorComponent::AddEvent(FName Name, int32 Keyframe, FOnTickTimelineKeyframeEvent EventFunc)
 {
-	TickTimeline.AddEvent(Keyframe, EventFunc);
+	TickTimeline.AddEvent(Name, Keyframe, EventFunc);
 }
 
 void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)

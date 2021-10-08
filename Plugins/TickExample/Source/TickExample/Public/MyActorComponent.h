@@ -47,7 +47,7 @@ public:
 
 
 	/** Add a callback event to the timeline */
-	void AddEvent(int32 Keyframe, FOnTickTimelineEvent EventFunc);
+	void AddEvent(FName Name, int32 Keyframe, FOnTickTimelineKeyframeEvent EventFunc);
 	
 	/** Set the delegate to call when timeline is finished */
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);

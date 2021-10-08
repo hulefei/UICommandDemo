@@ -33,6 +33,9 @@ class TICKEXAMPLE_API ATickEntryActor : public AActor
 
 	UFUNCTION(BlueprintCallable)
 	virtual void OnTickTimelineEventHandle();
+
+	UFUNCTION(BlueprintCallable)
+	void OnTickTimelineKeyframeEventHandle(FName Name);
 	
 
 	UPROPERTY()

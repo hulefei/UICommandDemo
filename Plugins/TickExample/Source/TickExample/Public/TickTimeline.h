@@ -11,11 +11,15 @@
 DECLARE_DYNAMIC_DELEGATE(FOnTickTimelineEvent);
 /** Signature of function to handle timeline 'update event' */
 DECLARE_DYNAMIC_DELEGATE_OneParam( FOnTickTimelineUpdateEvent, int32, Output );
+/** Signature of function to handle timeline 'keyframe event' */
+DECLARE_DYNAMIC_DELEGATE_OneParam( FOnTickTimelineKeyframeEvent, FName, Output );
 
 /** Static version of delegate to handle a timeline 'event' */
 DECLARE_DELEGATE(FOnTickTimelineEventStatic);
 /** Static version of delegate to handle a timeline 'update event' */
 DECLARE_DELEGATE_OneParam(FOnTickTimelineUpdateEventStatic, int32);
+/** Static version of delegate to handle a timeline 'keyframe event' */
+DECLARE_DELEGATE_OneParam(FOnTickTimelineKeyframeEventStatic, FName);
 
 /** Struct that contains one entry for an 'event' during the timeline */
 USTRUCT()
@@ -23,13 +27,17 @@ struct FTickTimelineEventEntry
 {
 	GENERATED_USTRUCT_BODY()
 
+	/** Name at which event should fire */
+	UPROPERTY()
+	FName Name;
+	
 	/** keyframe at which event should fire */
 	UPROPERTY()
 	int32 Keyframe;
 
 	/** Function to execute when Time is reached */
 	UPROPERTY()
-	FOnTickTimelineEvent EventFunc;
+	FOnTickTimelineKeyframeEvent EventFunc;
 
 
 	FTickTimelineEventEntry() : Keyframe(0)
@@ -98,7 +106,7 @@ public:
 	/** Set the delegate to call after each timeline tick */
 	void SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc);
 
-	void AddEvent(int32 Keyframe, FOnTickTimelineEvent Event);
+	void AddEvent(FName EventName, int32 Keyframe, FOnTickTimelineKeyframeEvent Event);
 
 private:
 	/** Called whenever this timeline is playing and updates - done after all delegates are executed and variables updated  */
@@ -112,7 +120,13 @@ private:
 	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
 	FOnTickTimelineEventStatic TickTimelineFinishFuncStatic;
 
-	/** Called whenever this timeline is finished. Is not called if 'stop' is used to terminate timeline early  */
+	/** Called whenever this timeline is playing and updates - done after all delegates are executed and variables updated  */
 	FOnTickTimelineUpdateEventStatic TickTimelinePostUpdateFuncStatic;
+
+	/** Called whenever this timeline keyframe is fired.*/
+	FOnTickTimelineKeyframeEvent TickTimelineKeyframeFunc;
+	
+	/** Called whenever this timeline keyframe is fired.*/
+	FOnTickTimelineKeyframeEventStatic TickTimelineKeyframeFuncStatic;
 	
 };
