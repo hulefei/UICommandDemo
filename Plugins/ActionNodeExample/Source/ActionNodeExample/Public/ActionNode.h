@@ -12,7 +12,8 @@
 
 struct FStreamableManager;
 class UActionNode;
-DECLARE_DELEGATE_OneParam(FOnActionNodeFinished, UActionNode*)
+
+DECLARE_DELEGATE(FOnActionNodeFinished)
 /**
  * 
  */
@@ -33,10 +34,13 @@ public:
 	TSharedPtr<FStreamableManager> StreamableManager;
 
 protected:
-	
+	/** 不同类型的子类需要实现此方法实现自己查找下一个NextActionNode的逻辑 */
 	virtual UActionNode* CreateNextActionNode();
-
-	static void ExecuteNextActionNode(UActionNode* NextActionNode);
+	
+	void ExecuteNextActionNode();
+	
+	/** 工具方法: 使用 NextId 来创建ActionNode */
+	UActionNode* CreateNextActionNodeWithNextId(const int32 NextId);
 	
 	FOnActionNodeFinished OnActionNodeFinished;
 

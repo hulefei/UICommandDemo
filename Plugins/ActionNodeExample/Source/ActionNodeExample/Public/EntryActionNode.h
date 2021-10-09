@@ -21,4 +21,5 @@ class ACTIONNODEEXAMPLE_API UEntryActionNode : public UActionNode
 
 public:
 	virtual void Execute() override;
+	virtual UActionNode* CreateNextActionNode() override;
 };

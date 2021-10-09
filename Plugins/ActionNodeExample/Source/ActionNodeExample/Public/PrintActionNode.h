@@ -18,4 +18,5 @@ class ACTIONNODEEXAMPLE_API UPrintActionNode : public UActionNode
 
 	public:
 	virtual void Execute() override;
+	virtual UActionNode* CreateNextActionNode() override;
 };

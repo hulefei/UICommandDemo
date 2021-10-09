@@ -45,26 +45,41 @@ void UActionNode::Init(const FActionData InActionData, const TMap<int32, FAction
 {
 	ActionData = InActionData;
 	ActionDataMap = InActionDataMap;
-	OnActionNodeFinished.BindStatic(&UActionNode::ExecuteNextActionNode);
+	OnActionNodeFinished.BindUObject(this, &UActionNode::ExecuteNextActionNode);
+}
+
+UActionNode* UActionNode::CreateNextActionNodeWithNextId(const int32 NextId)
+{
+	// if (ActionData.Next.Num() > 0)
+	// {
+	// 	FActionData* ActionDataPtr = ActionDataMap.Find(ActionData.Next[0]);
+	// 	if (ActionDataPtr != nullptr)
+	// 	{
+	// 		const FActionData NextActionData = *ActionDataPtr;
+	// 		return UActionNode::CreateActionNode(NextActionData, ActionDataMap);
+	// 	}
+	// }
+
+	FActionData* ActionDataPtr = ActionDataMap.Find(NextId);
+	if (ActionDataPtr != nullptr)
+	{
+		const FActionData NextActionData = *ActionDataPtr;
+		return UActionNode::CreateActionNode(NextActionData, ActionDataMap);
+	}
+
+	UE_LOG(LogActionNode, Error, TEXT("UActionNode::CreateNextActionNode Not Found:%d"), NextId);	
+	return nullptr;
 }
 
 UActionNode* UActionNode::CreateNextActionNode()
 {
-	if (ActionData.Next.Num() > 0)
-	{
-		FActionData* ActionDataPtr = ActionDataMap.Find(ActionData.Next[0]);
-		if (ActionDataPtr != nullptr)
-		{
-			const FActionData NextActionData = *ActionDataPtr;
-			return UActionNode::CreateActionNode(NextActionData, ActionDataMap);
-		}
-	}
-
+	UE_LOG(LogActionNode, Error, TEXT("UActionNode::CreateNextActionNode Not Implement"));	
 	return nullptr;
 }
 
-void UActionNode::ExecuteNextActionNode(UActionNode* NextActionNode)
+void UActionNode::ExecuteNextActionNode()
 {
+	UActionNode* NextActionNode = CreateNextActionNode();
 	if (NextActionNode != nullptr)
 	{
 		NextActionNode->Execute();
@@ -72,4 +87,5 @@ void UActionNode::ExecuteNextActionNode(UActionNode* NextActionNode)
 	{
 		UE_LOG(LogActionNode, Log, TEXT("Action Node End"));		
 	}
+	
 }

@@ -44,13 +44,14 @@ void UBranchActionNode::Execute()
 	// }
 
 	UActionNode* NextActionNode = CreateNextActionNode();
-	OnActionNodeFinished.ExecuteIfBound(NextActionNode);
+	OnActionNodeFinished.ExecuteIfBound();
 }
 
 UActionNode* UBranchActionNode::CreateNextActionNode()
 {
 	if (NextIndex < 0 || NextIndex >= ActionData.Next.Num()) return nullptr;
 
-	ActionData.Next[NextIndex];
-	
+	// ActionData.Next[NextIndex];
+
+	return nullptr;
 }
