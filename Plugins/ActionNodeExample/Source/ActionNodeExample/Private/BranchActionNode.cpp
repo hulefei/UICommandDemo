@@ -3,55 +3,52 @@
 
 #include "BranchActionNode.h"
 
-#include "BridgeActor.h"
+#include "ActionNodeLogs.h"
+#include "BlueprintCallback.h"
+
 #include "Engine/StreamableManager.h"
 
 void UBranchActionNode::Init(const FActionData InActionData, const TMap<int32, FActionData> InActionDataMap)
 {
 	Super::Init(InActionData, InActionDataMap);
 	
-	// const FStringAssetReference BlueprintReference(TEXT("Blueprint'/Game/BridgeActor_BP.BridgeActor_BP'"));
-	const FStringAssetReference BlueprintReference(TEXT("Blueprint'/Game/BridgeActor_BP.BridgeActor_BP'"));
-
-	const int32 HashKey = GetTypeHash(InActionData.AssetReferenceString);
-	ABridgeActor** BridgeActorPtr = BridgeActorMap.Find(HashKey);
-	if (BridgeActorPtr != nullptr)
+	const FSoftObjectPath BlueprintReference(TEXT("Blueprint'/Game/Skill_BP.Skill_BP'"));
+	UBlueprint* ActionBlueprint = Cast<UBlueprint>(StreamableManager->LoadSynchronous(BlueprintReference));
+	if (ActionBlueprint->GeneratedClass->IsChildOf(UBlueprintCallback::StaticClass()))
 	{
-		BridgeActor = *BridgeActorPtr;
-	} else
+		//TODO: 可进行缓存优化
+		BlueprintCallback = NewObject<UBlueprintCallback>(
+		GetTransientPackage(), ActionBlueprint->GeneratedClass);
+	}
+	else
 	{
-		UBlueprint* ActionBlueprint = Cast<UBlueprint>(StreamableManager->LoadSynchronous(BlueprintReference));
-		// auto BlueprintClass = ActionBlueprint->GetBlueprintClass();
-		const FVector Location(-3000, -3000, -3000);
-		const FActorSpawnParameters SpawnParams;
-		BridgeActor = GetWorld()->SpawnActor<ABridgeActor>(
-			ActionBlueprint->GeneratedClass, Location, FRotator::ZeroRotator, SpawnParams);
-
-		BridgeActorMap.Add(HashKey, BridgeActor);
+		UE_LOG(LogActionNode, Error, TEXT("Not ChildOf UBlueprintCallback:[%s]"),
+		       *BlueprintReference.GetAssetPathString());
 	}
 }
 
 void UBranchActionNode::Execute()
 {
-	//TODO: 更具返回值 创建 CreateNextActionNode
-	check(BridgeActor)
+	//根据返回值 创建 CreateNextActionNode
+	UE_LOG(LogActionNode, Log, TEXT("UBranchActionNode::Execute"));
+	if (BlueprintCallback != nullptr)
+	{
+		BranchResult = BlueprintCallback->BranchFunction(ActionData.Name);
+	}
+	else
+	{
+		UE_LOG(LogActionNode, Error, TEXT("BlueprintCallback != nullptr"));
+	}
 	
-	BridgeActor->DispatchEvent(FName(TEXT("test2")), NextIndex);
-	// UActionNode* ActionNode = nullptr;
-	// if (BridgeActor->DispatchEvent(FName(TEXT("test2")), NextIndex))
-	// {
-	// 	ActionNode = NewObject<UActionNode>();
-	// }
-
-	UActionNode* NextActionNode = CreateNextActionNode();
 	OnActionNodeFinished.ExecuteIfBound();
 }
 
 UActionNode* UBranchActionNode::CreateNextActionNode()
 {
+	const int32 NextIndex = BranchResult ? 0 : 1;
+	
 	if (NextIndex < 0 || NextIndex >= ActionData.Next.Num()) return nullptr;
 
-	// ActionData.Next[NextIndex];
-
-	return nullptr;
+	const int32 NextId = ActionData.Next[NextIndex];
+	return CreateNextActionNodeWithNextId(NextId);
 }

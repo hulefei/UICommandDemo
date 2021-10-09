@@ -28,7 +28,7 @@ void AEntryActor::BeginPlay()
 	EntryActionData.Id = 1;
 	EntryActionData.Name = FName(TEXT("Name1"));
 	EntryActionData.Type = FActionType::Entry;
-	EntryActionData.Next.Add(2);
+	EntryActionData.Next.Add(4);
 
 	FActionData ActionData2{};
 	ActionData2.Id = 2;
@@ -41,9 +41,17 @@ void AEntryActor::BeginPlay()
 	ActionData3.Name = FName(TEXT("Name3"));
 	ActionData3.Type = FActionType::Print;
 
+	FActionData ActionData4{};
+	ActionData4.Id = 4;
+	ActionData4.Name = FName(TEXT("test2"));
+	ActionData4.Type = FActionType::Branch;
+	ActionData4.Next.Add(2);
+	ActionData4.Next.Add(3);
+
 	ActionDataMap.Add(EntryActionData.Id, EntryActionData);
 	ActionDataMap.Add(ActionData2.Id, ActionData2);
 	ActionDataMap.Add(ActionData3.Id, ActionData3);
+	ActionDataMap.Add(ActionData4.Id, ActionData4);
 
 	UActionExecutor* ActionExecutor = UActionExecutor::New(EntryActionData, ActionDataMap);
 	ActionExecutor->Execute();

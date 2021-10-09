@@ -8,7 +8,7 @@
 
 #include "BranchActionNode.generated.h"
 
-class ABridgeActor;
+class UBlueprintCallback;
 class UBlueprint;
 /**
  * 
@@ -22,12 +22,12 @@ public:
 	virtual void Execute() override;
 	virtual void Init(const FActionData InActionData, const TMap<int32, FActionData> InActionDataMap) override;
 
-	UPROPERTY()
-	ABridgeActor* BridgeActor;
-
 protected:
 	virtual UActionNode* CreateNextActionNode() override;
 	
 private:
-	int32 NextIndex = -1;
+	bool BranchResult = false;
+
+	UPROPERTY()
+	UBlueprintCallback* BlueprintCallback = nullptr;
 };
