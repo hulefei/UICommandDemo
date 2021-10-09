@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 
 #include "ActionData.h"
+#include "BridgeActor.h"
 #include "UObject/Object.h"
+
 #include "ActionNode.generated.h"
 
 struct FStreamableManager;
@@ -39,7 +41,10 @@ protected:
 	FOnActionNodeFinished OnActionNodeFinished;
 
 	FActionData ActionData;
+	//key:ActionData.Id , value:FActionData
+	UPROPERTY()
 	TMap<int32, FActionData> ActionDataMap;
-
-	
+	//key:Reference.hashId , value:ABridgeActor
+	UPROPERTY()
+	TMap<int32, ABridgeActor*> BridgeActorMap;
 };

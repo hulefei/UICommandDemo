@@ -18,14 +18,16 @@ class ACTIONNODEEXAMPLE_API UBranchActionNode : public UActionNode
 {
 	GENERATED_BODY()
 
-	public:
-	// UBranchActionNode(const FObjectInitializer& ObjectInitializer);
+public:
 	virtual void Execute() override;
-	void Init();
-	void Deinitialization();
+	virtual void Init(const FActionData InActionData, const TMap<int32, FActionData> InActionDataMap) override;
 
 	UPROPERTY()
-	UBlueprint* ActionBlueprint;
-	UPROPERTY()
 	ABridgeActor* BridgeActor;
+
+protected:
+	virtual UActionNode* CreateNextActionNode() override;
+	
+private:
+	int32 NextIndex = -1;
 };

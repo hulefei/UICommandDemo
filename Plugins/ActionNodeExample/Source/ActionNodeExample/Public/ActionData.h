@@ -26,5 +26,8 @@ struct FActionData
 	FActionType Type = FActionType::None;
 
 	UPROPERTY()
+	FString AssetReferenceString;
+
+	UPROPERTY()
 	TArray<int32> Next;
 };

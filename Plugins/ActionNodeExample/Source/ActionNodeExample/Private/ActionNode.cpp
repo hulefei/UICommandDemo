@@ -10,6 +10,7 @@
 #include "PrintActionNode.h"
 
 #include "ActionNodeLogs.h"
+#include "BranchActionNode.h"
 
 UActionNode::UActionNode(const FObjectInitializer& ObjectInitializer)
 {
@@ -22,7 +23,6 @@ UActionNode* UActionNode::CreateActionNode(const FActionData ActionData, const T
 	{
 		UEntryActionNode* ActionNode = NewObject<UEntryActionNode>();
 		ActionNode->Init(ActionData, InActionDataMap);
-		// UEntryActionNode* ActionNode = UEntryActionNode::CreateNode(ActionData, InActionDataMap);
 		return ActionNode;
 	}
 	else if (ActionData.Type == FActionType::Print)
@@ -33,6 +33,9 @@ UActionNode* UActionNode::CreateActionNode(const FActionData ActionData, const T
 	}
 	else if (ActionData.Type == FActionType::Branch)
 	{
+		UBranchActionNode* ActionNode = NewObject<UBranchActionNode>();
+		ActionNode->Init(ActionData, InActionDataMap);
+		return ActionNode;
 	}
 
 	return nullptr;
