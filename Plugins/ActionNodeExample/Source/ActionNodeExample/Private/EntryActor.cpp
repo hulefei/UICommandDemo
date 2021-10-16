@@ -3,11 +3,8 @@
 
 #include "EntryActor.h"
 
-#include "ActionNodeSubsystem.h"
-#include "BranchActionNode.h"
-#include "BridgeActor.h"
-#include "Engine/StreamableManager.h"
-#include "Kismet/GameplayStatics.h"
+#include "ActionData.h"
+#include "ActionExecutor.h"
 
 
 // Sets default values
@@ -22,11 +19,42 @@ void AEntryActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld());
-	UActionNodeSubsystem* ActionNodeSubsystem = GameInstance->GetSubsystem<UActionNodeSubsystem>();
-	UBranchActionNode* BranchActionNode = NewObject<UBranchActionNode>(this);
-	BranchActionNode->Init();
-	ActionNodeSubsystem->ExecAction(BranchActionNode);
+	// UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld());
+	// UActionNodeSubsystem* ActionNodeSubsystem = GameInstance->GetSubsystem<UActionNodeSubsystem>();
+	// UBranchActionNode* BranchActionNode = NewObject<UBranchActionNode>(this);
+	// BranchActionNode->Init();
+	// ActionNodeSubsystem->ExecAction(BranchActionNode);
+
+	EntryActionData.Id = 1;
+	EntryActionData.Name = FName(TEXT("Name1"));
+	EntryActionData.Type = FActionType::Entry;
+	EntryActionData.Next.Add(4);
+
+	FActionData ActionData2{};
+	ActionData2.Id = 2;
+	ActionData2.Name = FName(TEXT("Name2"));
+	ActionData2.Type = FActionType::Print;
+	ActionData2.Next.Add(3);
+
+	FActionData ActionData3{};
+	ActionData3.Id = 3;
+	ActionData3.Name = FName(TEXT("Name3"));
+	ActionData3.Type = FActionType::Print;
+
+	FActionData ActionData4{};
+	ActionData4.Id = 4;
+	ActionData4.Name = FName(TEXT("test2"));
+	ActionData4.Type = FActionType::Branch;
+	ActionData4.Next.Add(2);
+	ActionData4.Next.Add(3);
+
+	ActionDataMap.Add(EntryActionData.Id, EntryActionData);
+	ActionDataMap.Add(ActionData2.Id, ActionData2);
+	ActionDataMap.Add(ActionData3.Id, ActionData3);
+	ActionDataMap.Add(ActionData4.Id, ActionData4);
+
+	UActionExecutor* ActionExecutor = UActionExecutor::New(EntryActionData, ActionDataMap);
+	ActionExecutor->Execute();
 }
 
 // Called every frame

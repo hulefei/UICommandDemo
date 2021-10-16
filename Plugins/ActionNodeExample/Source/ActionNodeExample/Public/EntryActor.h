@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "ActionData.h"
 #include "GameFramework/Actor.h"
 #include "EntryActor.generated.h"
+
 
 UCLASS()
 class ACTIONNODEEXAMPLE_API AEntryActor : public AActor
@@ -22,4 +25,11 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	UPROPERTY()
+	FActionData EntryActionData;
+
+	UPROPERTY()
+	TMap<int32, FActionData> ActionDataMap;
 };

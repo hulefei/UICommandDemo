@@ -2,6 +2,8 @@
 
 #include "ActionNodeExample.h"
 
+DEFINE_LOG_CATEGORY(LogActionNode);
+
 #define LOCTEXT_NAMESPACE "FActionNodeExampleModule"
 
 void FActionNodeExampleModule::StartupModule()

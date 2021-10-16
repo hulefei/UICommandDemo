@@ -4,11 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "TickTimeline.h"
-#include "Components/SceneComponent.h"
+
 #include "MyActorComponent.generated.h"
 
 class AMyBaseActor;
-
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class TICKEXAMPLE_API UMyActorComponent : public UActorComponent
@@ -38,7 +37,7 @@ public:
 
 	//设置TickTimeline
 	UFUNCTION(BlueprintCallable)
-	void ResetTimeline(const int32 InFrameNum, const bool InbLooping);
+	void ResetTimeline(const int32 InFrameNum, const bool InbLooping = false);
 	UFUNCTION(BlueprintCallable)
 	void Play();
 	UFUNCTION(BlueprintCallable)
@@ -46,7 +45,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Stop();
 
+
+	/** Add a callback event to the timeline */
+	void AddEvent(FName Name, int32 Keyframe, FOnTickTimelineKeyframeEvent EventFunc);
+	
 	/** Set the delegate to call when timeline is finished */
-	UFUNCTION(BlueprintCallable)
 	void SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc);
+
+	/** Set the delegate to call after each timeline tick */
+	void SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc);
+
+	/** Set the delegate to call when timeline is finished */
+	void SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTickTimelineFinishedFunc);
+
+	/** Set the delegate to call after each timeline tick */
+	void SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc);
 };

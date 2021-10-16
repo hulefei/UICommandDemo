@@ -3,9 +3,11 @@
 
 #include "TickTimeline.h"
 
+// DEFINE_LOG_CATEGORY_STATIC(LogTickExample, Log, All);
 
 void FTickTimeline::ConstructTimeline()
 {
+	Events.Empty();
 	bLooping = false;
 	bPlaying = false;
 	Position = 0;
@@ -26,6 +28,7 @@ void FTickTimeline::Play()
 
 void FTickTimeline::PlayFromStart()
 {
+	Position = 0;
 	bPlaying = true;
 }
 
@@ -38,41 +41,92 @@ void FTickTimeline::TimelineTick(float DeltaTime)
 {
 	bool bIsFinished = false;
 
-	UE_LOG(LogTemp, Log, TEXT("FTickTimeline::TimelineTick"));
-	
 	if (bPlaying)
 	{
-		const uint32 TimelineFrameNum = GetTimelineFrameNum();
-		float NewPosition = Position + 1;
+		const int32 TimelineFrameNum = GetTimelineFrameNum();
+		int32 NewPosition = Position + 1;
 		if (NewPosition > TimelineFrameNum)
 		{
 			if (bLooping)
 			{
 				NewPosition = 0;
-			}else
+			}
+			else
 			{
 				NewPosition = TimelineFrameNum;
 				Stop();
 				bIsFinished = true;
 			}
+		} else
+		{
+			//只有小于等于最大帧数时才执行
+			SetPlaybackPosition(NewPosition, true);		
 		}
-		SetPlaybackPosition(NewPosition, true);
 	}
 
 	if (bIsFinished)
 	{
-		//TODO: call finished
-		TickTimelineFinishedFunc.ExecuteIfBound();
+		TickTimelineFinishFunc.ExecuteIfBound();
+		TickTimelineFinishFuncStatic.ExecuteIfBound();
 	}
 }
 
-void FTickTimeline::SetPlaybackPosition(uint32 NewPosition, bool bFireEvents, bool bFireUpdate)
+void FTickTimeline::SetPlaybackPosition(int32 NewPosition, bool bFireEvents, bool bFireUpdate)
 {
 	Position = NewPosition;
+
+	// See which events fall into traversed region.
+	for (int32 i = 0; i < Events.Num(); i++)
+	{
+		const float EventKeyframe = Events[i].Keyframe;
+
+		// Need to be slightly careful here and make behavior for firing events symmetric when playing forwards of backwards.
+		bool bFireThisEvent = false;
+		if (EventKeyframe == Position)
+		{
+			bFireThisEvent = true;
+		}
+
+		if (bFireThisEvent)
+		{
+			Events[i].EventFunc.ExecuteIfBound(Events[i].Name);
+		}
+	}
+	
+	// Execute the delegate to say that all properties are updated
+	if (bFireUpdate)
+	{
+		TickTimelinePostUpdateFunc.ExecuteIfBound(NewPosition);
+		TickTimelinePostUpdateFuncStatic.ExecuteIfBound(NewPosition);
+	}
 }
 
 void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)
 {
-	UE_LOG(LogTemp, Log, TEXT("FTickTimeline::SetTickTimelineFinishedFunc"));
-	TickTimelineFinishedFunc = NewTickTimelineFinishedFunc;
+	TickTimelineFinishFunc = NewTickTimelineFinishedFunc;
+}
+
+void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc)
+{
+	TickTimelinePostUpdateFunc = NewTimelinePostUpdateFunc;
+}
+
+void FTickTimeline::SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTickTimelineFinishedFunc)
+{
+	TickTimelineFinishFuncStatic = NewTickTimelineFinishedFunc;
+}
+
+void FTickTimeline::SetTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc)
+{
+	TickTimelinePostUpdateFuncStatic = NewTimelinePostUpdateFunc;
+}
+
+void FTickTimeline::AddEvent(FName EventName, int32 Keyframe, FOnTickTimelineKeyframeEvent Event)
+{
+	FTickTimelineEventEntry NewEntry;
+	NewEntry.Name = EventName;
+	NewEntry.Keyframe = Keyframe;
+	NewEntry.EventFunc = Event;
+
+	Events.Add(NewEntry);
 }

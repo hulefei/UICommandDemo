@@ -24,8 +24,19 @@ class TICKEXAMPLE_API ATickEntryActor : public AActor
 	public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void OnTickTimelineUpdateEventHandle(int32 Position);
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void OnTickTimelineFinishedEventHandle();
+
 	UFUNCTION(BlueprintCallable)
 	virtual void OnTickTimelineEventHandle();
+
+	UFUNCTION(BlueprintCallable)
+	void OnTickTimelineKeyframeEventHandle(FName Name);
+	
 
 	UPROPERTY()
 	class UMyActorComponent* MyActorComponent;

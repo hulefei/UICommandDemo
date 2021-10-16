@@ -7,6 +7,8 @@
 UMyActorComponent::UMyActorComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
+	PrimaryComponentTick.TickGroup = TG_PrePhysics;
 }
 
 void UMyActorComponent::Activate(bool bReset)
@@ -28,6 +30,7 @@ void UMyActorComponent::BeginPlay()
 	const FActorSpawnParameters Parameters;
 	MyBaseActor = GetWorld()->SpawnActor<AMyBaseActor>(ActorBlueprint, Parameters);
 }
+
 
 void UMyActorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                       FActorComponentTickFunction* ThisTickFunction)
@@ -55,11 +58,31 @@ void UMyActorComponent::PlayFromStart()
 
 void UMyActorComponent::Stop()
 {
-	Activate();
-	TickTimeline.PlayFromStart();
+	Deactivate();
+	TickTimeline.Stop();
+}
+
+void UMyActorComponent::AddEvent(FName Name, int32 Keyframe, FOnTickTimelineKeyframeEvent EventFunc)
+{
+	TickTimeline.AddEvent(Name, Keyframe, EventFunc);
 }
 
 void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEvent NewTickTimelineFinishedFunc)
 {
 	TickTimeline.SetTickTimelineFinishedFunc(NewTickTimelineFinishedFunc);
+}
+
+void UMyActorComponent::SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEvent NewTimelinePostUpdateFunc)
+{
+	TickTimeline.SetTimelinePostUpdateFunc(NewTimelinePostUpdateFunc);
+}
+
+void UMyActorComponent::SetTickTimelineFinishedFunc(FOnTickTimelineEventStatic NewTickTimelineFinishedFunc)
+{
+	TickTimeline.SetTickTimelineFinishedFunc(NewTickTimelineFinishedFunc);
+}
+
+void UMyActorComponent::SetTickTimelinePostUpdateFunc(FOnTickTimelineUpdateEventStatic NewTimelinePostUpdateFunc)
+{
+	TickTimeline.SetTimelinePostUpdateFunc(NewTimelinePostUpdateFunc);
 }

@@ -2,9 +2,8 @@
 
 
 #include "TickEntryActor.h"
-#include "MyActorComponent.h"
-#include "TickEntryActor.h"
 
+#include "MyActorComponent.h"
 
 // Sets default values
 ATickEntryActor::ATickEntryActor()
@@ -16,11 +15,24 @@ ATickEntryActor::ATickEntryActor()
 // Called when the game starts or when spawned
 void ATickEntryActor::BeginPlay()
 {
-	FOnTickTimelineEvent OnTickTimelineEvent;
-	OnTickTimelineEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineEventHandle);
-	MyActorComponent->SetTickTimelineFinishedFunc(OnTickTimelineEvent);
-
 	Super::BeginPlay();
+
+	MyActorComponent->ResetTimeline(100);
+	
+	FOnTickTimelineUpdateEvent OnTickTimelineUpdateEvent;
+	OnTickTimelineUpdateEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineUpdateEventHandle);
+
+	FOnTickTimelineEvent OnTickTimelineFinishedEvent;
+	OnTickTimelineFinishedEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineFinishedEventHandle);
+
+	FOnTickTimelineKeyframeEvent OnTickTimelineKeyframeEvent;
+	OnTickTimelineKeyframeEvent.BindDynamic(this, &ATickEntryActor::OnTickTimelineKeyframeEventHandle);
+	
+	MyActorComponent->SetTickTimelineFinishedFunc(OnTickTimelineFinishedEvent);
+	MyActorComponent->SetTickTimelinePostUpdateFunc(OnTickTimelineUpdateEvent);
+	MyActorComponent->AddEvent(FName(TEXT("TestEvent1")), 50, OnTickTimelineKeyframeEvent);
+
+	MyActorComponent->PlayFromStart();
 }
 
 // Called every frame
@@ -30,7 +42,22 @@ void ATickEntryActor::Tick(float DeltaTime)
 }
 
 
+void ATickEntryActor::OnTickTimelineUpdateEventHandle(int32 Position)
+{
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineUpdateEventHandle:%d"), Position);
+}
+
+void ATickEntryActor::OnTickTimelineFinishedEventHandle()
+{
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineFinishedEventHandle"));
+}
+
 void ATickEntryActor::OnTickTimelineEventHandle()
 {
-	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle"));
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineEventHandle: 50"));
+}
+
+void ATickEntryActor::OnTickTimelineKeyframeEventHandle(FName Name)
+{
+	UE_LOG(LogTemp, Log, TEXT("ATickEntryActor::OnTickTimelineKeyframeEventHandle: %s"), *Name.ToString());
 }
