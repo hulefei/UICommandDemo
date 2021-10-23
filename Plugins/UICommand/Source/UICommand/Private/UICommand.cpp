@@ -34,7 +34,7 @@ void FUICommandModule::StartupModule()
 	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	//扩展关卡编辑器的菜单
 	{
-		TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
+		const TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
 		MenuExtender->AddMenuExtension("WindowLayout"
 		                               , EExtensionHook::After
 		                               , PluginCommandList
@@ -68,7 +68,9 @@ void FUICommandModule::StartupModule()
 		//                                      {
 		// 	                                     Builder.AddToolBarButton(FTestCommands::Get().CommandB);
 		//                                      }));
-		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
+		
+		//添加到工具栏方法1
+		// LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
 	}
 
 	//获得内容浏览器模块

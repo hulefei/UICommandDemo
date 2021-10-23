@@ -95,16 +95,17 @@ void FSlateExampleModule::RegisterMenus()
 		}
 	}
 
-	{
-		UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
-		{
-			FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
-			{
-				FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FSlateExampleCommands::Get().OpenPluginWindow));
-				Entry.SetCommandList(PluginCommands);
-			}
-		}
-	}
+	//添加到工具栏方法2
+	// {
+	// 	UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
+	// 	{
+	// 		FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
+	// 		{
+	// 			FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FSlateExampleCommands::Get().OpenPluginWindow));
+	// 			Entry.SetCommandList(PluginCommands);
+	// 		}
+	// 	}
+	// }
 }
 
 #undef LOCTEXT_NAMESPACE
