@@ -4,6 +4,7 @@
 #include "GCExampleStyle.h"
 #include "GCExampleCommands.h"
 #include "LevelEditor.h"
+#include "SGCWidget.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
@@ -64,13 +65,14 @@ TSharedRef<SDockTab> FGCExampleModule::OnSpawnPluginTab(const FSpawnTabArgs& Spa
 		.TabRole(ETabRole::NomadTab)
 		[
 			// Put your tab content here!
-			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
+			// SNew(SBox)
+			// .HAlign(HAlign_Center)
+			// .VAlign(VAlign_Center)
+			// [
+			// 	SNew(STextBlock)
+			// 	.Text(WidgetText)
+			// ]
+			SNew(SGCWidget)
 		];
 }
 
