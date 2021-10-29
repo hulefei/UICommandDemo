@@ -19,4 +19,8 @@ SLATE_BEGIN_ARGS(SCustomAssetKTimeline)
 
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
+	void UpdateTrack() const;
+
+/* Our Action Container */
+	TSharedPtr<class SCustomAssetKTimelineScrollBox> KTimelineScrollBox;
 };

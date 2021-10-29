@@ -3,12 +3,16 @@
 
 #include "SCustomAssetKTimeline.h"
 
+#include "SCustomAssetKTimelineScrollBox.h"
 #include "SlateOptMacros.h"
+#include "SKTimelineRuler.h"
+#include "SKTimelineTrack.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 {
+	KTimelineScrollBox = SNew(SCustomAssetKTimelineScrollBox);
 	
 	ChildSlot
 	[
@@ -26,8 +30,8 @@ void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 				.AutoHeight()
 				.VAlign(EVerticalAlignment::VAlign_Top)
 				[
-					// SNew(SKSkillSimpleTimelineRuler, InKSkillEditor)
-				SNew(SImage).ColorAndOpacity(FColor::Red)
+					SNew(SKTimelineRuler)
+				// SNew(SImage).ColorAndOpacity(FColor::Red)
 				]
 				+ SVerticalBox::Slot()
 				.VAlign(EVerticalAlignment::VAlign_Fill)
@@ -36,8 +40,8 @@ void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 					+ SOverlay::Slot()
 					[
 						// m_ActionList.ToSharedRef()
-						// SimpleTimelineScrollBox.ToSharedRef()
-						SNew(SImage).ColorAndOpacity(FColor::Green)
+						KTimelineScrollBox.ToSharedRef()
+						// SNew(SImage).ColorAndOpacity(FColor::Green)
 					]
 					// + SOverlay::Slot()
 					// [
@@ -49,7 +53,19 @@ void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 			]
 		]
 	];
-	
+
+
+	UpdateTrack();
+}
+
+void SCustomAssetKTimeline::UpdateTrack() const
+{
+	KTimelineScrollBox->AddSlot()
+						.VAlign(VAlign_Top)
+						.Padding(0, 0.0f)
+	[
+		SNew(SKTimelineTrack)
+	];
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
