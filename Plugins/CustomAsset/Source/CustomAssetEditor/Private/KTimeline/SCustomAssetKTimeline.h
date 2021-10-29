@@ -24,6 +24,7 @@ SLATE_BEGIN_ARGS(SCustomAssetKTimeline)
 	// 							const FPointerEvent& MouseEvent) override;
 	
 	void UpdateTrack() const;
+void UpdateTrack_Move() const;
 
 /* Our Action Container */
 	TSharedPtr<class SCustomAssetKTimelineScrollBox> KTimelineScrollBox;

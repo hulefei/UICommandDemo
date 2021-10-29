@@ -8,6 +8,7 @@
 #include "SKTimelineRuler.h"
 #include "SKTimelineTrack.h"
 #include "SKTimelineFrameRuler.h"
+#include "SKTimelineTrack_Move.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
@@ -62,8 +63,8 @@ void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 		]
 	];
 
-
 	UpdateTrack();
+	UpdateTrack_Move();
 }
 
 void SCustomAssetKTimeline::UpdateTrack() const
@@ -73,6 +74,16 @@ void SCustomAssetKTimeline::UpdateTrack() const
 						.Padding(0, 0.0f)
 	[
 		SNew(SKTimelineTrack)
+	];
+}
+
+void SCustomAssetKTimeline::UpdateTrack_Move() const
+{
+	KTimelineScrollBox->AddSlot()
+						.VAlign(VAlign_Top)
+						.Padding(0, 0.0f)
+	[
+		SNew(SKTimelineTrack_Move)
 	];
 }
 

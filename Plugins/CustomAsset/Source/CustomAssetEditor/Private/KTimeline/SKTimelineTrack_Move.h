@@ -3,18 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
-#include "SKTimelineTrackNode.h"
 #include "Widgets/SCompoundWidget.h"
 
 class SKTimelineTrackMoveNode;
 /**
  * 
  */
-class CUSTOMASSETEDITOR_API SKTimelineTrack : public SCompoundWidget
+class CUSTOMASSETEDITOR_API SKTimelineTrack_Move : public SCompoundWidget
 {
 public:
-SLATE_BEGIN_ARGS(SKTimelineTrack)
+SLATE_BEGIN_ARGS(SKTimelineTrack_Move)
 		{
 		}
 
@@ -27,9 +25,9 @@ SLATE_BEGIN_ARGS(SKTimelineTrack)
 	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyClippingRect,
 		FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
 
-protected:
+	protected:
 	/* Our Timeline Node. */
-	TSharedPtr<SKTimelineTrackNode> TrackNode;
+	TSharedPtr<SKTimelineTrackMoveNode> TrackNode;
 	/* Our Timeline Track brush. */
 	const FSlateBrush* TrackBrush = nullptr;
 };
