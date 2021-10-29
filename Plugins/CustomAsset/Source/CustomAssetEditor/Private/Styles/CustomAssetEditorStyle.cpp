@@ -84,7 +84,7 @@ TSharedRef<FSlateStyleSet> FCustomAssetEditorStyle::Create()
 {
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet(GetStyleSetName()));
 	
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("KSkillFramework")->GetBaseDir() / TEXT("Resources"));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin("CustomAsset")->GetBaseDir() / TEXT("Resources"));
 	Style->Set("CustomAssetEditorModule.OpenSKBrowserWindow", new IMAGE_BRUSH(TEXT("Icons/Icon128"), Icon40x40));
 	Style->Set("CustomAssetEditor.SyncServer", new IMAGE_BRUSH(TEXT("Icons/IconSync"), Icon40x40));
 	Style->Set("CustomAssetEditor.PreviewPlay", new IMAGE_BRUSH(TEXT("Icons/UI_Btn_Battle_Replay_Play_01"), Icon40x40));
