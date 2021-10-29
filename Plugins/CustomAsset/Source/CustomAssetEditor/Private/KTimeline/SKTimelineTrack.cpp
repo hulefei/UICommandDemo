@@ -16,18 +16,19 @@ void SKTimelineTrack::Construct(const FArguments& InArgs)
 		.Padding(0.0f)
 	[
 
-		SNew(SOverlay)
-		+ SOverlay::Slot()
+		// SNew(SOverlay)
+		// + SOverlay::Slot()
+		// [
+		// 	SAssignNew(TrackNode, SKTimelineTrackNode)
+		// ]
+
+		SNew(SBorder)
+			.BorderBackgroundColor(FLinearColor::Gray)
+		.Content()
 		[
 			SAssignNew(TrackNode, SKTimelineTrackNode)
 		]
-
-		// SNew(SBorder)
-		// 	.BorderBackgroundColor(FLinearColor::Gray)
-		// .Content()
-		// [
-		// 	SAssignNew(TrackNode, SKSkillSimpleTimelineTrackNode, KSkillEditor.Pin(), nullptr)
-		// ]
+		
 	];
 
 	TrackBrush = FCustomAssetEditorStyle::GetBrush("CustomAssetEditor.Timeline");

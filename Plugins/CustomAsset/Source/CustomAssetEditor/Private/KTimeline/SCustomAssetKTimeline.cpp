@@ -27,13 +27,13 @@ void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 			.HAlign(EHorizontalAlignment::HAlign_Fill)
 			[
 				SNew(SVerticalBox)
-				+ SVerticalBox::Slot()
-				.AutoHeight()
-				.VAlign(EVerticalAlignment::VAlign_Top)
-				[
-					SNew(SKTimelineRuler)
-				// SNew(SImage).ColorAndOpacity(FColor::Red)
-				]
+				// + SVerticalBox::Slot()
+				// .AutoHeight()
+				// .VAlign(EVerticalAlignment::VAlign_Top)
+				// [
+				// 	SNew(SKTimelineRuler)
+				// // SNew(SImage).ColorAndOpacity(FColor::Red)
+				// ]
 				+ SVerticalBox::Slot()
 				.AutoHeight()
 				.VAlign(EVerticalAlignment::VAlign_Top)
@@ -48,8 +48,8 @@ void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 					+ SOverlay::Slot()
 					[
 						// m_ActionList.ToSharedRef()
-						// KTimelineScrollBox.ToSharedRef()
-						SNew(SImage).ColorAndOpacity(FColor::Green)
+						KTimelineScrollBox.ToSharedRef()
+						// SNew(SImage).ColorAndOpacity(FColor::Green)
 					]
 					// + SOverlay::Slot()
 					// [

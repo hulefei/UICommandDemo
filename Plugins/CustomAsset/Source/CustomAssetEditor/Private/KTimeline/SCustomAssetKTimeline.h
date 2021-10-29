@@ -20,8 +20,8 @@ SLATE_BEGIN_ARGS(SCustomAssetKTimeline)
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
 	
-	virtual FReply OnMouseWheel(SWidget& WidgetOwner, const FGeometry& MyGeometry,
-								const FPointerEvent& MouseEvent) override;
+	// virtual FReply OnMouseWheel(SWidget& WidgetOwner, const FGeometry& MyGeometry,
+	// 							const FPointerEvent& MouseEvent) override;
 	
 	void UpdateTrack() const;
 

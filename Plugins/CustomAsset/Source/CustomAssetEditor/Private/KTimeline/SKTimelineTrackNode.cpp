@@ -93,20 +93,21 @@ int32 SKTimelineTrackNode::OnPaint(const FPaintArgs& Args, const FGeometry& Allo
 	const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
 	const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
+	int32 CurrentLayer = LayerId;
 	const TSharedRef<FSlateFontMeasure> FontMeasureService = FSlateApplication::Get().GetRenderer()->
 		GetFontMeasureService();
 	const FVector2D& ParentWidgetSize = AllottedGeometry.GetLocalSize();
-	const FVector2D DependencyIconSize(12.0f, 12.0f);
-	const FVector2D TextBackgroundPadding(2.0f, 0.0f);
-
-	float SegmentStartTime = 0.0f;
+	
+	// const FVector2D DependencyIconSize(12.0f, 12.0f);
+	// const FVector2D TextBackgroundPadding(2.0f, 0.0f);
+	// float SegmentStartTime = 0.0f;
 	// MaxLength = FMath::Clamp(MaxLength, 0.1f, 10.00f);
 
 	float ActionSizeRatio = Duration == 0 ? MaxLength * 0.05f : Duration / MaxLength;
 	ActionSizeRatio = FMath::Clamp(ActionSizeRatio, 0.05f, 1.0f);
 	const float Size = ParentWidgetSize.X * ActionSizeRatio;
 
-	int32 CurrentLayer = LayerId;
+	
 	const FVector2D NodeSize(Size, ParentWidgetSize.Y);
 	// const FVector2D NodeSize(15, 15);
 	const FVector2D NodeTranslation(0, 0.0f);
