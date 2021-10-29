@@ -60,9 +60,9 @@ FReply SKTimelineTrackMoveNode::OnMouseMove(const FGeometry& MyGeometry, const F
 
 	const FVector2D& ParentWidgetSize = MyGeometry.GetLocalSize();
 	const FVector2D MousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
-	float MouseTimePosition = MousePos.X / ParentWidgetSize.X * MaxLength;
-	MouseTimePosition = FMath::Clamp(MouseTimePosition, 0.0f, MaxLength);
-	Duration = MouseTimePosition;
+	// float MouseTimePosition = MousePos.X / ParentWidgetSize.X * MaxLength;
+	// MouseTimePosition = FMath::Clamp(MouseTimePosition, 0.0f, MaxLength);
+	Duration = MousePos.X;
 
 	return FReply::Unhandled();
 }
@@ -96,7 +96,7 @@ int32 SKTimelineTrackMoveNode::OnPaint(const FPaintArgs& Args, const FGeometry& 
 
 	const FVector2D NodeSize(ParentWidgetSize.Y, ParentWidgetSize.Y);
 	// const FVector2D NodeSize(15, 15);
-	const FVector2D NodeTranslation(50, 0.0f);
+	const FVector2D NodeTranslation(Duration - 13, 0.0f);
 	const FSlateLayoutTransform NodeOffset(NodeTranslation);
 	
 	// Node
