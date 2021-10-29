@@ -7,6 +7,7 @@
 #include "SKTimelineTrackNode.h"
 #include "Widgets/SCompoundWidget.h"
 
+class SKTimelineTrackMoveNode;
 /**
  * 
  */
@@ -28,7 +29,7 @@ SLATE_BEGIN_ARGS(SKTimelineTrack)
 
 protected:
 	/* Our Timeline Node. */
-	TSharedPtr<SKTimelineTrackNode> TrackNode;
+	TSharedPtr<SKTimelineTrackMoveNode> TrackNode;
 	/* Our Timeline Track brush. */
 	const FSlateBrush* TrackBrush = nullptr;
 };

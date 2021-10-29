@@ -1,14 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SKTimelineTrackNode.h"
+#include "SKTimelineTrackMoveNode.h"
 
 #include "SlateOptMacros.h"
 #include "Styles/CustomAssetEditorStyle.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
-void SKTimelineTrackNode::Construct(const FArguments& InArgs)
+void SKTimelineTrackMoveNode::Construct(const FArguments& InArgs)
 {
 	SlateFontInfo = FEditorStyle::GetFontStyle("PropertyWindow.NormalFont");
 	SlateFontInfo.Size = 12;
@@ -16,9 +16,8 @@ void SKTimelineTrackNode::Construct(const FArguments& InArgs)
 	HighlightNodeBrush = FCustomAssetEditorStyle::GetBrush("CustomAssetEditor.NodeHighlight");
 	TextBackgroundBrush = FCustomAssetEditorStyle::GetBrush("CustomAssetEditor.NodeText");
 
-	DragType = MoveNone;
+	DragType = TMoveNone;
 	MaxLength = 100.0f;
-
 	
 	/*
 	ChildSlot
@@ -28,31 +27,31 @@ void SKTimelineTrackNode::Construct(const FArguments& InArgs)
 	*/
 }
 
-FReply SKTimelineTrackNode::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+FReply SKTimelineTrackMoveNode::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	const bool IsLMBDown = MouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton);
 	const bool IsRMBDown = MouseEvent.IsMouseButtonDown(EKeys::RightMouseButton);
 	if (IsLMBDown)
 	{
 		//TODO:判断类型
-		DragType = MoveCenter;
+		DragType = TMoveCenter;
 		return FReply::Handled().DetectDrag(SharedThis(this), EKeys::LeftMouseButton);
 	}
 
 	return FReply::Unhandled();
 }
 
-FReply SKTimelineTrackNode::OnMouseButtonUp(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+FReply SKTimelineTrackMoveNode::OnMouseButtonUp(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
-	if (DragType != EKSkillDragType::MoveNone)
+	if (DragType != EKMoveType::TMoveNone)
 	{
-		DragType = EKSkillDragType::MoveNone;
+		DragType = EKMoveType::TMoveNone;
 		return FReply::Handled().ReleaseMouseCapture();
 	}
 	return FReply::Unhandled();
 }
 
-FReply SKTimelineTrackNode::OnMouseMove(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+FReply SKTimelineTrackMoveNode::OnMouseMove(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	if (!HasMouseCapture())
 	{
@@ -68,27 +67,23 @@ FReply SKTimelineTrackNode::OnMouseMove(const FGeometry& MyGeometry, const FPoin
 	return FReply::Unhandled();
 }
 
-FReply SKTimelineTrackNode::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+FReply SKTimelineTrackMoveNode::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	return FReply::Handled().CaptureMouse(SharedThis(this));
 }
 
-FCursorReply SKTimelineTrackNode::OnCursorQuery(const FGeometry& MyGeometry, const FPointerEvent& CursorEvent) const
+FCursorReply SKTimelineTrackMoveNode::OnCursorQuery(const FGeometry& MyGeometry,
+	const FPointerEvent& CursorEvent) const
 {
 	return FCursorReply::Cursor(EMouseCursor::GrabHand);
 }
 
-FVector2D SKTimelineTrackNode::ComputeDesiredSize(float Scale) const
+FVector2D SKTimelineTrackMoveNode::ComputeDesiredSize(float LayoutScaleMultiplier) const
 {
-	// Since it's Horizontal Fill, the X is ignored, we only care about the Y (Height).
-	// if (TrackNode.IsValid())
-	// {
-	// 	return TrackNode.Get()->ComputeDesiredSize(Scale);
-	// }
 	return FVector2D(100.0f, 26.0f);
 }
 
-int32 SKTimelineTrackNode::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry,
+int32 SKTimelineTrackMoveNode::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry,
 	const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
 	const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
@@ -96,21 +91,14 @@ int32 SKTimelineTrackNode::OnPaint(const FPaintArgs& Args, const FGeometry& Allo
 	const TSharedRef<FSlateFontMeasure> FontMeasureService = FSlateApplication::Get().GetRenderer()->
 		GetFontMeasureService();
 	const FVector2D& ParentWidgetSize = AllottedGeometry.GetLocalSize();
-	
-	// const FVector2D DependencyIconSize(12.0f, 12.0f);
-	// const FVector2D TextBackgroundPadding(2.0f, 0.0f);
-	// float SegmentStartTime = 0.0f;
-	// MaxLength = FMath::Clamp(MaxLength, 0.1f, 10.00f);
 
-	float ActionSizeRatio = Duration == 0 ? MaxLength * 0.05f : Duration / MaxLength;
-	ActionSizeRatio = FMath::Clamp(ActionSizeRatio, 0.05f, 1.0f);
-	const float Size = ParentWidgetSize.X * ActionSizeRatio;
+	//Code...
 
-	const FVector2D NodeSize(Size, ParentWidgetSize.Y);
+	const FVector2D NodeSize(ParentWidgetSize.Y, ParentWidgetSize.Y);
 	// const FVector2D NodeSize(15, 15);
-	const FVector2D NodeTranslation(0, 0.0f);
+	const FVector2D NodeTranslation(50, 0.0f);
 	const FSlateLayoutTransform NodeOffset(NodeTranslation);
-
+	
 	// Node
 	FSlateDrawElement::MakeBox(OutDrawElements,
 							CurrentLayer++,
@@ -123,7 +111,7 @@ int32 SKTimelineTrackNode::OnPaint(const FPaintArgs& Args, const FGeometry& Allo
 									bParentEnabled);
 }
 
-FLinearColor SKTimelineTrackNode::GetNodeColor() const
+FLinearColor SKTimelineTrackMoveNode::GetNodeColor() const
 {
 	return FLinearColor::Yellow;
 }

@@ -5,6 +5,7 @@
 
 #include "SlateOptMacros.h"
 #include "SKTimelineTrackNode.h"
+#include "SKTimelineTrackMoveNode.h"
 #include "Styles/CustomAssetEditorStyle.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -26,9 +27,9 @@ void SKTimelineTrack::Construct(const FArguments& InArgs)
 			.BorderBackgroundColor(FLinearColor::Gray)
 		.Content()
 		[
-			SAssignNew(TrackNode, SKTimelineTrackNode)
+			// SAssignNew(TrackNode, SKTimelineTrackNode)
+			SAssignNew(TrackNode, SKTimelineTrackMoveNode)
 		]
-		
 	];
 
 	TrackBrush = FCustomAssetEditorStyle::GetBrush("CustomAssetEditor.Timeline");
