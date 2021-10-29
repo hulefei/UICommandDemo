@@ -3,16 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "WorkflowOrientedApp/WorkflowTabFactory.h"
 #include "Toolkits/CustomAssetEditorToolkit.h"
-
 /**
 * 
 */
-class CUSTOMASSETEDITOR_API FCustomAssetTimelineSummoner : public FWorkflowTabFactory
+class CUSTOMASSETEDITOR_API FCustomAssetKTimelineSummoner : public FWorkflowTabFactory
 {
-public:
-	FCustomAssetTimelineSummoner(TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditorPtr);
+	public:
+	FCustomAssetKTimelineSummoner(TSharedPtr<FCustomAssetEditorToolkit> InCustomAssetEditorPtr);
 
 	//FWorkflowTabFactory Implement
 	virtual TSharedRef<SWidget> CreateTabBody(const FWorkflowTabSpawnInfo& Info) const override;

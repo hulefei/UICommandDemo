@@ -24,6 +24,7 @@
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
 #include "WorkflowOrientedApp/WorkflowUObjectDocuments.h"
 #include "Timeline/SCustomAssetTimeline.h"
+#include "KTimeline/SCustomAssetKTimeline.h"
 
 #define LOCTEXT_NAMESPACE "FCustomAssetEditorToolkit"
 
@@ -482,6 +483,19 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnTimeline()
 		[
 			// SNew(SCustomAssetEditor, CustomAsset, Style)
 			SNew(SCustomAssetTimeline)
+		];
+}
+
+TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnKTimeline()
+{
+	return
+		SNew(SVerticalBox)
+		+ SVerticalBox::Slot()
+		.FillHeight(1.0f)
+		.HAlign(HAlign_Fill)
+		[
+			// SNew(SCustomAssetEditor, CustomAsset, Style)
+			SNew(SCustomAssetKTimeline)
 		];
 }
 

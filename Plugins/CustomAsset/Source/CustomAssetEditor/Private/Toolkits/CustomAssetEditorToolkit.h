@@ -78,6 +78,7 @@ public:
 	TSharedRef<SWidget> SpawnProperties();
 	TSharedRef<SWidget> SpawnEditable();
 	TSharedRef<SWidget> SpawnTimeline();
+	TSharedRef<SWidget> SpawnKTimeline();
 	static FText GetLocalizedMode(FName InMode);
 
 	void CreateNewNode() const;

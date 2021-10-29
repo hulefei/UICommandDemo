@@ -8,6 +8,7 @@
 #include "CustomAssetEditorToolbar.h"
 #include "CustomAssetGraphEditorSummoner.h"
 #include "CustomAssetSummoner.h"
+#include "KTimeline/CustomAssetKTimelineSummoner.h"
 #include "Timeline/CustomAssetTimelineSummoner.h"
 #include "Toolkits/CustomAssetEditorToolkit.h"
 
@@ -20,7 +21,8 @@ FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetSummoner(InCustomAssetEditor)));
 	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetDetailsSummoner(InCustomAssetEditor)));
 	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetTimelineSummoner(InCustomAssetEditor)));
-
+	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetKTimelineSummoner(InCustomAssetEditor)));
+	
 	TabLayout = FTabManager::NewLayout("Standalone_TestEditor_Layout_v1")
 		->AddArea
 		(
@@ -54,7 +56,11 @@ FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 						                                                       ->AddTab(
 							                                                       FCustomAssetEditorTabs::CustomAssetTimelineID,
 							                                                       ETabState::OpenedTab)
-						                                                       ->SetHideTabWell(true)
+						                                                       ->SetHideTabWell(false)
+						                                                       ->AddTab(
+																				FCustomAssetEditorTabs::CustomAssetKTimelineID,
+																				ETabState::OpenedTab)
+																			->SetHideTabWell(false)
 					                                                       )
 				                                                       )
 				                                                       ->Split
