@@ -8,10 +8,10 @@ int32 FCustomAssetTimeSliderController::OnPaintTimeSlider(bool bMirrorLabels, co
 	const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
 	const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
-	FSlateDrawElement::MakeBox(OutDrawElements,
-							LayerId,
-							AllottedGeometry.ToPaintGeometry(),
-							TrackBrush, ESlateDrawEffect::None, FColor::Red);
+	// FSlateDrawElement::MakeBox(OutDrawElements,
+	// 						LayerId,
+	// 						AllottedGeometry.ToPaintGeometry(),
+	// 						TrackBrush, ESlateDrawEffect::None, FColor::Red);
 	
 	return LayerId;
 }
