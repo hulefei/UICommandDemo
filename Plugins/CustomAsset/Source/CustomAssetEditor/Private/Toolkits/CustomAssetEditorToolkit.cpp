@@ -471,6 +471,19 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnEditable()
 		];
 }
 
+TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnTimeline()
+{
+	return
+		SNew(SVerticalBox)
+		+ SVerticalBox::Slot()
+		.FillHeight(1.0f)
+		.HAlign(HAlign_Fill)
+		[
+			// SNew(SCustomAssetEditor, CustomAsset, Style)
+			SNew(SButton)
+		];
+}
+
 void FCustomAssetEditorToolkit::RegisterToolbarTab(const TSharedRef<class FTabManager>& InTabManager)
 {
 	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);

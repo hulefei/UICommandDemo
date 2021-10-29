@@ -77,6 +77,7 @@ public:
 	void RegisterToolbarTab(const TSharedRef<class FTabManager>& InTabManager);
 	TSharedRef<SWidget> SpawnProperties();
 	TSharedRef<SWidget> SpawnEditable();
+	TSharedRef<SWidget> SpawnTimeline();
 	static FText GetLocalizedMode(FName InMode);
 
 	void CreateNewNode() const;

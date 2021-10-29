@@ -6,7 +6,9 @@
 #include "CustomAssetDetailsSummoner.h"
 #include "CustomAssetEditorTabs.h"
 #include "CustomAssetEditorToolbar.h"
+#include "CustomAssetGraphEditorSummoner.h"
 #include "CustomAssetSummoner.h"
+#include "Timeline/CustomAssetTimelineSummoner.h"
 #include "Toolkits/CustomAssetEditorToolkit.h"
 
 
@@ -17,6 +19,7 @@ FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 	CustomAssetEditor = InCustomAssetEditor;
 	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetSummoner(InCustomAssetEditor)));
 	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetDetailsSummoner(InCustomAssetEditor)));
+	CustomAssetEditorTabFactories.RegisterFactory(MakeShareable(new FCustomAssetTimelineSummoner(InCustomAssetEditor)));
 
 	TabLayout = FTabManager::NewLayout("Standalone_TestEditor_Layout_v1")
 		->AddArea
@@ -30,16 +33,29 @@ FCustomAssetEditorApplicationMode::FCustomAssetEditorApplicationMode(
 				                             FTabManager::NewSplitter()->SetOrientation(Orient_Horizontal)
 				                                                       ->Split
 				                                                       (
-					                                                       FTabManager::NewStack()
-					                                                       ->SetSizeCoefficient(0.8f)
-					                                                       ->AddTab(
-						                                                       FCustomAssetEditorTabs::CustomAssetEditorID,
-						                                                       ETabState::OpenedTab)
-					                                                       ->SetHideTabWell(true)
-					                                                       ->AddTab(
-						                                                       FCustomAssetEditorTabs::CustomAssetGraphEditorID,
-						                                                       ETabState::ClosedTab)
-					                                                       ->SetHideTabWell(true)
+																			FTabManager::NewSplitter()->SetOrientation(
+						                                                       Orient_Vertical)->SetSizeCoefficient(
+						                                                       0.6f)
+					                                                       ->Split(
+						                                                       FTabManager::NewStack()
+						                                                       ->SetSizeCoefficient(0.6f)
+						                                                       ->AddTab(
+							                                                       FCustomAssetEditorTabs::CustomAssetEditorID,
+							                                                       ETabState::ClosedTab)
+						                                                       ->SetHideTabWell(true)
+						                                                       ->AddTab(
+																				FCustomAssetEditorTabs::CustomAssetGraphEditorID,
+																				ETabState::ClosedTab)
+																			->SetHideTabWell(true)
+					                                                       )
+					                                                       ->Split(
+						                                                       FTabManager::NewStack()
+						                                                       ->SetSizeCoefficient(0.4f)
+						                                                       ->AddTab(
+							                                                       FCustomAssetEditorTabs::CustomAssetTimelineID,
+							                                                       ETabState::OpenedTab)
+						                                                       ->SetHideTabWell(true)
+					                                                       )
 				                                                       )
 				                                                       ->Split
 				                                                       (

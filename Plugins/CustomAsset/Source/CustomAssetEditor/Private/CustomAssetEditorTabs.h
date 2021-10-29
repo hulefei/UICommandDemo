@@ -7,6 +7,7 @@ struct FCustomAssetEditorTabs
 
 	// Document tab identifiers
 	static const FName CustomAssetEditorID;
+	static const FName CustomAssetTimelineID;
 
 	// Document tab identifiers
 	static const FName CustomAssetGraphEditorID;
