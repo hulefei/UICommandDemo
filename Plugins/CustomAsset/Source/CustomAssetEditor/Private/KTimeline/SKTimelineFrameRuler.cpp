@@ -59,16 +59,54 @@ int32 SKTimelineFrameRuler::OnPaint(const FPaintArgs& Args, const FGeometry& All
 	FVector2D MinSize = FontMeasureService->Measure(MinText, SlateFontInfo);
 	const FVector2D MaxSize = FontMeasureService->Measure(MaxText, SlateFontInfo);
 
+	float MajorFreq = 0.5f;
+	float MinorFreq = 0.25f;
+	// Lines
+	const float MajorLineSize = WidgetSize.Y * 0.5f;
+	const float MinorLineSize = WidgetSize.Y * 0.25f;
+
+	//添加最大值
 	const float Padding = MaxSize.X * 0.5f;
 	const float MaxPositionX = WidgetSize.X - MaxSize.X * 0.5f - Padding - ScrollbarWidth;
-	// Right side (Max Time Label)
-	const FSlateLayoutTransform Transform = FSlateLayoutTransform(FVector2D(MaxPositionX, 0));
+	FVector2D Offset(MaxPositionX, 0);
+	FSlateLayoutTransform OffsetTransform = FSlateLayoutTransform(Offset);
 	FSlateDrawElement::MakeText(OutDrawElements,
 	                            CurrentLayer++,
-	                            AllottedGeometry.ToPaintGeometry(Transform),
+	                            AllottedGeometry.ToPaintGeometry(OffsetTransform),
 	                            MaxText,
 	                            SlateFontInfo);
-	
+
+	TArray<FVector2D> Line; // Start/End points.
+	Line.SetNum(2);
+
+	Line[0].Y = WidgetSize.Y - 1.0f; // Bottom, minus a bit of padding.
+	Line[1].Y = WidgetSize.Y - MajorLineSize;
+	//刻度绘制区域
+	const float WidgetContentSize = WidgetSize.X - Padding * 2.0f - ScrollbarWidth;
+
+	for (float StepTime = 0.0f; StepTime < TimeInterval.Max + 0.001; StepTime += MajorFreq)
+	{
+		Line[0].X = Padding + WidgetContentSize * (StepTime / TimeInterval.Max);
+		Line[1].X = Line[0].X;
+
+		FSlateDrawElement::MakeLines(OutDrawElements,
+		                             CurrentLayer++,
+		                             AllottedGeometry.ToPaintGeometry(),
+		                             Line);
+
+		{
+			FText MajorLabel = FText::AsNumber(StepTime, &FmtOptions);
+
+			Offset.X = Line[0].X - FontMeasureService->Measure(MajorLabel, SlateFontInfo).X * 0.5f;
+			OffsetTransform = FSlateLayoutTransform(Offset);
+
+			FSlateDrawElement::MakeText(OutDrawElements,
+			                            CurrentLayer++,
+			                            AllottedGeometry.ToPaintGeometry(OffsetTransform),
+			                            MajorLabel,
+			                            SlateFontInfo);
+		}
+	}
 
 	return SCompoundWidget::OnPaint(Args, AllottedGeometry, MyClippingRect, OutDrawElements, LayerId + 1, InWidgetStyle,
 	                                bParentEnabled);
