@@ -7,6 +7,7 @@
 #include "SlateOptMacros.h"
 #include "SKTimelineRuler.h"
 #include "SKTimelineTrack.h"
+#include "SKTimelineFrameRuler.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
@@ -32,6 +33,13 @@ void SCustomAssetKTimeline::Construct(const FArguments& InArgs)
 				[
 					SNew(SKTimelineRuler)
 				// SNew(SImage).ColorAndOpacity(FColor::Red)
+				]
+				+ SVerticalBox::Slot()
+				.AutoHeight()
+				.VAlign(EVerticalAlignment::VAlign_Top)
+				[
+					SNew(SKTimelineFrameRuler)
+					// SNew(SImage).ColorAndOpacity(FColor::Red)
 				]
 				+ SVerticalBox::Slot()
 				.VAlign(EVerticalAlignment::VAlign_Fill)

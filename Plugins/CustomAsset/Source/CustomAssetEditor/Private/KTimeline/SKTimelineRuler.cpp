@@ -35,7 +35,7 @@ int32 SKTimelineRuler::OnPaint(const FPaintArgs& Args, const FGeometry& Allotted
                                           const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
                                           const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
-	FVector2D TimeRange(0.0f, 2.0f);
+	FVector2D TimeRange(0.0f, 20.0f);
 	const TSharedRef< FSlateFontMeasure > FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
 
 	// if (KSkillEditorPtr.IsValid())
