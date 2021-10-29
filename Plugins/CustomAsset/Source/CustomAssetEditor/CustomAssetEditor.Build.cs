@@ -36,6 +36,10 @@ public class CustomAssetEditor : ModuleRules
 				"BehaviorTreeEditor",
 				"ToolMenus",
 				"GraphEditor",
+				"Sequencer",
+				"SequencerWidgets",
+				"MovieScene",
+				"TimeManagement",
 			});
 		
 		PrivateIncludePathModuleNames.AddRange(

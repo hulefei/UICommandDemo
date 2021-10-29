@@ -23,6 +23,7 @@
 #include "Widgets/Docking/SDockTab.h"
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
 #include "WorkflowOrientedApp/WorkflowUObjectDocuments.h"
+#include "Timeline/SCustomAssetTimeline.h"
 
 #define LOCTEXT_NAMESPACE "FCustomAssetEditorToolkit"
 
@@ -480,7 +481,7 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnTimeline()
 		.HAlign(HAlign_Fill)
 		[
 			// SNew(SCustomAssetEditor, CustomAsset, Style)
-			SNew(SButton)
+			SNew(SCustomAssetTimeline)
 		];
 }
 
