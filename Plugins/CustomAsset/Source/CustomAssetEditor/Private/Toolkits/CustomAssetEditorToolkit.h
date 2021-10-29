@@ -22,7 +22,7 @@ public:
 	*
 	* @param InStyle The style set to use.
 	*/
-	FCustomAssetEditorToolkit(const TSharedRef<ISlateStyle>& InStyle);
+	FCustomAssetEditorToolkit();
 
 	/** Virtual destructor. */
 	virtual ~FCustomAssetEditorToolkit();
@@ -107,9 +107,6 @@ private:
 private:
 	/** The text asset being edited. */
 	UCustomAsset* CustomAsset = nullptr;
-
-	/** Pointer to the style set to use for toolkits. */
-	TSharedRef<ISlateStyle> Style;
 
 	TSharedPtr<class FDocumentTracker> DocumentManager;
 	TWeakPtr<FDocumentTabFactory> GraphEditorTabFactoryPtr;

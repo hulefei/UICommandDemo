@@ -25,7 +25,7 @@ SCustomAssetEditor::~SCustomAssetEditor()
 }
 
 
-void SCustomAssetEditor::Construct(const FArguments& InArgs, UCustomAsset* InCustomAsset, const TSharedRef<ISlateStyle>& InStyle)
+void SCustomAssetEditor::Construct(const FArguments& InArgs, UCustomAsset* InCustomAsset)
 {
 	CustomAsset = InCustomAsset;
 

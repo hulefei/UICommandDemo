@@ -19,7 +19,9 @@ class FCustomAssetEditorModule
 {
 	virtual void StartupModule() override
 	{
-		Style = MakeShareable(new FCustomAssetEditorStyle());
+		// Style = MakeShareable(new FCustomAssetEditorStyle());
+		FCustomAssetEditorStyle::Initialize();
+		FCustomAssetEditorStyle::ReloadTextures();
 		RegisterAssetTools();
 
 		// FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
@@ -38,6 +40,7 @@ class FCustomAssetEditorModule
 	}
 	virtual void ShutdownModule() override
 	{
+		FCustomAssetEditorStyle::Shutdown();
 		UnregisterAssetTools();
 	}
 	virtual bool SupportsDynamicReloading() override
@@ -50,7 +53,7 @@ protected:
 	void RegisterAssetTools()
 	{
 		IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
-		RegisterAssetTypeAction(AssetTools, MakeShareable(new FCustomAssetActions(Style.ToSharedRef())));
+		RegisterAssetTypeAction(AssetTools, MakeShareable(new FCustomAssetActions()));
 	}
 
 	void RegisterAssetTypeAction(IAssetTools& AssetTools, TSharedRef<IAssetTypeActions> Action)
@@ -78,8 +81,8 @@ private:
 	// /** The collection of registered asset type actions. */
 	TArray<TSharedRef<IAssetTypeActions>> RegisteredAssetTypeActions;
 
-	/** Holds the plug-ins style set. */
-	TSharedPtr<ISlateStyle> Style;
+	// /** Holds the plug-ins style set. */
+	// TSharedPtr<ISlateStyle> Style;
 
 	TSharedPtr<FCustomAssetGraphNodeFactory> CustomAssetNodeFactory;
 	TSharedPtr<FCustomAssetGraphPinFactory> CustomAssetPinFactory;

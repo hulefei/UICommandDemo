@@ -13,7 +13,7 @@
 class CUSTOMASSETEDITOR_API FCustomAssetActions : public FAssetTypeActions_Base
 {
 public:
-	FCustomAssetActions(const TSharedRef<ISlateStyle>& InStyle);
+	FCustomAssetActions();
 	// void CreateBlueprint();
 
 	public:
@@ -29,7 +29,7 @@ public:
 private:
 
 	/** Pointer to the style set to use for toolkits. */
-	TSharedRef<ISlateStyle> Style;
+	// TSharedRef<ISlateStyle> Style;
 
 	void OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<IToolkitHost> EditWithinLevelEditor);
 };

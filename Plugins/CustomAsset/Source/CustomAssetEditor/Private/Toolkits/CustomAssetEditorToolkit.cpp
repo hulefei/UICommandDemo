@@ -46,9 +46,8 @@ namespace CustomAssetEditor
 /* FTextAssetEditorToolkit structors
  *****************************************************************************/
 
-FCustomAssetEditorToolkit::FCustomAssetEditorToolkit(const TSharedRef<ISlateStyle>& InStyle)
+FCustomAssetEditorToolkit::FCustomAssetEditorToolkit()
 	: CustomAsset(nullptr)
-	  , Style(InStyle)
 {
 }
 
@@ -261,7 +260,7 @@ TSharedRef<SDockTab> FCustomAssetEditorToolkit::HandleTabManagerSpawnTab(const F
 
 	if (TabIdentifier == CustomAssetEditor::TabId)
 	{
-		TabWidget = SNew(SCustomAssetEditor, CustomAsset, Style);
+		TabWidget = SNew(SCustomAssetEditor, CustomAsset);
 	}
 
 	return SNew(SDockTab)
@@ -469,7 +468,7 @@ TSharedRef<SWidget> FCustomAssetEditorToolkit::SpawnEditable()
 		  .FillHeight(1.0f)
 		  .HAlign(HAlign_Fill)
 		[
-			SNew(SCustomAssetEditor, CustomAsset, Style)
+			SNew(SCustomAssetEditor, CustomAsset)
 		];
 }
 

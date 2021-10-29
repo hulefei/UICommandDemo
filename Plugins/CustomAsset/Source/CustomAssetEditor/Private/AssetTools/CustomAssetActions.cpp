@@ -9,8 +9,7 @@
 
 #define LOCTEXT_NAMESPACE "AssetTypeActions"
 
-FCustomAssetActions::FCustomAssetActions(const TSharedRef<ISlateStyle>& InStyle)
-	: Style(InStyle)
+FCustomAssetActions::FCustomAssetActions()
 { }
 
 uint32 FCustomAssetActions::GetCategories()
@@ -86,7 +85,7 @@ void FCustomAssetActions::OpenAssetEditor(const TArray<UObject*>& InObjects, TSh
 
 		if (CustomAsset != nullptr)
 		{
-			TSharedRef<FCustomAssetEditorToolkit> EditorToolkit = MakeShareable(new FCustomAssetEditorToolkit(Style));
+			TSharedRef<FCustomAssetEditorToolkit> EditorToolkit = MakeShareable(new FCustomAssetEditorToolkit());
 			EditorToolkit->Initialize(CustomAsset, Mode, EditWithinLevelEditor);
 		}
 	}

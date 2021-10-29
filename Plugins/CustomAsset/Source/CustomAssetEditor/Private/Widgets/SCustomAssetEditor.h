@@ -29,7 +29,7 @@ public:
 	* @param InTextAsset The UTextAsset asset to edit.
 	* @param InStyleSet The style set to use.
 	*/
-	void Construct(const FArguments& InArgs, UCustomAsset* InTextAsset, const TSharedRef<ISlateStyle>& InStyle);
+	void Construct(const FArguments& InArgs, UCustomAsset* InTextAsset);
 
 private:
 
