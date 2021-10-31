@@ -32,4 +32,16 @@ protected:
 	TSharedPtr<SKTimelineTrackNode> TrackNode;
 	/* Our Timeline Track brush. */
 	const FSlateBrush* TrackBrush = nullptr;
+	/** Cache the SOverlay used to store all this tracks nodes */
+	TSharedPtr<SOverlay> NodeSlots;
+
+private:
+	// Returns the padding needed to render the notify in the correct track position
+	FMargin GetTrackPadding() const
+	{
+		UE_LOG(LogTemp, Log, TEXT("GetTrackPadding"));
+		// float LeftMargin = NotifyPairs[NotifyIndex]->GetWidgetPaddingLeft();
+		// float RightMargin = CachedGeometry.GetLocalSize().X - NotifyNodes[NotifyIndex]->GetWidgetPosition().X - NotifyNodes[NotifyIndex]->GetSize().X;
+		return FMargin(100, 0, 500, 0);
+	}
 };
