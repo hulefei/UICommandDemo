@@ -2,3 +2,13 @@
 
 
 #include "TestFObject.h"
+
+// FTestFObject::~FTestFObject()
+// {
+// 	
+// }
+
+void FTestFObject::AddReferencedObjects(FReferenceCollector& Collector)
+{
+	Collector.AddReferencedObject(TestUObject);
+}

@@ -4,13 +4,24 @@
 
 #include "CoreMinimal.h"
 
-#include "TestFObject.generated.h"
+#include "TestUObject.h"
 
-/**
- * 
- */
-UCLASS()
-class GCEXAMPLE_API UTestFObject : public UObject
+class FTestFObject : FGCObject
 {
-	GENERATED_BODY()
+public:
+	
+	FTestFObject()
+	{
+		Name = TEXT("Hello");
+		TestUObject = NewObject<UTestUObject>();
+		WeakObjectPtr = TestUObject;
+	};
+
+	// virtual ~FTestFObject() override;
+
+	virtual void AddReferencedObjects( FReferenceCollector& Collector ) override;
+
+	FString Name;
+	UTestUObject* TestUObject;
+	TWeakObjectPtr<UTestUObject> WeakObjectPtr;
 };

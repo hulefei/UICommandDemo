@@ -7,27 +7,53 @@
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
-FReply SGCWidget::Button1Handle() const
+FReply SGCWidget::Button1Handle()
 {
-	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("Button1Handle")));
+	TestFObject = new FTestFObject();
+	OutWeakObjectPtr = TestFObject->TestUObject;
+	// TestUObject->AddToRoot();
+	
+	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("init")));
 	return FReply::Handled();
 }
 
-FReply SGCWidget::Button2Handle() const
+FReply SGCWidget::Button2Handle()
 {
-	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("Button2Handle")));
+	CollectGarbage(EObjectFlags::RF_NoFlags);
+	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("GC")));
 	return FReply::Handled();
 }
 
-FReply SGCWidget::Button3Handle() const
+FReply SGCWidget::Button3Handle()
 {
-	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("Button3Handle")));
+	if (TestFObject != nullptr)
+	{
+		if (OutWeakObjectPtr.IsValid())
+		{
+			FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("TestFObject not nullptr : Valid")));
+		} else
+		{
+			FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("TestFObject not nullptr : not Valid")));
+		}
+	} else
+	{
+		if (OutWeakObjectPtr.IsValid())
+		{
+			FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("TestFObject is nullptr: Valid")));
+		} else
+		{
+			FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("TestFObject is nullptr : not Valid")));
+		}
+	}
+	
 	return FReply::Handled();
 }
 
-FReply SGCWidget::Button4Handle() const
+FReply SGCWidget::Button4Handle()
 {
-	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("Button4Handle")));
+	delete TestFObject;
+	CollectGarbage(EObjectFlags::RF_NoFlags);
+	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("delete TestFObject")));
 	return FReply::Handled();
 }
 

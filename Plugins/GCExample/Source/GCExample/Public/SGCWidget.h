@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
+#include "TestUObject.h"
+#include "TestFObject.h"
 
 /**
  * 
@@ -20,8 +22,13 @@ public:
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
 
-	FReply Button1Handle() const;
-	FReply Button2Handle() const;
-	FReply Button3Handle() const;
-	FReply Button4Handle() const;
+	FReply Button1Handle();
+	FReply Button2Handle();
+	FReply Button3Handle();
+	FReply Button4Handle();
+
+
+	TSharedPtr<FTestFObject> TestFObjectPtr;
+	FTestFObject* TestFObject;
+	TWeakObjectPtr<UTestUObject> OutWeakObjectPtr;
 };
