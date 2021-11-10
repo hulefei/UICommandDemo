@@ -48,7 +48,7 @@ void FGCExampleModule::StartupModule()
 
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FGCExampleModule::RegisterMenus));
 	
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(GCExampleTabName, FOnSpawnTab::CreateRaw(this, &FGCExampleModule::OnSpawnPluginTab))
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(GCExampleTabName	, FOnSpawnTab::CreateRaw(this, &FGCExampleModule::OnSpawnPluginTab))
 		.SetDisplayName(LOCTEXT("FGCExampleTabTitle", "GCExample"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
 }
@@ -67,6 +67,11 @@ void FGCExampleModule::ShutdownModule()
 	FGCExampleCommands::Unregister();
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(GCExampleTabName);
+}
+
+void FGCExampleModule::PluginButtonClicked()
+{
+	FGlobalTabmanager::Get()->TryInvokeTab(GCExampleTabName);
 }
 
 TSharedRef<SDockTab> FGCExampleModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
