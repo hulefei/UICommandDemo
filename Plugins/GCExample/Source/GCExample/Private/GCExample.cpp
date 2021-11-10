@@ -29,6 +29,22 @@ void FGCExampleModule::StartupModule()
 		FGCExampleCommands::Get().OpenPluginWindow,
 		FExecuteAction::CreateRaw(this, &FGCExampleModule::PluginButtonClicked),
 		FCanExecuteAction());
+	PluginCommands->MapAction(
+		FGCExampleCommands::Get().Command1,
+		FExecuteAction::CreateRaw(this, &FGCExampleModule::Command1Handle),
+		FCanExecuteAction());
+	PluginCommands->MapAction(
+		FGCExampleCommands::Get().Command2,
+		FExecuteAction::CreateRaw(this, &FGCExampleModule::Command2Handle),
+		FCanExecuteAction());
+	PluginCommands->MapAction(
+		FGCExampleCommands::Get().Command3,
+		FExecuteAction::CreateRaw(this, &FGCExampleModule::Command3Handle),
+		FCanExecuteAction());
+	PluginCommands->MapAction(
+		FGCExampleCommands::Get().Command4,
+		FExecuteAction::CreateRaw(this, &FGCExampleModule::Command4Handle),
+		FCanExecuteAction());
 
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FGCExampleModule::RegisterMenus));
 	
@@ -76,9 +92,24 @@ TSharedRef<SDockTab> FGCExampleModule::OnSpawnPluginTab(const FSpawnTabArgs& Spa
 		];
 }
 
-void FGCExampleModule::PluginButtonClicked()
+void FGCExampleModule::Command1Handle()
 {
-	FGlobalTabmanager::Get()->TryInvokeTab(GCExampleTabName);
+	UE_LOG(LogTemp, Log, TEXT("FGCExampleModule::Command1Handle"));
+}
+
+void FGCExampleModule::Command2Handle()
+{
+	UE_LOG(LogTemp, Log, TEXT("FGCExampleModule::Command2Handle"));
+}
+
+void FGCExampleModule::Command3Handle()
+{
+	UE_LOG(LogTemp, Log, TEXT("FGCExampleModule::Command3Handle"));
+}
+
+void FGCExampleModule::Command4Handle()
+{
+	UE_LOG(LogTemp, Log, TEXT("FGCExampleModule::Command4Handle"));
 }
 
 void FGCExampleModule::RegisterMenus()

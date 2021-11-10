@@ -18,6 +18,10 @@ public:
 	
 	/** This function will be bound to Command (by default it will bring up plugin window) */
 	void PluginButtonClicked();
+	void Command1Handle();
+	void Command2Handle();
+	void Command3Handle();
+	void Command4Handle();
 	
 private:
 

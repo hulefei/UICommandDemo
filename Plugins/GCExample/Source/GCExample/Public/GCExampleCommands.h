@@ -20,4 +20,10 @@ public:
 
 public:
 	TSharedPtr< FUICommandInfo > OpenPluginWindow;
+	
+	TSharedPtr< FUICommandInfo > Command1;
+	TSharedPtr< FUICommandInfo > Command2;
+	TSharedPtr< FUICommandInfo > Command3;
+	TSharedPtr< FUICommandInfo > Command4;
+	
 };
