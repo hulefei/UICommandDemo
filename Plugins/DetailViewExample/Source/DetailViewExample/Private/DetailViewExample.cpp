@@ -4,10 +4,12 @@
 #include "DetailViewExampleStyle.h"
 #include "DetailViewExampleCommands.h"
 #include "LevelEditor.h"
+#include "SDetailViewWidget.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
 #include "ToolMenus.h"
+#include "PropertyEditor/Private/SDetailsView.h"
 
 static const FName DetailViewExampleTabName("DetailViewExample");
 
@@ -63,14 +65,7 @@ TSharedRef<SDockTab> FDetailViewExampleModule::OnSpawnPluginTab(const FSpawnTabA
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
-			// Put your tab content here!
-			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
+			SNew(SDetailViewWidget)
 		];
 }
 
