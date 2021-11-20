@@ -16,8 +16,10 @@ void SDetailViewWidget::Construct(const FArguments& InArgs)
 	// DetailsViewArgs.NotifyHook = this;
 	DetailsViewArgs.DefaultsOnlyVisibility = EEditDefaultsOnlyNodeVisibility::Hide;
 	DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	UDetailObject* DetailObject = NewObject<UDetailObject>();
+	DetailObject = NewObject<UDetailObject>();
 	DetailsView->SetObject(DetailObject);
+
+	DetailsView->OnFinishedChangingProperties().AddSP(this, &SDetailViewWidget::OnFinishedChangingProperties);
 
 	const FText WidgetText = FText::Format(
 		LOCTEXT("WindowWidgetText", "Add code to {0} in {1} to override this window's contents"),
@@ -33,9 +35,24 @@ void SDetailViewWidget::Construct(const FArguments& InArgs)
 		]
 		+ SHorizontalBox::Slot().FillWidth(0.7f)
 		[
-			SNew(STextBlock).Text(WidgetText)
+			// SNew(STextBlock).Text(WidgetText)
+			SNew(SButton).OnClicked(this, &SDetailViewWidget::OnPlayClicked)
 		]
 	];
 }
+
+FReply SDetailViewWidget::OnPlayClicked() const
+{
+	UE_LOG(LogTemp, Log, TEXT("SelectedName：%s"), *DetailObject->CustomDetailStruct.SelectedName.ToString());
+	return FReply::Handled();
+}
+
+void SDetailViewWidget::OnFinishedChangingProperties(const FPropertyChangedEvent& Event)
+{
+	const FProperty* Property = Event.Property;
+	const FString Name = Property->GetName();
+	UE_LOG(LogTemp, Log, TEXT("Name:%s"), *FString(Name));
+}
+
 
 #undef LOCTEXT_NAMESPACE

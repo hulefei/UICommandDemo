@@ -6,9 +6,16 @@
 #include "UObject/Object.h"
 #include "DetailObject.generated.h"
 
-/**
- * 
- */
+USTRUCT(BlueprintType)
+struct DETAILVIEWEXAMPLE_API FCustomDetailStruct
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+	FName SelectedName;
+
+};
+
 UCLASS()
 class DETAILVIEWEXAMPLE_API UDetailObject : public UObject
 {
@@ -16,5 +23,11 @@ class DETAILVIEWEXAMPLE_API UDetailObject : public UObject
 
 public:
 	UPROPERTY(EditAnywhere, Category="DetailView")
+	FName Name;
+	
+	UPROPERTY(EditAnywhere, Category="DetailView")
 	int32 Age;
+
+	UPROPERTY(EditAnywhere, Category="DetailView")
+	FCustomDetailStruct CustomDetailStruct;
 };

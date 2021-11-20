@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DetailViewExample.h"
+
+#include "CustomDetailStructViewCustomization.h"
 #include "DetailViewExampleStyle.h"
 #include "DetailViewExampleCommands.h"
 #include "LevelEditor.h"
@@ -23,6 +25,11 @@ void FDetailViewExampleModule::StartupModule()
 	FDetailViewExampleStyle::ReloadTextures();
 
 	FDetailViewExampleCommands::Register();
+
+	// Register the details customizer
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	PropertyModule.RegisterCustomPropertyTypeLayout("CustomDetailStruct", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCustomDetailStructViewCustomization::MakeInstance));
+	PropertyModule.NotifyCustomizationModuleChanged();
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 
@@ -46,6 +53,9 @@ void FDetailViewExampleModule::ShutdownModule()
 	UToolMenus::UnRegisterStartupCallback(this);
 
 	UToolMenus::UnregisterOwner(this);
+
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	PropertyModule.UnregisterCustomPropertyTypeLayout("CustomDetailStruct");
 
 	FDetailViewExampleStyle::Shutdown();
 
