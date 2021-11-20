@@ -27,4 +27,5 @@ private:
 	UDetailObject* DetailObject = nullptr;
 
 	void OnFinishedChangingProperties(const FPropertyChangedEvent& Event);
+	bool IsPropertyVisible(const FPropertyAndParent& PropertyAndParent) const;
 };

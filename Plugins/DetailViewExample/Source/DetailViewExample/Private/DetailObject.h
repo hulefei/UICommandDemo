@@ -22,10 +22,10 @@ class DETAILVIEWEXAMPLE_API UDetailObject : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, Category="DetailView")
+	UPROPERTY(EditAnywhere, Category="DetailView", meta=(TestShow = "111"))
 	FName Name;
 	
-	UPROPERTY(EditAnywhere, Category="DetailView")
+	UPROPERTY(EditAnywhere, Category="DetailView", meta=(TestShow = "222"))
 	int32 Age;
 
 	UPROPERTY(EditAnywhere, Category="DetailView")
