@@ -2,7 +2,9 @@
 
 #include "DetailViewExample.h"
 
+#include "DetailObjectDetails.h"
 #include "CustomDetailStructViewCustomization.h"
+#include "DetailObject.h"
 #include "DetailViewExampleStyle.h"
 #include "DetailViewExampleCommands.h"
 #include "LevelEditor.h"
@@ -12,6 +14,7 @@
 #include "Widgets/Text/STextBlock.h"
 #include "ToolMenus.h"
 #include "PropertyEditor/Private/SDetailsView.h"
+#include "PropertyEditorDelegates.h"
 
 static const FName DetailViewExampleTabName("DetailViewExample");
 
@@ -28,8 +31,11 @@ void FDetailViewExampleModule::StartupModule()
 
 	// Register the details customizer
 	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	
 	PropertyModule.RegisterCustomPropertyTypeLayout("CustomDetailStruct", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCustomDetailStructViewCustomization::MakeInstance));
 	PropertyModule.NotifyCustomizationModuleChanged();
+	
+	PropertyModule.RegisterCustomClassLayout("DetailObject", FOnGetDetailCustomizationInstance::CreateStatic( &FDetailObjectDetails::MakeInstance ) );
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 
@@ -56,6 +62,7 @@ void FDetailViewExampleModule::ShutdownModule()
 
 	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	PropertyModule.UnregisterCustomPropertyTypeLayout("CustomDetailStruct");
+	PropertyModule.UnregisterCustomClassLayout("DetailObject");
 
 	FDetailViewExampleStyle::Shutdown();
 
