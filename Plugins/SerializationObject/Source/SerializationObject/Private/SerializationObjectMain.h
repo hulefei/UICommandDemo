@@ -16,4 +16,5 @@ class SERIALIZATIONOBJECT_API USerializationObjectMain : public UObject
 
 public:
 	static void Main();
+	static void CreateTextureAsset(FString TextureName, int32 TextureWidth, int32 TextureHeight);
 };

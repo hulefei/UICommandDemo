@@ -3,6 +3,7 @@
 #include "SerializationObject.h"
 #include "SerializationObjectStyle.h"
 #include "SerializationObjectCommands.h"
+#include "SerializationObjectMain.h"
 #include "Misc/MessageDialog.h"
 #include "ToolMenus.h"
 
@@ -53,7 +54,8 @@ void FSerializationObjectModule::PluginButtonClicked()
 	// 				   );
 	// FMessageDialog::Open(EAppMsgType::Ok, DialogText);
 
-	
+	USerializationObjectMain::Main();
+	// USerializationObjectMain::CreateTextureAsset(TEXT("Texture"), 128, 128);
 }
 
 void FSerializationObjectModule::RegisterMenus()
