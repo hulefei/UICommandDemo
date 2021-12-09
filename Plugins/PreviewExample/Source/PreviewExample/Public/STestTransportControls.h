@@ -25,12 +25,12 @@ public:
 	virtual FVector2D ComputeDesiredSize(float Scale) const override;
 
 public:
-	TSharedPtr<FTestEditorViewportClient> TestEditorViewportClient;
-	
+	void SetTestEditorViewportClient( TSharedPtr<FTestEditorViewportClient> TestEditorViewportClient);
 private:
 	TSharedPtr<class ITransportControl> TransportControl;
-	
-	
+	TSharedPtr<FTestEditorViewportClient> TestEditorViewportClient;
+	EPlaybackMode::Type PlaybackMode = EPlaybackMode::Stopped;
+	bool bLoop = false;
 	
 private:
 	FReply OnClick_Forward_Step();

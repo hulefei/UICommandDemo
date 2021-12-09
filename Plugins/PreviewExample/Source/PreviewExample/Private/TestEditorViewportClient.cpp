@@ -72,8 +72,26 @@ void FTestEditorViewportClient::PlayAnim()
 	AnimInstance->Montage_Play(AnimMontage);
 }
 
+void FTestEditorViewportClient::ReverseAnim()
+{
+	UAnimMontage* AnimMontage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
+	USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
+		MainActor->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	AnimInstance->Montage_Play(AnimMontage);
+}
+
+void FTestEditorViewportClient::StopAnim()
+{
+	USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
+		MainActor->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	AnimInstance->Montage_Stop(0.25f);
+}
+
 void FTestEditorViewportClient::AddStaticSkeletalMesh()
 {
+	
 }
 
 void FTestEditorViewportClient::Tick(float DeltaSeconds)

@@ -19,6 +19,8 @@ public:
 	void AddStaticCube();
 	void AddStaticBlueprint();
 	void PlayAnim();
+	void ReverseAnim();
+	void StopAnim();
 	void AddStaticSkeletalMesh();
 	virtual void Tick(float DeltaSeconds) override;
 

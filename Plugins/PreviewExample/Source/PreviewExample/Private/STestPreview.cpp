@@ -60,7 +60,8 @@ void STestPreview::Construct(const FArguments& InArgs)
 		]
 	];
 
-	TestTransportControls->TestEditorViewportClient = StaticCastSharedPtr<FTestEditorViewportClient>(TestEditorViewport->GetViewportClient());
+	TestTransportControls->SetTestEditorViewportClient(
+		StaticCastSharedPtr<FTestEditorViewportClient>(TestEditorViewport->GetViewportClient()));
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

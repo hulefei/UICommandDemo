@@ -41,6 +41,12 @@ FVector2D STestTransportControls::ComputeDesiredSize(float Scale) const
 	// return FVector2D(100.0f, 35.0f);
 }
 
+void STestTransportControls::SetTestEditorViewportClient(TSharedPtr<FTestEditorViewportClient> InTestEditorViewportClient)
+{
+	TestEditorViewportClient = InTestEditorViewportClient;
+	check(TestEditorViewportClient)
+}
+
 FReply STestTransportControls::OnClick_Forward_Step()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClick_Forward_Step"));
@@ -68,9 +74,17 @@ FReply STestTransportControls::OnClick_Backward_End()
 FReply STestTransportControls::OnClick_Forward()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClick_Forward"));
-	check(TestEditorViewportClient)
+	if (!TestEditorViewportClient.IsValid()) return FReply::Handled();
 
-	TestEditorViewportClient->PlayAnim();
+	if (PlaybackMode == EPlaybackMode::Stopped)
+	{
+		PlaybackMode = EPlaybackMode::PlayingForward;
+		TestEditorViewportClient->PlayAnim();
+	} else
+	{
+		PlaybackMode = EPlaybackMode::Stopped;
+		TestEditorViewportClient->StopAnim();
+	}
 	
 	return FReply::Handled();
 }
@@ -78,11 +92,23 @@ FReply STestTransportControls::OnClick_Forward()
 FReply STestTransportControls::OnClick_Backward()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClick_Backward"));
+	if (!TestEditorViewportClient.IsValid()) return FReply::Handled();
+
+	if (PlaybackMode == EPlaybackMode::Stopped)
+	{
+		PlaybackMode = EPlaybackMode::PlayingReverse;
+		TestEditorViewportClient->ReverseAnim();
+	} else
+	{
+		PlaybackMode = EPlaybackMode::Stopped;
+		TestEditorViewportClient->StopAnim();
+	}
 	return FReply::Handled();
 }
 
 FReply STestTransportControls::OnClick_ToggleLoop()
 {
+	bLoop = !bLoop;
 	return FReply::Handled();
 }
 
@@ -93,12 +119,12 @@ FReply STestTransportControls::OnClick_Record()
 
 bool STestTransportControls::IsLoopStatusOn() const
 {
-	return false;
+	return bLoop;
 }
 
 EPlaybackMode::Type STestTransportControls::GetPlaybackMode() const
 {
-	return EPlaybackMode::Stopped;
+	return PlaybackMode;
 }
 
 bool STestTransportControls::IsRecording() const
