@@ -17,10 +17,13 @@ public:
 	                          const TWeakPtr<STestEditorViewport>& InEditorViewportWidget = nullptr);
 	virtual ~FTestEditorViewportClient() override;
 	void AddStaticCube();
+	void AddStaticBlueprint();
+	void PlayAnim();
+	void AddStaticSkeletalMesh();
 	virtual void Tick(float DeltaSeconds) override;
 
 private:
 	TWeakPtr<STestEditorViewport> TestEditorViewport;
 	FTestPreviewScene* TestPreviewScene;
-	AActor* MainActor;
+	ACharacter* MainActor;
 };

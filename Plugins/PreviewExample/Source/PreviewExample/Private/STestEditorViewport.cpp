@@ -8,6 +8,7 @@ void STestEditorViewport::Construct(const FArguments& InArgs)
 {
 	SEditorViewport::Construct(SEditorViewport::FArguments());
 }
+
 STestEditorViewport::STestEditorViewport()
 {
 }
@@ -38,9 +39,11 @@ TSharedRef<FEditorViewportClient> STestEditorViewport::MakeEditorViewportClient(
 	// const TSharedPtr<FEditorViewportClient> EditorViewportClient = MakeShareable(new FEditorViewportClient(nullptr,
 	//                                                                                                        PreviewScene.Get()));
 	//使用自定义FEditorViewportClient
-	const TSharedPtr<FTestEditorViewportClient> EditorViewportClient = MakeShareable(new FTestEditorViewportClient(nullptr,
-																											PreviewScene.Get()));
-	
+	const TSharedPtr<FTestEditorViewportClient> EditorViewportClient = MakeShareable(new FTestEditorViewportClient(
+		nullptr,
+		PreviewScene.Get()
+		, SharedThis(this)));
+
 	return EditorViewportClient.ToSharedRef();
 }
 

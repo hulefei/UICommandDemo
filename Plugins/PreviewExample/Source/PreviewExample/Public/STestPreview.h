@@ -22,4 +22,5 @@ SLATE_BEGIN_ARGS(STestPreview)
 
 	private:
 	TSharedPtr<class STestEditorViewport> TestEditorViewport;
+	TSharedPtr<class STestTransportControls> TestTransportControls;
 };

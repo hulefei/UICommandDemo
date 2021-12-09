@@ -5,6 +5,7 @@
 
 #include "EditorWidgetsModule.h"
 #include "SlateOptMacros.h"
+#include "TestEditorViewportClient.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
@@ -67,6 +68,10 @@ FReply STestTransportControls::OnClick_Backward_End()
 FReply STestTransportControls::OnClick_Forward()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClick_Forward"));
+	check(TestEditorViewportClient)
+
+	TestEditorViewportClient->PlayAnim();
+	
 	return FReply::Handled();
 }
 
