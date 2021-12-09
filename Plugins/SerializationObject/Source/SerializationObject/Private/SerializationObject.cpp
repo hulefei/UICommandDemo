@@ -71,16 +71,17 @@ void FSerializationObjectModule::RegisterMenus()
 		}
 	}
 
-	{
-		UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
-		{
-			FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
-			{
-				FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FSerializationObjectCommands::Get().PluginAction));
-				Entry.SetCommandList(PluginCommands);
-			}
-		}
-	}
+	/* Add to Toolbar */
+	// {
+	// 	UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
+	// 	{
+	// 		FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
+	// 		{
+	// 			FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FSerializationObjectCommands::Get().PluginAction));
+	// 			Entry.SetCommandList(PluginCommands);
+	// 		}
+	// 	}
+	// }
 }
 
 #undef LOCTEXT_NAMESPACE
