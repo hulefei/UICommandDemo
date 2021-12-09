@@ -42,6 +42,7 @@ public class PreviewExample : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"EditorWidgets"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
