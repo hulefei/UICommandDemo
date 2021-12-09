@@ -5,10 +5,9 @@
 #include "PreviewExampleCommands.h"
 #include "LevelEditor.h"
 #include "Widgets/Docking/SDockTab.h"
-#include "Widgets/Layout/SBox.h"
-#include "Widgets/Text/STextBlock.h"
 #include "ToolMenus.h"
 #include "STestEditorViewport.h"
+#include "STestPreview.h"
 
 static const FName PreviewExampleTabName("PreviewExample");
 
@@ -65,7 +64,8 @@ TSharedRef<SDockTab> FPreviewExampleModule::OnSpawnPluginTab(const FSpawnTabArgs
 		.TabRole(ETabRole::NomadTab)
 		[
 			//创建预览视窗控件
-			SNew(STestEditorViewport)
+			// SNew(STestEditorViewport)
+			SNew(STestPreview)
 		];
 }
 

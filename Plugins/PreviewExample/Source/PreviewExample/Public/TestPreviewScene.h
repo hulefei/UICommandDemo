@@ -12,8 +12,10 @@
 class FTestPreviewScene : public FPreviewScene
 {
 public:
-	FTestPreviewScene(ConstructionValues CVS);
+	FTestPreviewScene(ConstructionValues CVS, float InFloorOffset = 0.0f);
 
+private:
+	UStaticMeshComponent* FloorMeshComponent;
 private:
 	void CreateSkySphere();
 	void CreateFloor();

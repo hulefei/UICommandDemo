@@ -27,4 +27,5 @@ protected:
 
 private:
 	TSharedPtr<class FPreviewScene> PreviewScene;
+	TSharedPtr<class STestEditorViewport> TestEditorViewport;
 };

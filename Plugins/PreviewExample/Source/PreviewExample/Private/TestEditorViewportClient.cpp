@@ -8,6 +8,14 @@ FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeToo
                                                      const TWeakPtr<SEditorViewport>& InEditorViewportWidget) :
 	FEditorViewportClient(InModeTools, InPreviewScene, InEditorViewportWidget)
 {
+	SetRealtime(true);
+
+	const FVector DefaultPerspectiveViewLocation( 83.f, 223.5f, 136.5f );
+	const FRotator DefaultPerspectiveViewRotation( -6.6f, -102.0f, 0 );
+	
+	//Initiate view
+	SetViewLocation(DefaultPerspectiveViewLocation);
+	SetViewRotation(DefaultPerspectiveViewRotation);
 }
 
 FTestEditorViewportClient::~FTestEditorViewportClient()
@@ -16,8 +24,6 @@ FTestEditorViewportClient::~FTestEditorViewportClient()
 
 void FTestEditorViewportClient::Tick(float DeltaSeconds)
 {
-	if (DeltaSeconds > 0.f)
-	{
-		PreviewScene->GetWorld()->Tick(LEVELTICK_All, DeltaSeconds);
-	}
+	FEditorViewportClient::Tick(DeltaSeconds);
+	PreviewScene->GetWorld()->Tick(LEVELTICK_All, DeltaSeconds);
 }
