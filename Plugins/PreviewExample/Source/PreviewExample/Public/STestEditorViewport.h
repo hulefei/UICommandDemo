@@ -26,6 +26,6 @@ protected:
 	virtual TSharedPtr<SWidget> MakeViewportToolbar() override;
 
 private:
-	TSharedPtr<class FPreviewScene> PreviewScene;
+	TSharedPtr<class FTestPreviewScene> PreviewScene;
 	TSharedPtr<class STestEditorViewport> TestEditorViewport;
 };

@@ -34,17 +34,6 @@ TSharedRef<FEditorViewportClient> STestEditorViewport::MakeEditorViewportClient(
 	//使用默认
 	// PreviewScene = MakeShareable(new FPreviewScene());
 
-	//向预览场景中加一个测试模型
-	// {
-	// 	//读取模型
-	// 	UStaticMesh* SM = LoadObject<UStaticMesh>(NULL, TEXT("StaticMesh'/Engine/EngineMeshes/Cube.Cube'"), NULL, LOAD_None, NULL);
-	// 	//创建组件
-	// 	UStaticMeshComponent* SMC = NewObject<UStaticMeshComponent>();
-	// 	SMC->SetStaticMesh(SM);
-	// 	//向预览场景中增加组件
-	// 	PreviewScene->AddComponent(SMC, FTransform::Identity);
-	// }
-
 	//使用UE4默认的FEditorViewportClient，并使用PreviewScene的world, 默认使用编辑器中打开的默认场景
 	// const TSharedPtr<FEditorViewportClient> EditorViewportClient = MakeShareable(new FEditorViewportClient(nullptr,
 	//                                                                                                        PreviewScene.Get()));
