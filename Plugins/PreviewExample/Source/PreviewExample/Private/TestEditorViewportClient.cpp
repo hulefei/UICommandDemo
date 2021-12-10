@@ -5,6 +5,8 @@
 #include "TestPreviewScene.h"
 #include "STestEditorViewport.h"
 #include "Animation/AnimInstance.h"
+#include "Animation/DebugSkelMeshComponent.h"
+#include "AnimPreviewInstance.h"
 #include "GameFramework/Character.h"
 
 FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeTools, FPreviewScene* InPreviewScene,
@@ -18,6 +20,8 @@ FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeToo
 
 	UDebugSkelMeshComponent* PreviewMeshComponent = TestPreviewScene->GetPreviewMeshComponent();
 	check(PreviewMeshComponent)
+	UAnimPreviewInstance* PreviewInstance = PreviewMeshComponent->PreviewInstance;
+	check(PreviewInstance)
 	
 	SetRealtime(true);
 
@@ -31,6 +35,9 @@ FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeToo
 	// AddStaticCube();
 	// AddStaticBlueprint();
 	// PlayAnim();
+
+	UAnimMontage* Montage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
+	PreviewInstance->Montage_Play(Montage);
 }
 
 FTestEditorViewportClient::~FTestEditorViewportClient()

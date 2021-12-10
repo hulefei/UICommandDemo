@@ -69,7 +69,7 @@ TSharedRef<IPersonaPreviewScene> STestEditorViewport::CreatePreviewScene(const F
 	// ersonaToolkitArgs.OnPreviewSceneCreated = FOnPreviewSceneCreated::FDelegate::CreateSP(this, &FControlRigEditor::HandlePreviewSceneCreated);
 	UPreviewAsset* PreviewAsset = NewObject<UPreviewAsset>();
 	// USkeletalMesh* SkeletalMesh = LoadObject<USkeletalMesh>(nullptr, TEXT("Skeleton'/Game/FightingAnimsetPro/UE4_Mannequin/Mesh/UE4_Mannequin_Skeleton.UE4_Mannequin_Skeleton'"));
-	USkeletalMesh* SkeletalMesh = LoadObject<USkeletalMesh>(nullptr, TEXT("SkeletalMesh'/Game/Mannequin/Character/Mesh/SK_Mannequin.SK_Mannequin'"));
+	USkeletalMesh* SkeletalMesh = LoadObject<USkeletalMesh>(nullptr, TEXT("SkeletalMesh'/Game/FightingAnimsetPro/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
 	PreviewAsset->SetPreviewMesh(SkeletalMesh);
 	const TSharedRef<IPersonaToolkit> PersonaToolkit = PersonaModule.CreatePersonaToolkit(PreviewAsset, PersonaToolkitArgs);
 	auto LocalPreviewScene = PersonaToolkit->GetPreviewScene();
