@@ -18,6 +18,7 @@ public:
 	virtual ~FTestEditorViewportClient() override;
 	void AddStaticCube();
 	void AddStaticBlueprint();
+	void ForwardMontage();
 	// void PlayAnim();
 	void PlayMontage();
 	UAnimSingleNodeInstance* GetPreviewInstance() const;

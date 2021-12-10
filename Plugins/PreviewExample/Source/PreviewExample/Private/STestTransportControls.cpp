@@ -50,6 +50,8 @@ void STestTransportControls::SetTestEditorViewportClient(TSharedPtr<FTestEditorV
 FReply STestTransportControls::OnClick_Forward_Step()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClick_Forward_Step"));
+	if (!TestEditorViewportClient.IsValid()) return FReply::Handled();
+	TestEditorViewportClient->ForwardMontage();
 	return FReply::Handled();
 }
 

@@ -32,7 +32,8 @@ FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeToo
 	SetViewLocation(DefaultPerspectiveViewLocation);
 	SetViewRotation(DefaultPerspectiveViewRotation);
 
-	PlayMontage();
+	UAnimMontage* AnimMontage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
+	PreviewInstance->SetAnimationAsset(AnimMontage);
 	
 	// AddStaticCube();
 	// AddStaticBlueprint();
@@ -85,6 +86,22 @@ void FTestEditorViewportClient::AddStaticBlueprint()
 // 	AnimInstance->Montage_Play(AnimMontage);
 // }
 
+void FTestEditorViewportClient::ForwardMontage()
+{
+	if (UAnimSingleNodeInstance* PreviewInstance = GetPreviewInstance())
+	{
+		bool bShouldStepCloth = FMath::Abs(PreviewInstance->GetLength() - PreviewInstance->GetCurrentTime()) > SMALL_NUMBER;
+
+		PreviewInstance->SetPlaying(false);
+		PreviewInstance->StepForward();
+
+		// if(SMC && bShouldStepCloth)
+		// {
+		// 	SMC->bPerformSingleClothingTick = true;
+		// }
+	}
+}
+
 void FTestEditorViewportClient::PlayMontage()
 {
 	UAnimSingleNodeInstance* PreviewInstance = GetPreviewInstance();
@@ -92,8 +109,6 @@ void FTestEditorViewportClient::PlayMontage()
 	if (PreviewInstance != nullptr)
 	{
 		bool bShouldStepCloth = FMath::Abs(PreviewInstance->GetLength() - PreviewInstance->GetCurrentTime()) > SMALL_NUMBER;
-		UAnimMontage* AnimMontage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
-		PreviewInstance->SetAnimationAsset(AnimMontage);
 		PreviewInstance->SetReverse(false);
 		PreviewInstance->SetPlaying(true);
 		UE_LOG(LogTemp, Log, TEXT("PreviewInstance not nullptr"));
