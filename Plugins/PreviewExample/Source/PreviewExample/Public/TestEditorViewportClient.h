@@ -13,7 +13,7 @@ class FTestEditorViewportClient : public FEditorViewportClient
 {
 public:
 	/** FEditorViewportClient 接口 */
-	FTestEditorViewportClient(FEditorModeTools* InModeTools, FTestPreviewScene* InPreviewScene = nullptr,
+	FTestEditorViewportClient(FEditorModeTools* InModeTools, FPreviewScene* InPreviewScene = nullptr,
 	                          const TWeakPtr<STestEditorViewport>& InEditorViewportWidget = nullptr);
 	virtual ~FTestEditorViewportClient() override;
 	void AddStaticCube();

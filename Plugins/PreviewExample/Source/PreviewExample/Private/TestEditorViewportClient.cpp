@@ -7,15 +7,18 @@
 #include "Animation/AnimInstance.h"
 #include "GameFramework/Character.h"
 
-FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeTools, FTestPreviewScene* InPreviewScene,
+FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeTools, FPreviewScene* InPreviewScene,
                                                      const TWeakPtr<STestEditorViewport>& InEditorViewportWidget) :
 	FEditorViewportClient(InModeTools, InPreviewScene, InEditorViewportWidget)
 {
-	TestPreviewScene = InPreviewScene;
+	TestPreviewScene = static_cast<FTestPreviewScene*>(InPreviewScene);
 	TestEditorViewport = InEditorViewportWidget;
 
 	check(TestPreviewScene)
 
+	UDebugSkelMeshComponent* PreviewMeshComponent = TestPreviewScene->GetPreviewMeshComponent();
+	check(PreviewMeshComponent)
+	
 	SetRealtime(true);
 
 	const FVector DefaultPerspectiveViewLocation(200.f, 1000.f, 300.f);
@@ -26,7 +29,7 @@ FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeToo
 	SetViewRotation(DefaultPerspectiveViewRotation);
 
 	// AddStaticCube();
-	AddStaticBlueprint();
+	// AddStaticBlueprint();
 	// PlayAnim();
 }
 

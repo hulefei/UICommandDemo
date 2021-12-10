@@ -4,19 +4,31 @@
 
 #include "CoreMinimal.h"
 #include "PreviewScene.h"
-
+#include "AdvancedPreviewScene.h"
+#include "IPersonaPreviewScene.h"
 
 /**
  * 
  */
-class FTestPreviewScene : public FPreviewScene
+class FTestPreviewScene :  public IPersonaPreviewScene //public FAdvancedPreviewScene,
 {
 public:
 	FTestPreviewScene(ConstructionValues CVS, float InFloorOffset = 0.0f);
 
+
+	//~ override IPersonaPreviewScene
+	virtual UDebugSkelMeshComponent* GetPreviewMeshComponent() const override { return SkeletalMeshComponent; }
+	virtual void SetPreviewMeshComponent(UDebugSkelMeshComponent* InSkeletalMeshComponent) override;
+
 private:
-	UStaticMeshComponent* FloorMeshComponent;
+	/** The one and only actor we have */
+	AActor* Actor;
+
+	/** The main preview skeletal mesh component */
+	UDebugSkelMeshComponent*			SkeletalMeshComponent;
+
 private:
 	void CreateSkySphere();
 	void CreateFloor();
+	
 };

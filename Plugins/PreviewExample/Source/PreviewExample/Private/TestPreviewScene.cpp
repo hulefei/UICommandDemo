@@ -8,58 +8,63 @@
 #include "Materials/MaterialInstanceConstant.h"
 
 
-FTestPreviewScene::FTestPreviewScene(ConstructionValues CVS, float InFloorOffset) : FPreviewScene(CVS)
+FTestPreviewScene::FTestPreviewScene(ConstructionValues CVS, float InFloorOffset) :
+	IPersonaPreviewScene(CVS), Actor(nullptr), SkeletalMeshComponent(nullptr)
 {
-	// CreateSkySphere();
-	const FTransform Transform(FRotator(0, 0, 0), FVector(0, 0, 0), FVector(1));
-	//Set Sky Light
-	const FString EnvironmentCubeMapPath = TEXT("/Engine/EditorMaterials/AssetViewer/EpicQuadPanorama_CC+EV1.EpicQuadPanorama_CC+EV1");
-	UObject* LoadedObject = LoadObject<UObject>(nullptr, *EnvironmentCubeMapPath);
-	while (UObjectRedirector* Redirector = Cast<UObjectRedirector>(LoadedObject))
-	{
-		LoadedObject = Redirector->DestinationObject;
-	}
-	TSoftObjectPtr<UTextureCube> EnvironmentCubeMap = LoadedObject;
-	SetSkyCubemap(EnvironmentCubeMap.Get());
-	SetSkyBrightness(1.0f);
-	//Set Sky Sphere
-	// Large scale to prevent sphere from clipping
-	const FTransform SphereTransform(FRotator(0, 0, 0), FVector(0, 0, 0), FVector(2000));
-	UStaticMeshComponent* SkyComponent = NewObject<UStaticMeshComponent>(GetTransientPackage());
+	// const FTransform Transform(FRotator(0, 0, 0), FVector(0, 0, 0), FVector(1));
+	// //Set Sky Light
+	// const FString EnvironmentCubeMapPath = TEXT("/Engine/EditorMaterials/AssetViewer/EpicQuadPanorama_CC+EV1.EpicQuadPanorama_CC+EV1");
+	// UObject* LoadedObject = LoadObject<UObject>(nullptr, *EnvironmentCubeMapPath);
+	// while (UObjectRedirector* Redirector = Cast<UObjectRedirector>(LoadedObject))
+	// {
+	// 	LoadedObject = Redirector->DestinationObject;
+	// }
+	// TSoftObjectPtr<UTextureCube> EnvironmentCubeMap = LoadedObject;
+	// SetSkyCubemap(EnvironmentCubeMap.Get());
+	// SetSkyBrightness(1.0f);
+	// //Set Sky Sphere
+	// // Large scale to prevent sphere from clipping
+	// const FTransform SphereTransform(FRotator(0, 0, 0), FVector(0, 0, 0), FVector(2000));
+	// UStaticMeshComponent* SkyComponent = NewObject<UStaticMeshComponent>(GetTransientPackage());
+	//
+	// // Set up sky sphere showing hte same cube map as used by the sky light
+	// UStaticMesh* SkySphere = LoadObject<UStaticMesh>(NULL, TEXT("/Engine/EditorMeshes/AssetViewer/Sphere_inversenormals.Sphere_inversenormals"), NULL, LOAD_None, NULL);
+	// check(SkySphere);
+	// SkyComponent->SetStaticMesh(SkySphere);
+	// SkyComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// SkyComponent->bVisibleInRayTracing = false;
+	//
+	// UMaterial* SkyMaterial = LoadObject<UMaterial>(NULL, TEXT("/Engine/EditorMaterials/AssetViewer/M_SkyBox.M_SkyBox"), NULL, LOAD_None, NULL);
+	// check(SkyMaterial);
+	//
+	// UMaterialInstanceConstant* InstancedSkyMaterial = NewObject<UMaterialInstanceConstant>(GetTransientPackage());
+	// InstancedSkyMaterial->Parent = SkyMaterial;
+	//
+	// UTextureCube* DefaultTexture = LoadObject<UTextureCube>(NULL, TEXT("/Engine/MapTemplates/Sky/SunsetAmbientCubemap.SunsetAmbientCubemap"));
+	//
+	// InstancedSkyMaterial->SetTextureParameterValueEditorOnly(FName("SkyBox"), (EnvironmentCubeMap.Get() != nullptr) ? EnvironmentCubeMap.Get() : DefaultTexture);
+	// InstancedSkyMaterial->SetScalarParameterValueEditorOnly(FName("CubemapRotation"), 0);
+	// InstancedSkyMaterial->SetScalarParameterValueEditorOnly(FName("Intensity"), 1.0f);
+	// InstancedSkyMaterial->PostLoad();
+	// SkyComponent->SetMaterial(0, InstancedSkyMaterial);
+	// FPreviewScene::AddComponent(SkyComponent, SphereTransform);
+	//
+	// UPostProcessComponent* PostProcessComponent = NewObject<UPostProcessComponent>();
+	// PostProcessComponent->bUnbound = true;
+	// FPreviewScene::AddComponent(PostProcessComponent, Transform);
+	//
+	// UStaticMesh* FloorMesh = LoadObject<UStaticMesh>(NULL, TEXT("/Engine/EditorMeshes/AssetViewer/Floor_Mesh.Floor_Mesh"), NULL, LOAD_None, NULL);
+	// check(FloorMesh);
+	// FloorMeshComponent = NewObject<UStaticMeshComponent>(GetTransientPackage());
+	// FloorMeshComponent->SetStaticMesh(FloorMesh);
+	//
+	// FTransform FloorTransform(FRotator(0, 0, 0), FVector(0, 0, -(InFloorOffset)), FVector(4.0f, 4.0f, 1.0f ));
+	// FPreviewScene::AddComponent(FloorMeshComponent, FloorTransform);
+}
 
-	// Set up sky sphere showing hte same cube map as used by the sky light
-	UStaticMesh* SkySphere = LoadObject<UStaticMesh>(NULL, TEXT("/Engine/EditorMeshes/AssetViewer/Sphere_inversenormals.Sphere_inversenormals"), NULL, LOAD_None, NULL);
-	check(SkySphere);
-	SkyComponent->SetStaticMesh(SkySphere);
-	SkyComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SkyComponent->bVisibleInRayTracing = false;
-
-	UMaterial* SkyMaterial = LoadObject<UMaterial>(NULL, TEXT("/Engine/EditorMaterials/AssetViewer/M_SkyBox.M_SkyBox"), NULL, LOAD_None, NULL);
-	check(SkyMaterial);
-
-	UMaterialInstanceConstant* InstancedSkyMaterial = NewObject<UMaterialInstanceConstant>(GetTransientPackage());
-	InstancedSkyMaterial->Parent = SkyMaterial;
-
-	UTextureCube* DefaultTexture = LoadObject<UTextureCube>(NULL, TEXT("/Engine/MapTemplates/Sky/SunsetAmbientCubemap.SunsetAmbientCubemap"));
-
-	InstancedSkyMaterial->SetTextureParameterValueEditorOnly(FName("SkyBox"), (EnvironmentCubeMap.Get() != nullptr) ? EnvironmentCubeMap.Get() : DefaultTexture);
-	InstancedSkyMaterial->SetScalarParameterValueEditorOnly(FName("CubemapRotation"), 0);
-	InstancedSkyMaterial->SetScalarParameterValueEditorOnly(FName("Intensity"), 1.0f);
-	InstancedSkyMaterial->PostLoad();
-	SkyComponent->SetMaterial(0, InstancedSkyMaterial);
-	FPreviewScene::AddComponent(SkyComponent, SphereTransform);
-
-	UPostProcessComponent* PostProcessComponent = NewObject<UPostProcessComponent>();
-	PostProcessComponent->bUnbound = true;
-	FPreviewScene::AddComponent(PostProcessComponent, Transform);
-
-	UStaticMesh* FloorMesh = LoadObject<UStaticMesh>(NULL, TEXT("/Engine/EditorMeshes/AssetViewer/Floor_Mesh.Floor_Mesh"), NULL, LOAD_None, NULL);
-	check(FloorMesh);
-	FloorMeshComponent = NewObject<UStaticMeshComponent>(GetTransientPackage());
-	FloorMeshComponent->SetStaticMesh(FloorMesh);
-
-	FTransform FloorTransform(FRotator(0, 0, 0), FVector(0, 0, -(InFloorOffset)), FVector(4.0f, 4.0f, 1.0f ));
-	FPreviewScene::AddComponent(FloorMeshComponent, FloorTransform);
+void FTestPreviewScene::SetPreviewMeshComponent(UDebugSkelMeshComponent* InSkeletalMeshComponent)
+{
+	SkeletalMeshComponent = InSkeletalMeshComponent;
 }
 
 void FTestPreviewScene::CreateSkySphere()

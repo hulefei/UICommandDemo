@@ -26,6 +26,9 @@ protected:
 	virtual TSharedPtr<SWidget> MakeViewportToolbar() override;
 
 private:
-	TSharedPtr<class FTestPreviewScene> PreviewScene;
+	TSharedPtr<class FPreviewScene> PreviewScene;
 	TSharedPtr<class STestEditorViewport> TestEditorViewport;
+
+private:
+	TSharedRef<class IPersonaPreviewScene> CreatePreviewScene(const struct FPersonaToolkitArgs& PersonaToolkitArgs);
 };
