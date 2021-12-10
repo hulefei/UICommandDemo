@@ -32,12 +32,15 @@ FTestEditorViewportClient::FTestEditorViewportClient(FEditorModeTools* InModeToo
 	SetViewLocation(DefaultPerspectiveViewLocation);
 	SetViewRotation(DefaultPerspectiveViewRotation);
 
+	PlayMontage();
+	
 	// AddStaticCube();
 	// AddStaticBlueprint();
 	// PlayAnim();
 
-	UAnimMontage* Montage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
-	PreviewInstance->Montage_Play(Montage);
+	// Montage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
+	// PreviewInstance->Montage_Play(Montage);
+	
 }
 
 FTestEditorViewportClient::~FTestEditorViewportClient()
@@ -73,13 +76,37 @@ void FTestEditorViewportClient::AddStaticBlueprint()
 		PreviewScene->GetWorld()->SpawnActor(SpawnActor->GetClass(), &EmptyTransform, ActorSpawnParameters));
 }
 
-void FTestEditorViewportClient::PlayAnim()
+// void FTestEditorViewportClient::PlayAnim()
+// {
+// 	UAnimMontage* AnimMontage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
+// 	USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
+// 		MainActor->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+// 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+// 	AnimInstance->Montage_Play(AnimMontage);
+// }
+
+void FTestEditorViewportClient::PlayMontage()
 {
-	UAnimMontage* AnimMontage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
-	USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
-		MainActor->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	AnimInstance->Montage_Play(AnimMontage);
+	UAnimSingleNodeInstance* PreviewInstance = GetPreviewInstance();
+	check(PreviewInstance)
+	if (PreviewInstance != nullptr)
+	{
+		bool bShouldStepCloth = FMath::Abs(PreviewInstance->GetLength() - PreviewInstance->GetCurrentTime()) > SMALL_NUMBER;
+		UAnimMontage* AnimMontage = LoadObject<UAnimMontage>(nullptr, TEXT("AnimMontage'/Game/FightingAnimsetPro/Montages/Skill1.Skill1'"));
+		PreviewInstance->SetAnimationAsset(AnimMontage);
+		PreviewInstance->SetReverse(false);
+		PreviewInstance->SetPlaying(true);
+		UE_LOG(LogTemp, Log, TEXT("PreviewInstance not nullptr"));
+	} else
+	{
+		UE_LOG(LogTemp, Log, TEXT("PreviewInstance is nullptr"));
+	}
+}
+
+UAnimSingleNodeInstance* FTestEditorViewportClient::GetPreviewInstance() const
+{
+	UDebugSkelMeshComponent* PreviewMeshComponent = TestPreviewScene->GetPreviewMeshComponent();
+	return PreviewMeshComponent && PreviewMeshComponent->IsPreviewOn()? PreviewMeshComponent->PreviewInstance : nullptr;
 }
 
 void FTestEditorViewportClient::ReverseAnim()
@@ -91,12 +118,18 @@ void FTestEditorViewportClient::ReverseAnim()
 	AnimInstance->Montage_Play(AnimMontage);
 }
 
-void FTestEditorViewportClient::StopAnim()
+void FTestEditorViewportClient::StopMontage()
 {
-	USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
-		MainActor->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	AnimInstance->Montage_Stop(0.25f);
+	// USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
+	// 	MainActor->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+	// UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	// AnimInstance->Montage_Stop(0.25f);
+	UAnimSingleNodeInstance* PreviewInstance = GetPreviewInstance();
+	check(PreviewInstance)
+	if (PreviewInstance != nullptr)
+	{
+		PreviewInstance->SetPlaying(false);
+	}
 }
 
 void FTestEditorViewportClient::AddStaticSkeletalMesh()

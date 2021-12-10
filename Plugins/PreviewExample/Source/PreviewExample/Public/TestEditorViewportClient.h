@@ -18,9 +18,11 @@ public:
 	virtual ~FTestEditorViewportClient() override;
 	void AddStaticCube();
 	void AddStaticBlueprint();
-	void PlayAnim();
+	// void PlayAnim();
+	void PlayMontage();
+	UAnimSingleNodeInstance* GetPreviewInstance() const;
 	void ReverseAnim();
-	void StopAnim();
+	void StopMontage();
 	void AddStaticSkeletalMesh();
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -28,4 +30,5 @@ private:
 	TWeakPtr<STestEditorViewport> TestEditorViewport;
 	FTestPreviewScene* TestPreviewScene;
 	ACharacter* MainActor;
+	UAnimMontage* Montage;
 };

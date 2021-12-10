@@ -78,12 +78,13 @@ FReply STestTransportControls::OnClick_Forward()
 
 	if (PlaybackMode == EPlaybackMode::Stopped)
 	{
+		TestEditorViewportClient->PlayMontage();
 		PlaybackMode = EPlaybackMode::PlayingForward;
-		TestEditorViewportClient->PlayAnim();
+		// TestEditorViewportClient->PlayAnim();
 	} else
 	{
 		PlaybackMode = EPlaybackMode::Stopped;
-		TestEditorViewportClient->StopAnim();
+		TestEditorViewportClient->StopMontage();
 	}
 	
 	return FReply::Handled();
@@ -101,7 +102,7 @@ FReply STestTransportControls::OnClick_Backward()
 	} else
 	{
 		PlaybackMode = EPlaybackMode::Stopped;
-		TestEditorViewportClient->StopAnim();
+		TestEditorViewportClient->StopMontage();
 	}
 	return FReply::Handled();
 }
