@@ -9,8 +9,11 @@
 #include "Widgets/Input/SSearchBox.h"
 #include "Widgets/Input/SSpinBox.h"
 #include "Widgets/Layout/SGridPanel.h"
+#include "Widgets/Layout/SScrollBorder.h"
 #include "ITimeSlider.h"
 #include "EditorStyleSet.h"
+#include "ISequencerWidgetsModule.h"
+#include "PreviewTimeSliderController.h"
 #include "Styling/ISlateStyle.h"
 #include "Styling/SlateTypes.h"
 
@@ -21,6 +24,17 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 
 	ColumnFillCoefficients[0] = 0.2f;
 	ColumnFillCoefficients[1] = 0.8f;
+
+	FTimeSliderArgs TimeSliderArgs;
+	TimeSliderController = MakeShareable(new FPreviewTimeSliderController(TimeSliderArgs, SharedThis(this), SecondaryNumericTypeInterface));
+	
+	TSharedRef<FPreviewTimeSliderController> TimeSliderControllerRef = TimeSliderController.ToSharedRef();
+	
+	
+	// Create the top slider
+	const bool bMirrorLabels = false;
+	ISequencerWidgetsModule& SequencerWidgets = FModuleManager::Get().LoadModuleChecked<ISequencerWidgetsModule>("SequencerWidgets");
+	TopTimeSlider = SequencerWidgets.CreateTimeSlider(TimeSliderControllerRef, bMirrorLabels);
 
 	int32 SequenceFrameRate = 30;//FMath::RoundToInt(InModel->GetFrameRate());
 	int32 TickResolutionValue = FMath::RoundToInt((double)GetDefault<UPersonaOptions>()->TimelineScrubSnapValue * SequenceFrameRate);//InModel->GetTickResolution();
@@ -60,6 +74,9 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 	// Create our numeric type interface so we can pass it to the time slider below.
 	NumericTypeInterface = MakeShareable(new FFrameNumberInterface(DisplayFormat, 0, TickResolution, DisplayRate));
 	SecondaryNumericTypeInterface = MakeShareable(new FFrameNumberInterface(DisplayFormatSecondary, 0, TickResolution, DisplayRate));
+
+	TSharedRef<SScrollBar> ScrollBar = SNew(SScrollBar)
+		.Thickness(FVector2D(5.0f, 5.0f));
 	
 	ChildSlot
 	[
@@ -122,50 +139,52 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 						]
 					]
 					// main timeline area
-					// +SGridPanel::Slot(Column0, Row1, SGridPanel::Layer(10))
-					// .ColumnSpan(2)
-					// [
-					// 	SNew(SHorizontalBox)
-					// 	+SHorizontalBox::Slot()
-					// 	[
-					// 		SNew(SOverlay)
-					// 		+SOverlay::Slot()
-					// 		[
-					// 			SNew(SScrollBorder, Outliner.ToSharedRef())
-					// 			[
-					// 				SNew(SHorizontalBox)
-					//
-					// 				// outliner tree
-					// 				+SHorizontalBox::Slot()
-					// 				.FillWidth(FillCoefficient_0)
-					// 				[
-					// 					SNew(SBox)
-					// 					[
-					// 						Outliner.ToSharedRef()
-					// 					]
-					// 				]
-					//
-					// 				// track area
-					// 				+SHorizontalBox::Slot()
-					// 				.FillWidth(FillCoefficient_1)
-					// 				[
-					// 					SNew(SBox)
-					// 					.Padding(ResizeBarPadding)
-					// 					.Clipping(EWidgetClipping::ClipToBounds)
-					// 					[
-					// 						TrackArea.ToSharedRef()
-					// 					]
-					// 				]
-					// 			]
-					// 		]
-					//
-					// 		+SOverlay::Slot()
-					// 		.HAlign(HAlign_Right)
-					// 		[
-					// 			ScrollBar
-					// 		]
-					// 	]
-					// ]
+					+SGridPanel::Slot(Column0, Row1, SGridPanel::Layer(10))
+					.ColumnSpan(2)
+					[
+						SNew(SHorizontalBox)
+						+SHorizontalBox::Slot()
+						[
+							SNew(SOverlay)
+							// +SOverlay::Slot()
+							// [
+							// 	SNew(SScrollBorder, Outliner.ToSharedRef())
+							// 	[
+							// 		SNew(SHorizontalBox)
+							//
+							// 		// outliner tree
+							// 		+SHorizontalBox::Slot()
+							// 		.FillWidth(FillCoefficient_0)
+							// 		[
+							// 			SNew(SBox)
+							// 			[
+							// 				// Outliner.ToSharedRef()
+							// 				SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::Black))
+							// 			]
+							// 		]
+							//
+							// 		// track area
+							// 		+SHorizontalBox::Slot()
+							// 		.FillWidth(FillCoefficient_1)
+							// 		[
+							// 			SNew(SBox)
+							// 			.Padding(ResizeBarPadding)
+							// 			.Clipping(EWidgetClipping::ClipToBounds)
+							// 			[
+							// 				// TrackArea.ToSharedRef()
+							// 				SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::White))
+							// 			]
+							// 		]
+							// 	]
+							// ]
+					
+							+SOverlay::Slot()
+							.HAlign(HAlign_Right)
+							[
+								ScrollBar
+							]
+						]
+					]
 
 					// Transport controls
 					+SGridPanel::Slot(Column0, Row3, SGridPanel::Layer(10))
@@ -188,7 +207,7 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 						]
 					]
 
-					// +SGridPanel::Slot(Column1, Row0, SGridPanel::Layer(10))
+					+SGridPanel::Slot(Column1, Row0, SGridPanel::Layer(10))
 					.Padding(ResizeBarPadding)
 					[
 						SNew( SBorder )
@@ -197,8 +216,7 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 						.Padding(0)
 						.Clipping(EWidgetClipping::ClipToBounds)
 						[
-							// TopTimeSlider.ToSharedRef()
-							SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::Green))
+							TopTimeSlider.ToSharedRef()
 						]
 					]
 

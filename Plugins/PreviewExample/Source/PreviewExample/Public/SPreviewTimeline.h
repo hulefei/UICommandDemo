@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
 
+class FPreviewTimeSliderController;
+class ITimeSlider;
 struct FAnimatedRange;
 /**
  * 
@@ -48,6 +50,12 @@ private:
 
 	/** Filter text used to search the tree */
 	FText FilterText;
+
+	/** The top time slider widget */
+	TSharedPtr<ITimeSlider> TopTimeSlider;
+
+	/** The time slider controller */
+	TSharedPtr<FPreviewTimeSliderController> TimeSliderController;
 private:
 	/**
 	 * @return The fill percentage of the animation outliner
