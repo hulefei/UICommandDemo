@@ -25,7 +25,7 @@ public class PreviewExample : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core", 
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -45,7 +45,10 @@ public class PreviewExample : ModuleRules
 				"EditorWidgets",
 				"AdvancedPreviewScene",
 				"Persona",
-				"AnimGraph"
+				"AnimGraph",
+				"SequencerWidgets",
+				"TimeManagement",
+				"EditorStyle"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

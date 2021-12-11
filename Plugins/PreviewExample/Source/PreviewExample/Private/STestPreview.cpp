@@ -4,6 +4,7 @@
 #include "STestPreview.h"
 
 #include "SlateOptMacros.h"
+#include "SPreviewTimeline.h"
 #include "STestTransportControls.h"
 #include "STestEditorViewport.h"
 #include "TestEditorViewportClient.h"
@@ -17,7 +18,7 @@ void STestPreview::Construct(const FArguments& InArgs)
 		SNew(SVerticalBox)
 
 		+ SVerticalBox::Slot()
-		.FillHeight(1.0f)
+		.FillHeight(.5f)
 		[
 			SNew(SVerticalBox)
 			+ SVerticalBox::Slot()
@@ -57,6 +58,12 @@ void STestPreview::Construct(const FArguments& InArgs)
 					SAssignNew(TestTransportControls, STestTransportControls)
 				]
 			]
+		]
+
+		+ SVerticalBox::Slot()
+		.FillHeight(.5f)
+		[
+			SNew(SPreviewTimeline)
 		]
 	];
 
