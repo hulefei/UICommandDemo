@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PreviewTimelineTrack.h"
 #include "Widgets/SCompoundWidget.h"
 
+class SPreviewTrackArea;
 /**
  * 
  */
-class PREVIEWEXAMPLE_API SPreviewOutliner : public SCompoundWidget
+class PREVIEWEXAMPLE_API SPreviewOutliner : public STreeView<TSharedRef<FPreviewTimelineTrack >>
 {
 public:
 	SLATE_BEGIN_ARGS(SPreviewOutliner)
@@ -17,6 +19,7 @@ public:
 
 	SLATE_END_ARGS()
 
-	/** Constructs this widget with InArgs */
-	void Construct(const FArguments& InArgs);
+
+	void Construct(const FArguments& InArgs, const TSharedRef<SPreviewTrackArea>& InTrackArea);
+	
 };

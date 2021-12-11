@@ -7,14 +7,13 @@
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
-void SPreviewOutliner::Construct(const FArguments& InArgs)
+void SPreviewOutliner::Construct(const FArguments& InArgs, const TSharedRef<SPreviewTrackArea>& InTrackArea)
 {
-	/*
-	ChildSlot
-	[
-		// Populate the widget
-	];
-	*/
+	// ChildSlot
+	// [
+	// 	// Populate the widget
+	// 	
+	// ];
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

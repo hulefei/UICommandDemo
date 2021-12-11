@@ -8,9 +8,8 @@
 class FPreviewTimeSliderController;
 class ITimeSlider;
 struct FAnimatedRange;
-/**
- * 
- */
+
+
 class PREVIEWEXAMPLE_API SPreviewTimeline : public SCompoundWidget
 {
 public:
@@ -53,6 +52,10 @@ private:
 
 	/** The top time slider widget */
 	TSharedPtr<ITimeSlider> TopTimeSlider;
+
+	TSharedPtr<class SPreviewTrackArea> TrackArea;
+
+	TSharedPtr<class SPreviewOutliner> Outliner;
 
 	/** The time slider controller */
 	TSharedPtr<FPreviewTimeSliderController> TimeSliderController;

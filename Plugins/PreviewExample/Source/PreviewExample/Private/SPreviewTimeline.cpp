@@ -14,6 +14,8 @@
 #include "EditorStyleSet.h"
 #include "ISequencerWidgetsModule.h"
 #include "PreviewTimeSliderController.h"
+#include "SPreviewOutliner.h"
+#include "SPreviewTrackArea.h"
 #include "Styling/ISlateStyle.h"
 #include "Styling/SlateTypes.h"
 
@@ -29,12 +31,22 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 	TimeSliderController = MakeShareable(new FPreviewTimeSliderController(TimeSliderArgs, SharedThis(this), SecondaryNumericTypeInterface));
 	
 	TSharedRef<FPreviewTimeSliderController> TimeSliderControllerRef = TimeSliderController.ToSharedRef();
-	
+
+	TSharedRef<SScrollBar> ScrollBar = SNew(SScrollBar)
+		.Thickness(FVector2D(5.0f, 5.0f));
 	
 	// Create the top slider
 	const bool bMirrorLabels = false;
 	ISequencerWidgetsModule& SequencerWidgets = FModuleManager::Get().LoadModuleChecked<ISequencerWidgetsModule>("SequencerWidgets");
 	TopTimeSlider = SequencerWidgets.CreateTimeSlider(TimeSliderControllerRef, bMirrorLabels);
+
+	TrackArea = SNew(SPreviewTrackArea, TimeSliderControllerRef);
+	Outliner = SNew(SPreviewOutliner, TrackArea.ToSharedRef())
+		// .ExternalScrollbar(ScrollBar)
+		.Clipping(EWidgetClipping::ClipToBounds);
+		// .FilterText_Lambda([this](){ return FilterText; });
+
+	// TrackArea->SetOutliner(Outliner);
 
 	int32 SequenceFrameRate = 30;//FMath::RoundToInt(InModel->GetFrameRate());
 	int32 TickResolutionValue = FMath::RoundToInt((double)GetDefault<UPersonaOptions>()->TimelineScrubSnapValue * SequenceFrameRate);//InModel->GetTickResolution();
@@ -75,9 +87,6 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 	NumericTypeInterface = MakeShareable(new FFrameNumberInterface(DisplayFormat, 0, TickResolution, DisplayRate));
 	SecondaryNumericTypeInterface = MakeShareable(new FFrameNumberInterface(DisplayFormatSecondary, 0, TickResolution, DisplayRate));
 
-	TSharedRef<SScrollBar> ScrollBar = SNew(SScrollBar)
-		.Thickness(FVector2D(5.0f, 5.0f));
-	
 	ChildSlot
 	[
 		SNew(SOverlay)
