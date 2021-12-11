@@ -146,37 +146,38 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 						+SHorizontalBox::Slot()
 						[
 							SNew(SOverlay)
-							// +SOverlay::Slot()
-							// [
-							// 	SNew(SScrollBorder, Outliner.ToSharedRef())
-							// 	[
-							// 		SNew(SHorizontalBox)
-							//
-							// 		// outliner tree
-							// 		+SHorizontalBox::Slot()
-							// 		.FillWidth(FillCoefficient_0)
-							// 		[
-							// 			SNew(SBox)
-							// 			[
-							// 				// Outliner.ToSharedRef()
-							// 				SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::Black))
-							// 			]
-							// 		]
-							//
-							// 		// track area
-							// 		+SHorizontalBox::Slot()
-							// 		.FillWidth(FillCoefficient_1)
-							// 		[
-							// 			SNew(SBox)
-							// 			.Padding(ResizeBarPadding)
-							// 			.Clipping(EWidgetClipping::ClipToBounds)
-							// 			[
-							// 				// TrackArea.ToSharedRef()
-							// 				SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::White))
-							// 			]
-							// 		]
-							// 	]
-							// ]
+							+SOverlay::Slot()
+							[
+							SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::White))
+								// SNew(SScrollBorder, Outliner.ToSharedRef())
+								// [
+								// 	SNew(SHorizontalBox)
+								//
+								// 	// outliner tree
+								// 	+SHorizontalBox::Slot()
+								// 	.FillWidth(FillCoefficient_0)
+								// 	[
+								// 		SNew(SBox)
+								// 		[
+								// 			// Outliner.ToSharedRef()
+								// 			SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::Black))
+								// 		]
+								// 	]
+								//
+								// 	// track area
+								// 	+SHorizontalBox::Slot()
+								// 	.FillWidth(FillCoefficient_1)
+								// 	[
+								// 		SNew(SBox)
+								// 		.Padding(ResizeBarPadding)
+								// 		.Clipping(EWidgetClipping::ClipToBounds)
+								// 		[
+								// 			// TrackArea.ToSharedRef()
+								// 			SNew(SImage).ColorAndOpacity(FSlateColor(FLinearColor::White))
+								// 		]
+								// 	]
+								// ]
+							]
 					
 							+SOverlay::Slot()
 							.HAlign(HAlign_Right)
