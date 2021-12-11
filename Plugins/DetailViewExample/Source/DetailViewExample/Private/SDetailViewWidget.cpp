@@ -8,6 +8,27 @@
 
 #define LOCTEXT_NAMESPACE "SDetailViewWidget"
 
+FTreeViewInstanceData::FTreeViewInstanceData(const FString& InPath) : DiskPath(InPath)
+{
+	CleanName = FPaths::GetBaseFilename(DiskPath);
+	bIsDirectory = !FPaths::FileExists(DiskPath);
+}
+
+FTreeViewInstanceData::FTreeViewInstanceData(const FString& InPath, TSharedPtr<FTreeViewInstanceData>& InParent): DiskPath(InPath), Parent(InParent)
+{
+	CleanName = FPaths::GetBaseFilename(DiskPath);
+	bIsDirectory = !FPaths::FileExists(DiskPath);
+}
+
+TSharedPtr<SWidget> FTreeViewInstanceData::CreateIcon() const
+{
+	FSlateColor IconColor = FSlateColor::UseForeground();
+	const FSlateBrush* Brush = FEditorStyle::GetBrush(bIsDirectory ? "ContentBrowser.AssetTreeFolderOpen" : "ContentBrowser.ColumnViewAssetIcon");
+	return SNew(SImage)
+		.Image(Brush)
+		.ColorAndOpacity(IconColor);
+}
+
 void SDetailViewWidget::Construct(const FArguments& InArgs)
 {
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(
@@ -28,6 +49,19 @@ void SDetailViewWidget::Construct(const FArguments& InArgs)
 		FText::FromString(TEXT("FDetailViewExampleModule::OnSpawnPluginTab")),
 		FText::FromString(TEXT("DetailViewExample.cpp"))
 	);
+
+	SAssignNew(TreeViewPtr, STreeViewPtr)
+		.TreeItemsSource(&TreeRootItems)
+		.OnGenerateRow(this, &SDetailViewWidget::GenerateTreeRow)
+		.ItemHeight(30)
+		.SelectionMode(ESelectionMode::Multi)
+		.OnGetChildren(this, &SDetailViewWidget::GetChildrenForTree)
+		.ClearSelectionOnClick(false)
+		.HighlightParentNodesForSelection(true);
+
+	const FString Path(TEXT("D:\\workspace\\UnrealEngine"));
+	InitTreeView(Path);
+	
 	ChildSlot
 	[
 		SNew(SHorizontalBox)
@@ -38,7 +72,8 @@ void SDetailViewWidget::Construct(const FArguments& InArgs)
 		+ SHorizontalBox::Slot().FillWidth(0.7f)
 		[
 			// SNew(STextBlock).Text(WidgetText)
-			SNew(SButton).OnClicked(this, &SDetailViewWidget::OnPlayClicked)
+			// SNew(SButton).OnClicked(this, &SDetailViewWidget::OnPlayClicked)
+			TreeViewPtr.ToSharedRef()
 		]
 	];
 }
@@ -73,5 +108,99 @@ bool SDetailViewWidget::IsPropertyVisible(const FPropertyAndParent& PropertyAndP
 	return true;
 }
 
+void SDetailViewWidget::InitTreeView(const FString& InRootPath)
+{
+	FTreeViewInstanceDataPtr Root = MakeShared<FTreeViewInstanceData>(InRootPath);
+	TreeRootItems.Add(Root);
+	// ConstructChildrenRecursively(Root);
+	CustomConstructChildren(Root);
+}
+
+void SDetailViewWidget::CustomConstructChildren(FTreeViewInstanceDataPtr TreeItem)
+{
+	if (TreeItem.IsValid())
+	{
+		FTreeViewInstanceDataPtr Parent1 = MakeShared<FTreeViewInstanceData>(TEXT("Parent1"), TreeItem);
+		TreeItem->Children.Add(Parent1);
+		FTreeViewInstanceDataPtr Parent2 = MakeShared<FTreeViewInstanceData>(TEXT("Parent2"), TreeItem);
+		TreeItem->Children.Add(Parent2);
+
+		FTreeViewInstanceDataPtr Child1_1 = MakeShared<FTreeViewInstanceData>(TEXT("Child1"), TreeItem);
+		Child1_1->bIsDirectory = false;
+		Parent1->Children.Add(Child1_1);
+
+		FTreeViewInstanceDataPtr Child2_1 = MakeShared<FTreeViewInstanceData>(TEXT("Child1"), TreeItem);
+		Child2_1->bIsDirectory = false;
+		Parent2->Children.Add(Child2_1);
+		// if (Child->bIsDirectory)
+		// {
+		// 	//目录则递归获取其子节点信息
+		// 	ConstructChildrenRecursively(Child);
+		// }
+	}
+}
+
+void SDetailViewWidget::ConstructChildrenRecursively(FTreeViewInstanceDataPtr TreeItem)
+{
+	if (TreeItem.IsValid())
+	{
+		//找到此目录下所有文件
+		TArray<FString> FindedFiles;
+		FString SearchFile = TreeItem->DiskPath + "/*.*";
+		IFileManager::Get().FindFiles(FindedFiles, *SearchFile, true, true);
+
+		for (auto&element : FindedFiles)
+		{
+			//构建子节点
+			FString FullPath = TreeItem->DiskPath + "/" + element;
+			FTreeViewInstanceDataPtr Child = FTreeViewInstanceDataPtr(new FTreeViewInstanceData(FullPath, TreeItem));
+			TreeItem->Children.Add(Child);
+			if (Child->bIsDirectory)
+			{
+				//目录则递归获取其子节点信息
+				ConstructChildrenRecursively(Child);
+			}
+		}
+	}
+}
+
+TSharedRef<ITableRow> SDetailViewWidget::GenerateTreeRow(FTreeViewInstanceDataPtr TreeItem,
+	const TSharedRef<STableViewBase>& OwnerTable)
+{
+	check(TreeItem.IsValid());
+	//根据TreeItem构建一个Item表现的Widget
+	return
+		SNew(STableRow<FTreeViewInstanceDataPtr>, OwnerTable)
+		[
+			SNew(SBox)
+			.WidthOverride(200.0f)
+			[
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				.VAlign(VAlign_Center)
+				.AutoWidth()
+				[
+					TreeItem->CreateIcon().ToSharedRef()
+				]
+				+ SHorizontalBox::Slot()
+				.VAlign(VAlign_Center)
+				.AutoWidth()
+				[
+				SNew(STextBlock)
+				.Text(FText::FromString(TreeItem->CleanName))
+				.Font(FStyleDefaults::GetFontInfo(20))
+				]
+			]
+		];
+}
+
+void SDetailViewWidget::GetChildrenForTree(FTreeViewInstanceDataPtr TreeItem, TArray<FTreeViewInstanceDataPtr>& OutChildren)
+{
+	//获取TreeItem的子节点信息
+	if (TreeItem.IsValid())
+	{
+		OutChildren = TreeItem->Children;
+	}
+}
 
 #undef LOCTEXT_NAMESPACE
