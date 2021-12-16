@@ -2,6 +2,7 @@
 
 #include "UICommandDemoCharacter.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
+#include "KSkillHello.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
