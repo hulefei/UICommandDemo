@@ -27,7 +27,11 @@ void SPreviewTimeline::Construct(const FArguments& InArgs)
 	ColumnFillCoefficients[0] = 0.2f;
 	ColumnFillCoefficients[1] = 0.8f;
 
+	TAttribute<FAnimatedRange> ViewRange = MakeAttributeLambda([](){ return FAnimatedRange(0.0, 100.0); });
 	FTimeSliderArgs TimeSliderArgs;
+	{
+		TimeSliderArgs.ViewRange = ViewRange;
+	}
 	TimeSliderController = MakeShareable(new FPreviewTimeSliderController(TimeSliderArgs, SharedThis(this), SecondaryNumericTypeInterface));
 	
 	TSharedRef<FPreviewTimeSliderController> TimeSliderControllerRef = TimeSliderController.ToSharedRef();
