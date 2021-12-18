@@ -2,6 +2,7 @@
 
 #include "Modules/ModuleManager.h"
 
+
 #define LOCTEXT_NAMESPACE "FKSkillCore"
 
 void FKSkillCore::StartupModule()
