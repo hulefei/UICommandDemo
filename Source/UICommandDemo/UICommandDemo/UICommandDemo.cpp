@@ -2,7 +2,8 @@
 
 #include "UICommandDemo.h"
 
-#include "../../../Plugins/ModuleExample/Source/ModuleExample/Classes/ModuleAsset.h"
+#include "ModuleExample.h"
+#include "ModuleExampleAsset.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "UICommandDemo"
@@ -12,7 +13,6 @@ class FUICommandDemoModule : public FDefaultGameModuleImpl
 	virtual void StartupModule() override
 	{
 		UE_LOG(LogTemp, Log, TEXT("FUICommandDemoModule StartupModuleStartupModule"));
-		UModuleAsset& ModuleAsset = FModuleManager::Get().LoadModuleChecked<UModuleAsset>("ModuleExample");
 	}
 };
 

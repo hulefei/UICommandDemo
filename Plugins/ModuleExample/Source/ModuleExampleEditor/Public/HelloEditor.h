@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-#include "ModuleAsset.generated.h"
+#include "HelloEditor.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MODULEEXAMPLE_API UModuleAsset : public UObject
+class MODULEEXAMPLEEDITOR_API UHelloEditor : public UObject
 {
 	GENERATED_BODY()
-
+	
 public:
-	FString Name;
+	void Hello1();
 };

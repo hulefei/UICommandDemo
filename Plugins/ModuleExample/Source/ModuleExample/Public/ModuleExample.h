@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-// #include "ModuleAsset.h"
 #include "Modules/ModuleManager.h"
+
+
+class UModuleExampleAsset;
 
 class FModuleExampleModule : public IModuleInterface
 {
@@ -13,9 +15,7 @@ public:
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
+	void SayHello();
 
-	// UModuleAsset* GetModuleAsset() const {return ModuleAsset;}
-	
 private:
-	// UModuleAsset* ModuleAsset = nullptr;
 };

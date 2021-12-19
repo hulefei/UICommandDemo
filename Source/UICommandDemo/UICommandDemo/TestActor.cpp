@@ -3,7 +3,10 @@
 
 #include "TestActor.h"
 
+#include "KSkillAsset.h"
 #include "KSkillCore.h"
+#include "ModuleExample.h"
+#include "ModuleExampleAsset.h"
 
 
 // Sets default values
@@ -18,9 +21,12 @@ void ATestActor::BeginPlay()
 {
 	Super::BeginPlay();
 	FKSkillCore& KSkillCore = FModuleManager::Get().LoadModuleChecked<FKSkillCore>("KSkillCore");
-	FKSkillCore& KSkillCore2 = FModuleManager::Get().LoadModuleChecked<FKSkillCore>("KSkillCore");
 	KSkillCore.SayHello();
-	KSkillCore2.SayHello();
+
+	UModuleExampleAsset* Asset = NewObject<UModuleExampleAsset>();
+	Asset->Name = TEXT("FKSkillCore:lefeihu");
+	Asset->Age = 100;
+	UE_LOG(LogTemp, Log, TEXT("Name:%s, Age:%d"), *Asset->Name, Asset->Age);
 }
 
 // Called every frame

@@ -4,15 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-#include "KSkillAsset.generated.h"
+#include "ModuleExampleAsset.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class KSKILLCORE_API UKSkillAsset : public UObject
+class MODULEEXAMPLE_API UModuleExampleAsset : public UObject
 {
 	GENERATED_BODY()
 public:
 	FString Name;
+
+#if WITH_EDITOR
+	int32 Age;
+#endif
+	
 };

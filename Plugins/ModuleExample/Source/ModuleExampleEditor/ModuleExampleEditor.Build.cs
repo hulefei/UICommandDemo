@@ -41,6 +41,7 @@ public class ModuleExampleEditor : ModuleRules
 				"SequencerWidgets",
 				"MovieScene",
 				"TimeManagement",
+				"ModuleExample"
 			});
 		
 		PrivateIncludePathModuleNames.AddRange(
