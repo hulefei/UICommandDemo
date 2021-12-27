@@ -14,7 +14,16 @@ class PRESTUDYEXAMPLE_API UTargetObject : public UObject
 {
 	GENERATED_UCLASS_BODY()
 public:
-	UPROPERTY(EditAnywhere, Category=Reflection)
+	UPROPERTY(EditAnywhere, Category=Reflection, meta=(kskill))
 	int32 Age;
-	
+
+	UPROPERTY(EditAnywhere, Category=Reflection, meta=(kskill))
+	FName Name;
+
+	UPROPERTY(EditAnywhere, Category=Reflection, meta=(kskill))
+	FString Description;
+
+	UPROPERTY(EditAnywhere)
+	FSoftObjectPath SoftObjectPath;
+
 };

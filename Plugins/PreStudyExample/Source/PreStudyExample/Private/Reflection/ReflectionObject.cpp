@@ -8,5 +8,4 @@
 void UReflectionObject::Main()
 {
 	UTargetObject* TargetObject = NewObject<UTargetObject>();
-	UE_LOG(LogTemp, Log, TEXT("Age:%d"), TargetObject->Age);
 }
