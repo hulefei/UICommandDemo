@@ -23,7 +23,7 @@ void SPreStudyWidget::Construct(const FArguments& InArgs)
 			[
 				SNew(SButton).Text(LOCTEXT("Reflection", "Reflection")).OnClicked_Lambda([this]() -> FReply
 				{
-					UReflectionObject::SayHello();
+					UReflectionObject::Main();
 					return FReply::Handled();
 				})
 			]

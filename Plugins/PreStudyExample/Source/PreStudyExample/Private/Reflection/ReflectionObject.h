@@ -15,6 +15,7 @@ class PRESTUDYEXAMPLE_API UReflectionObject : public UObject
 	GENERATED_BODY()
 
 public:
+	static void Main();
 	static void SayHello()
 	{
 		UE_LOG(LogTemp, Log, TEXT("UReflectionObject Say Hello"));
