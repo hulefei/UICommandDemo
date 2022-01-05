@@ -30,12 +30,10 @@ void FDetailViewExampleModule::StartupModule()
 	FDetailViewExampleCommands::Register();
 
 	// Register the details customizer
-	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	
-	PropertyModule.RegisterCustomPropertyTypeLayout("CustomDetailStruct", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCustomDetailStructViewCustomization::MakeInstance));
-	PropertyModule.NotifyCustomizationModuleChanged();
-	
-	PropertyModule.RegisterCustomClassLayout("DetailObject", FOnGetDetailCustomizationInstance::CreateStatic( &FDetailObjectDetails::MakeInstance ) );
+	// FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	// PropertyModule.RegisterCustomPropertyTypeLayout("CustomDetailStruct", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCustomDetailStructViewCustomization::MakeInstance));
+	// PropertyModule.NotifyCustomizationModuleChanged();
+	// PropertyModule.RegisterCustomClassLayout("DetailObject", FOnGetDetailCustomizationInstance::CreateStatic( &FDetailObjectDetails::MakeInstance ) );
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 

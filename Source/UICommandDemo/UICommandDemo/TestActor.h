@@ -12,6 +12,9 @@ class UICOMMANDDEMO_API ATestActor : public AActor
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ParticleSystem;
+	
 	// Sets default values for this actor's properties
 	ATestActor();
 

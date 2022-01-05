@@ -38,6 +38,7 @@ public class KSkillCore : ModuleRules
 				"LevelEditor",
 				"CoreUObject",
 				"Engine",
+				// "ModuleExampleEditor",
 				// ... add private dependencies that you statically link with here ...    
 			}
 		);

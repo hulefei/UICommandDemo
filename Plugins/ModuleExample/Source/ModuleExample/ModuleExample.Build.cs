@@ -39,6 +39,7 @@ public class ModuleExample : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				// ,"KSkillCore"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

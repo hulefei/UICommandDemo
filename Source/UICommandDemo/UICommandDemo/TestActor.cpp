@@ -7,6 +7,8 @@
 #include "KSkillCore.h"
 #include "ModuleExample.h"
 #include "ModuleExampleAsset.h"
+#include "TestObject.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -27,6 +29,15 @@ void ATestActor::BeginPlay()
 	Asset->Name = TEXT("FKSkillCore:lefeihu");
 	Asset->Age = 100;
 	UE_LOG(LogTemp, Log, TEXT("Name:%s, Age:%d"), *Asset->Name, Asset->Age);
+
+	UWorld* World = GetWorld();
+	UE_LOG(LogTemp, Log, TEXT("Name:%s"), *GetOuter()->GetName());
+	check(World)
+
+	UTestObject* TestObject = NewObject<UTestObject>(this);
+	TestObject->Test1(ParticleSystem);
+
+	// UGameplayStatics::SpawnEmitterAtLocation(GetOuter()->GetWorld(), ParticleSystem, FTransform::Identity);
 }
 
 // Called every frame
