@@ -52,7 +52,7 @@ FReply SGCWidget::Button3Handle()
 FReply SGCWidget::Button4Handle()
 {
 	delete TestFObject;
-	CollectGarbage(EObjectFlags::RF_NoFlags);
+	// CollectGarbage(EObjectFlags::RF_NoFlags);
 	FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("delete TestFObject")));
 	return FReply::Handled();
 }
