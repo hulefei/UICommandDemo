@@ -34,9 +34,7 @@ private:
 class XMLEXAMPLE_API FKXmlNode
 {
 	friend class FKXmlFile;
-
 private:
-
 	/** Default ctor, private for FKXmlFile use only */
 	FKXmlNode() : NextNode(nullptr) {}
 	/** No copy ctor allowed */
@@ -51,6 +49,8 @@ private:
 
 	/** Recursively deletes the nodes for cleanup */
 	void Delete();
+
+	FKXmlNode& AppendChildNode(FKXmlNode* InNode);
 
 public:
 
@@ -85,7 +85,7 @@ public:
 	FString GetAttribute(const FString& InTag) const;
 	void UpdateOrAddAttribute(const FString& InTag, const FString& InValue);
 	/** Adds a simple tag with content to the current node */
-	void AppendChildNode(const FString& InTag, const FString& InContent);
+	FKXmlNode& AppendChildNode(const FString& InTag, const FString& InContent=TEXT(""));
 private:
 
 	/** The list of children nodes */

@@ -114,16 +114,23 @@ void FKXmlNode::UpdateOrAddAttribute(const FString& InTag, const FString& InValu
 	Attributes.Add(NewAttribute);
 }
 
-void FKXmlNode::AppendChildNode(const FString& InTag, const FString& InContent)
+FKXmlNode& FKXmlNode::AppendChildNode(FKXmlNode* InNode)
+{
+	const auto NumChildren = Children.Num();
+	if (NumChildren != 0)
+	{
+		Children[NumChildren - 1]->NextNode = InNode;
+	}
+	Children.Push(InNode);
+
+	return *InNode;
+}
+
+FKXmlNode& FKXmlNode::AppendChildNode(const FString& InTag, const FString& InContent)
 {
 	const auto NewNode = new FKXmlNode;
 	NewNode->Tag = InTag;
 	NewNode->Content = InContent;
 
-	auto NumChildren = Children.Num();
-	if (NumChildren != 0)
-	{
-		Children[NumChildren - 1]->NextNode = NewNode;
-	}
-	Children.Push(NewNode);
+	return AppendChildNode(NewNode);
 }

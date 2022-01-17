@@ -4,5 +4,6 @@
 	<Director>张艺谋</Director>
 	<Time>2021-04-30</Time>
 	<Place>Shanghai</Place>
-	<Place>Shanghai</Place>
+	<Place ID="310">Shanghai</Place>
+	<Place ID="310" />
 </Movie>

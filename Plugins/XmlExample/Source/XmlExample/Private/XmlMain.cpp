@@ -28,7 +28,8 @@ void UXmlMain::Main()
 		// 获取属性值
 		FString MovieName = RootNode->GetAttribute(TEXT("Name"));
 
-		RootNode->AppendChildNode(TEXT("Place"), TEXT("Shanghai"));
+		RootNode->AppendChildNode(TEXT("Place"), TEXT("Shanghai")).UpdateOrAddAttribute(TEXT("ID"), TEXT("310"));
+		RootNode->AppendChildNode(TEXT("Place")).UpdateOrAddAttribute(TEXT("ID"), TEXT("310"));
 		// 获取子节点
 		FKXmlNode* CategoryNode = RootNode->FindChildNode(TEXT("Category"));
 		FString CategoryName = CategoryNode->GetAttribute(TEXT("Name"));
