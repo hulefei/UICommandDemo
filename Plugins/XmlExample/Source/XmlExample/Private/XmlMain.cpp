@@ -3,7 +3,6 @@
 
 #include "XmlMain.h"
 
-#include "XmlFile.h"
 #include "KXmlParser/KXmlFile.h"
 
 #define LOCTEXT_NAMESPACE "FXmlExampleModule"
@@ -33,6 +32,7 @@ void UXmlMain::Main()
 		// 获取子节点
 		FKXmlNode* CategoryNode = RootNode->FindChildNode(TEXT("Category"));
 		FString CategoryName = CategoryNode->GetAttribute(TEXT("Name"));
+		CategoryNode->UpdateOrAddAttribute(TEXT("ID"), TEXT("28"));
 		// 获取子节点的值
 		FString MovieCategory = CategoryNode->GetContent();
 	

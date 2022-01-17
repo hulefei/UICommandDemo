@@ -25,7 +25,7 @@ public class XmlExample : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core", "XmlParser",
+				"Core"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -42,7 +42,6 @@ public class XmlExample : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore", 
-				"XmlParser",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

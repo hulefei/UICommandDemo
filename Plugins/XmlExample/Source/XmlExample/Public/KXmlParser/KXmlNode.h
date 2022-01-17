@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "XmlNode.h"
 
 class XMLEXAMPLE_API FKXmlAttribute
 {
@@ -19,6 +18,10 @@ public:
 
 	/** Gets the value of the attribute */
 	const FString& GetValue() const;
+	
+	/** Gets the value of the attribute */
+	void SetValue(const FString& InValue);
+	
 
 private:
 	/** The tag string */
@@ -66,7 +69,7 @@ public:
 	/** Gets the value of the node */
 	const FString& GetContent() const;
 	/** Sets the new value of the node */
-	void SetContent(const FString& InContent);
+	void SetContent(const FString InContent);
 
 	/**
 	 * Gets all of the attributes in this node
@@ -80,6 +83,7 @@ public:
 
 	/** Gets an attribute that corresponds with the passed-in tag */
 	FString GetAttribute(const FString& InTag) const;
+	void UpdateOrAddAttribute(const FString& InTag, const FString& InValue);
 	/** Adds a simple tag with content to the current node */
 	void AppendChildNode(const FString& InTag, const FString& InContent);
 private:

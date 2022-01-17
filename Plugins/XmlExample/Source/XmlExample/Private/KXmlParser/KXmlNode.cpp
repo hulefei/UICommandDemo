@@ -14,6 +14,11 @@ const FString& FKXmlAttribute::GetValue() const
 	return Value;
 }
 
+void FKXmlAttribute::SetValue(const FString& InValue)
+{
+	Value = InValue;
+}
+
 void FKXmlNode::Delete()
 {
 	const int32 ChildCount = Children.Num();
@@ -77,8 +82,7 @@ const FString& FKXmlNode::GetContent() const
 	return Content;
 }
 
-
-void FKXmlNode::SetContent( const FString& InContent )
+void FKXmlNode::SetContent( const FString InContent )
 {
 	Content = InContent;
 }
@@ -95,9 +99,24 @@ FString FKXmlNode::GetAttribute(const FString& InTag) const
 	return FString();
 }
 
+void FKXmlNode::UpdateOrAddAttribute(const FString& InTag, const FString& InValue)
+{
+	for (FKXmlAttribute& Attribute : Attributes)
+	{
+		if (Attribute.GetTag().Equals(InTag))
+		{
+			Attribute.SetValue(InValue);
+			return;
+		}
+	}
+
+	const FKXmlAttribute NewAttribute(InTag, InValue);
+	Attributes.Add(NewAttribute);
+}
+
 void FKXmlNode::AppendChildNode(const FString& InTag, const FString& InContent)
 {
-	auto NewNode = new FKXmlNode;
+	const auto NewNode = new FKXmlNode;
 	NewNode->Tag = InTag;
 	NewNode->Content = InContent;
 
