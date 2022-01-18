@@ -12,3 +12,9 @@ void UTestObject::Test1(UParticleSystem* ParticleSystem)
 
 	UGameplayStatics::SpawnEmitterAtLocation(GetOuter()->GetWorld(), ParticleSystem, FTransform::Identity);
 }
+
+bool UTestObject::ReactToTrigger()
+{
+	UE_LOG(LogTemp, Log, TEXT("UTestObject::ReactToTrigger"));
+	return ITestProvider::ReactToTrigger();
+}
