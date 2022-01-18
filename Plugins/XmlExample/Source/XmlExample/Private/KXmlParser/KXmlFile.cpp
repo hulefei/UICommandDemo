@@ -481,10 +481,10 @@ void FKXmlFile::AddAttribute(const FString& InToken, TArray<FKXmlAttribute>& Out
 		Value.TrimQuotesInline(&bQuotesRemoved);
 
 		// The xml spec allows single and double quotes, so this is a valid case to support: https://www.w3.org/TR/xml/#NT-AttValue
-		if (!bQuotesRemoved)
-		{
-			Value.TrimCharInline('\'', &bQuotesRemoved);
-		}
+		// if (!bQuotesRemoved)
+		// {
+		// 	Value.TrimCharInline('\'', &bQuotesRemoved);
+		// }
 
 		if(bQuotesRemoved)
 		{
