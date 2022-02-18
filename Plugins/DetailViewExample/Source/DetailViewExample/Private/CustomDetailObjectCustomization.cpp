@@ -18,8 +18,7 @@ void FCustomDetailObjectCustomization::CustomizeDetails(IDetailLayoutBuilder& De
 	DetailCategoryBuilder.AddCustomRow(FText::GetEmpty())
 	                     .NameContent()
 		[
-			SNew(STextBlock)
-			.Text(FText::FromString("CustomName"))
+			SNew(STextBlock).Text(FText::FromString("CustomName"))
 		]
 		.ValueContent()
 		[
