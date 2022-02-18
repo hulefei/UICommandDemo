@@ -2,8 +2,8 @@
 
 #include "DetailViewExample.h"
 
-#include "DetailObjectDetails.h"
-#include "CustomDetailStructViewCustomization.h"
+#include "CustomDetailObjectCustomization.h"
+#include "CustomDetailStructCustomization.h"
 #include "DetailObject.h"
 #include "DetailViewExampleStyle.h"
 #include "DetailViewExampleCommands.h"
@@ -30,10 +30,10 @@ void FDetailViewExampleModule::StartupModule()
 	FDetailViewExampleCommands::Register();
 
 	// Register the details customizer
-	// FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	// PropertyModule.RegisterCustomPropertyTypeLayout("CustomDetailStruct", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCustomDetailStructViewCustomization::MakeInstance));
-	// PropertyModule.NotifyCustomizationModuleChanged();
-	// PropertyModule.RegisterCustomClassLayout("DetailObject", FOnGetDetailCustomizationInstance::CreateStatic( &FDetailObjectDetails::MakeInstance ) );
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	PropertyModule.RegisterCustomPropertyTypeLayout("CustomDetailStruct", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCustomDetailStructCustomization::MakeInstance));
+	PropertyModule.RegisterCustomClassLayout("CustomDetailObject", FOnGetDetailCustomizationInstance::CreateStatic( &FCustomDetailObjectCustomization::MakeInstance ) );
+	PropertyModule.NotifyCustomizationModuleChanged();
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 
@@ -102,16 +102,16 @@ void FDetailViewExampleModule::RegisterMenus()
 		}
 	}
 
-	// {
-	// 	UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
-	// 	{
-	// 		FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
-	// 		{
-	// 			FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FDetailViewExampleCommands::Get().OpenPluginWindow));
-	// 			Entry.SetCommandList(PluginCommands);
-	// 		}
-	// 	}
-	// }
+	{
+		UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
+		{
+			FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
+			{
+				FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FDetailViewExampleCommands::Get().OpenPluginWindow));
+				Entry.SetCommandList(PluginCommands);
+			}
+		}
+	}
 }
 
 #undef LOCTEXT_NAMESPACE

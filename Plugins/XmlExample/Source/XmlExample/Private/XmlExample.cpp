@@ -64,16 +64,16 @@ void FXmlExampleModule::RegisterMenus()
 		}
 	}
 
-	{
-		UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
-		{
-			FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
-			{
-				FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FXmlExampleCommands::Get().PluginAction));
-				Entry.SetCommandList(PluginCommands);
-			}
-		}
-	}
+	// {
+	// 	UToolMenu* ToolbarMenu = UToolMenus::Get()->ExtendMenu("LevelEditor.LevelEditorToolBar");
+	// 	{
+	// 		FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
+	// 		{
+	// 			FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FXmlExampleCommands::Get().PluginAction));
+	// 			Entry.SetCommandList(PluginCommands);
+	// 		}
+	// 	}
+	// }
 }
 
 #undef LOCTEXT_NAMESPACE

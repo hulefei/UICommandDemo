@@ -1,19 +1,19 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CustomDetailStructViewCustomization.h"
+#include "CustomDetailStructCustomization.h"
 
 #include "DetailLayoutBuilder.h"
 #include "DetailWidgetRow.h"
 #include "Fonts/SlateFontInfo.h"
 #include "EditorStyle.h"
 
-TSharedRef<IPropertyTypeCustomization> FCustomDetailStructViewCustomization::MakeInstance()
+TSharedRef<IPropertyTypeCustomization> FCustomDetailStructCustomization::MakeInstance()
 {
-	return MakeShareable(new FCustomDetailStructViewCustomization);
+	return MakeShareable(new FCustomDetailStructCustomization);
 }
 
-void FCustomDetailStructViewCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle,
+void FCustomDetailStructCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle,
 	FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	MyStructProperty = StructPropertyHandle;
@@ -37,13 +37,13 @@ void FCustomDetailStructViewCustomization::CustomizeHeader(TSharedRef<IPropertyH
 		.ValueContent()
 		[
 			SNew(SComboButton)
-			.OnGetMenuContent(this, &FCustomDetailStructViewCustomization::OnGetKeyContent)
+			.OnGetMenuContent(this, &FCustomDetailStructCustomization::OnGetKeyContent)
 			 .ContentPadding(FMargin( 2.0f, 2.0f ))
-			.IsEnabled(this, &FCustomDetailStructViewCustomization::IsEditingEnabled)
+			.IsEnabled(this, &FCustomDetailStructCustomization::IsEditingEnabled)
 			.ButtonContent()
 			[
 				SNew(STextBlock) 
-				.Text(this, &FCustomDetailStructViewCustomization::GetCurrentKeyDesc)
+				.Text(this, &FCustomDetailStructCustomization::GetCurrentKeyDesc)
 				.Font(FontInfo)
 			]
 		];
@@ -51,31 +51,31 @@ void FCustomDetailStructViewCustomization::CustomizeHeader(TSharedRef<IPropertyH
 	MyKeyNameProperty->SetValue(KeyValues[0]);
 }
 
-void FCustomDetailStructViewCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle,
+void FCustomDetailStructCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle,
 	IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 }
 
-TSharedRef<SWidget> FCustomDetailStructViewCustomization::OnGetKeyContent() const
+TSharedRef<SWidget> FCustomDetailStructCustomization::OnGetKeyContent() const
 {
 	FMenuBuilder MenuBuilder(true, NULL);
 
 	for (int32 Idx = 0; Idx < KeyValues.Num(); Idx++)
 	{
-		FUIAction ItemAction( FExecuteAction::CreateSP( const_cast<FCustomDetailStructViewCustomization*>(this), &FCustomDetailStructViewCustomization::OnKeyComboChange, Idx) );
+		FUIAction ItemAction( FExecuteAction::CreateSP( const_cast<FCustomDetailStructCustomization*>(this), &FCustomDetailStructCustomization::OnKeyComboChange, Idx) );
 		MenuBuilder.AddMenuEntry( FText::FromName( KeyValues[Idx] ), TAttribute<FText>(), FSlateIcon(), ItemAction);
 	}
 
 	return MenuBuilder.MakeWidget();
 }
 
-void FCustomDetailStructViewCustomization::OnKeyComboChange(int32 Idx)
+void FCustomDetailStructCustomization::OnKeyComboChange(int32 Idx)
 {
 	UE_LOG(LogTemp, Log, TEXT("OnKeyComboChange:%d"), Idx);
 	MyKeyNameProperty->SetValue(KeyValues[Idx]);
 }
 
-FText FCustomDetailStructViewCustomization::GetCurrentKeyDesc() const
+FText FCustomDetailStructCustomization::GetCurrentKeyDesc() const
 {
 	FName NameValue;
 	MyKeyNameProperty->GetValue(NameValue);
@@ -84,7 +84,7 @@ FText FCustomDetailStructViewCustomization::GetCurrentKeyDesc() const
 	return KeyValues.IsValidIndex(KeyIdx) ? FText::FromName(KeyValues[KeyIdx]) : FText::FromName(NameValue);
 }
 
-bool FCustomDetailStructViewCustomization::IsEditingEnabled() const
+bool FCustomDetailStructCustomization::IsEditingEnabled() const
 {
 	return true;
 }

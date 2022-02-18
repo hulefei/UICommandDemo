@@ -9,7 +9,7 @@ DECLARE_DELEGATE_RetVal( TSharedRef<class IDetailCustomization>, FOnGetDetailCus
 /**
  * 
  */
-class DETAILVIEWEXAMPLE_API FDetailObjectDetails : public IDetailCustomization
+class DETAILVIEWEXAMPLE_API FCustomDetailObjectCustomization : public IDetailCustomization
 {
 public:
 	/** Makes a new instance of this detail layout class for a specific detail view requesting it */
@@ -17,4 +17,5 @@ public:
 
 	/** IDetailCustomization interface */
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
+	FText OnGetGroupText() const;
 };

@@ -17,17 +17,40 @@ struct DETAILVIEWEXAMPLE_API FCustomDetailStruct
 };
 
 UCLASS()
+class DETAILVIEWEXAMPLE_API UCustomDetailObject : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, Category="CustomDetail")
+	FName InnerName;
+
+	UPROPERTY(EditAnywhere, Category="CustomDetail")
+	int32 InnAgeAge;
+};
+
+UCLASS()
 class DETAILVIEWEXAMPLE_API UDetailObject : public UObject
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, Category="DetailView", meta=(TestShow = "111"))
+	UDetailObject(const FObjectInitializer& ObjectInitializer) : CustomDetailObject(NewObject<UCustomDetailObject>())
+	{
+	}
+
+public:
+	UPROPERTY(EditAnywhere, Category="DetailView")
 	FName Name;
 	
-	UPROPERTY(EditAnywhere, Category="DetailView", meta=(TestShow = "222"))
+	UPROPERTY(EditAnywhere, Category="DetailView")
 	int32 Age;
 
 	UPROPERTY(EditAnywhere, Category="DetailView")
 	FCustomDetailStruct CustomDetailStruct;
+	
+	UPROPERTY(EditAnywhere, Category="DetailView")
+	UCustomDetailObject* CustomDetailObject;
 };
+
+

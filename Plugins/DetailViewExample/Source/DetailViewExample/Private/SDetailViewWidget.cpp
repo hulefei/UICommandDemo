@@ -42,7 +42,7 @@ void SDetailViewWidget::Construct(const FArguments& InArgs)
 	DetailsView->OnFinishedChangingProperties().AddSP(this, &SDetailViewWidget::OnFinishedChangingProperties);
 	DetailsView->SetIsPropertyVisibleDelegate(FIsPropertyVisible::CreateSP(this, &SDetailViewWidget::IsPropertyVisible));
 
-	DetailsView->SetObject(DetailObject);
+	DetailsView->SetObject(DetailObject->CustomDetailObject);
 	
 	const FText WidgetText = FText::Format(
 		LOCTEXT("WindowWidgetText", "Add code to {0} in {1} to override this window's contents"),

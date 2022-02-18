@@ -7,7 +7,7 @@
 /**
  * 
  */
-class DETAILVIEWEXAMPLE_API FCustomDetailStructViewCustomization : public IPropertyTypeCustomization
+class DETAILVIEWEXAMPLE_API FCustomDetailStructCustomization : public IPropertyTypeCustomization
 {
 public:
 	/** Makes a new instance of this detail layout class for a specific detail view requesting it */
